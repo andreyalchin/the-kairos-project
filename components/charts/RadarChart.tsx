@@ -20,7 +20,7 @@ interface CustomTickProps {
   x?: number
   y?: number
   payload?: { value: string }
-  textAnchor?: string
+  textAnchor?: 'start' | 'middle' | 'end' | 'inherit'
 }
 
 function CustomTick({ x = 0, y = 0, payload, textAnchor }: CustomTickProps) {
