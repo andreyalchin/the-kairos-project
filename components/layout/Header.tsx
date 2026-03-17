@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { UserNav } from './UserNav'
 
 export function Header() {
   return (
@@ -11,10 +12,7 @@ export function Header() {
           <Link href="/enterprise" className="hover:text-indigo transition-colors">Enterprise</Link>
         </nav>
         <div className="flex items-center gap-3">
-          <Link href="/login" className="text-sm text-slate-600 hover:text-indigo">Log in</Link>
-          <Link href="/assessment" className="text-sm bg-indigo text-white px-4 py-2 rounded-lg hover:bg-indigo-600 transition-colors font-medium">
-            Take Assessment
-          </Link>
+          <UserNav />
         </div>
       </div>
     </header>
