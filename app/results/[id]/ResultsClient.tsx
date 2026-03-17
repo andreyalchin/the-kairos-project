@@ -17,8 +17,11 @@ import type { AssessmentResult, ArchetypeDefinition } from '@/lib/types'
 
 interface Props { result: AssessmentResult; archetypeContent: ArchetypeDefinition; resultId: string }
 
-export function ResultsClient({ result, archetypeContent }: Props) {
-  const [authenticated, setAuthenticated] = useState(false)
+const DEMO_ID = '00000000-0000-0000-0000-000000000002'
+
+export function ResultsClient({ result, archetypeContent, resultId }: Props) {
+  const isDemo = resultId === DEMO_ID
+  const [authenticated, setAuthenticated] = useState(isDemo)
   const [showGate, setShowGate] = useState(false)
   const observerRef = useRef<IntersectionObserver | null>(null)
   const sessionToken = typeof window !== 'undefined' ? localStorage.getItem('kairos_session') ?? '' : ''
