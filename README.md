@@ -1,36 +1,130 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# The Kairos Project
 
-## Getting Started
+**Human Potential Intelligence Platform** — a psychometric assessment that measures 29 psychological dimensions, computes a behavioral profile, and delivers a personalized 11-section report with archetype classification.
 
-First, run the development server:
+Live: [kairosproject.vercel.app](https://kairosproject.vercel.app)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+---
+
+## What It Does
+
+Users complete an adaptive assessment of 83 questions across 8 question types (Likert, forced-choice, situational, timed, rank-order, allocation, frequency, visual). The engine tracks response timing and revision behavior alongside explicit answers to build a richer behavioral signal.
+
+After completing the assessment, users receive a full report covering:
+
+- **HPIF Profile** — High Performance Intelligence Framework scores across 5 composite dimensions
+- **Archetype classification** — matched to 1 of 32 archetypes (e.g. Strategic Visionary, Analytical Architect) with a match confidence score
+- **29-dimension radar breakdown** — openness, conscientiousness, emotional stability, leadership drive, cognitive agility, and 24 more
+- **Cognitive inference signals** — average response time, revision rate, consistency score derived from construct pair comparisons
+- **Team compatibility** — best partners, growth partners, and friction archetypes
+- **Growth edges, blind spots, decision-making style, communication patterns, stress response, and ideal environment** (sections 4–11)
+
+The first 2 report sections are public. Sections 3–11 are gated behind authentication using an IntersectionObserver blur pattern — the gate appears naturally as the user scrolls.
+
+---
+
+## Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Framework | Next.js 14 (App Router) |
+| Language | TypeScript |
+| Styling | Tailwind CSS |
+| Animations | Framer Motion |
+| Charts | Recharts |
+| Auth & Database | Supabase (PostgreSQL + Auth + RLS) |
+| Supabase SSR | @supabase/ssr |
+| Icons | Lucide React |
+| Deployment | Vercel |
+
+---
+
+## Assessment Engine
+
+- **83 questions** across 8 types, weighted per dimension
+- **Adaptive IRT logic** — ambiguous zone [35, 65] triggers targeted follow-up after 40 calibration questions
+- **Scoring** — weighted normalization per dimension → 0–100 scale
+- **HPIF computation** — 5 composite scores derived from dimension clusters
+- **Inference layer** — response time, revision rate, and construct-pair consistency computed separately from self-report scores
+- **Archetype matching** — cosine-style distance across dimension weights mapped to 32 archetypes
+
+---
+
+## Database (Supabase / PostgreSQL)
+
+Four tables with Row Level Security:
+
+- `assessments` — session token, status, completion timestamp, user_id (nullable for anonymous)
+- `responses` — per-question answers with response time and revision flag
+- `results` — computed scores, HPIF profile, archetype, match score, inference data
+- `questions` — seeded question bank (83 rows)
+
+Anonymous users can complete the full assessment. Auth is required only to access the gated sections of the report.
+
+---
+
+## Project Structure
+
+```
+app/                    # Next.js App Router pages and API routes
+  api/assessment/       # start, respond, complete endpoints
+  api/results/[id]/     # result fetch endpoint
+  assessment/           # assessment UI
+  results/[id]/         # report page
+  (auth)/               # login / signup
+  (app)/                # dashboard, profile
+components/
+  assessment/           # question type components, progress, processing screen
+  charts/               # RadarChart, GaugeChart, BarChart
+  report/               # 11 report section components + AuthGate
+  layout/               # Header, Footer
+  ui/                   # Button, Card, Badge primitives
+lib/
+  questions.ts          # question bank + construct pairs
+  scoring.ts            # weighted dimension scoring
+  inference.ts          # behavioral signal computation
+  hpif.ts               # HPIF composite score computation
+  archetypes.ts         # 32 archetype definitions
+  getResult.ts          # shared server-side result loader
+scripts/
+  seed-questions.ts     # seeds question bank to Supabase
+  seed-demo-result.ts   # seeds fixed demo result (UUID: 00000000-0000-0000-0000-000000000001)
+supabase/migrations/    # SQL schema
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Local Development
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm install
+npm run dev
+```
 
-## Learn More
+Requires a `.env.local` with:
 
-To learn more about Next.js, take a look at the following resources:
+```
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
+SUPABASE_SERVICE_ROLE_KEY=
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Seed the database:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+npx ts-node --project tsconfig.test.json scripts/seed-questions.ts
+npx ts-node --project tsconfig.test.json scripts/seed-demo-result.ts
+```
 
-## Deploy on Vercel
+Demo report: [localhost:3000/results/demo](http://localhost:3000/results/demo)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Tests
+
+```bash
+npm test
+```
+
+Unit tests cover scoring, HPIF computation, inference, norms, and archetype matching.
