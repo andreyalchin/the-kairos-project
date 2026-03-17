@@ -1,4 +1,4 @@
-import { createClient } from '@/lib/supabase/server'
+import { createClient, createServiceClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { FileText, ArrowRight, Plus } from 'lucide-react'
@@ -8,7 +8,9 @@ export default async function DashboardPage() {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login')
 
-  const { data: assessments } = await supabase
+  // Use service client so RLS on results doesn't silently block the join
+  const serviceClient = createServiceClient()
+  const { data: assessments } = await serviceClient
     .from('assessments')
     .select('id, completed_at, results(id, archetype, match_score)')
     .eq('user_id', user.id)
