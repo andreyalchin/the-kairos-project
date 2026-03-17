@@ -12,12 +12,43 @@ const COG_LABELS: Record<string, string> = {
   creative_intelligence: 'Creative Intelligence',
 }
 
-const COG_DESC: Record<string, string> = {
-  cognitive_agility: 'How quickly and fluidly you adapt your thinking across different problem types and domains.',
-  executive_function: 'Your ability to plan, organize, prioritize, and regulate complex goal-directed behavior.',
-  attention_control: 'How effectively you sustain focus and manage cognitive interference and distraction.',
-  systems_thinking: 'Your capacity to model how parts relate to wholes and understand complex interdependencies.',
-  creative_intelligence: 'The richness of your associative network and your capacity for original, generative thought.',
+function cogInsight(dim: string, score: number, p: number): string {
+  const band = score >= 75 ? 'high' : score >= 50 ? 'mid' : 'low'
+  const pStr = `${p}th percentile`
+  switch (dim) {
+    case 'cognitive_agility':
+      return band === 'high'
+        ? `At ${score} (${pStr}), your cognitive agility is a genuine differentiator. You shift between problem types, domains, and thinking modes with speed that most people cannot match. This makes you exceptionally effective in fast-changing environments.`
+        : band === 'mid'
+        ? `Your cognitive agility score of ${score} (${pStr}) reflects solid, reliable mental flexibility. You adapt your thinking when the situation demands it — not effortlessly, but consistently. Building deliberate practice in cross-domain thinking will move this higher.`
+        : `At ${score} (${pStr}), cognitive agility is a development area. You are most effective in familiar domains where your existing frameworks apply. Deliberately exposing yourself to unfamiliar problem types will build this dimension over time.`
+    case 'executive_function':
+      return band === 'high'
+        ? `Your executive function score of ${score} (${pStr}) puts you among the most organized and goal-directed people in the population. You translate intention into action reliably, manage complexity without losing threads, and execute with consistency.`
+        : band === 'mid'
+        ? `At ${score} (${pStr}), your executive function is functional but variable. You perform well under structure and clear priorities, and you can lose efficiency when context is ambiguous or demands are competing. Systems and external scaffolding amplify your output.`
+        : `Your executive function score of ${score} (${pStr}) suggests that planning, sequencing, and sustaining effort on complex projects is a meaningful challenge. External structure — tools, accountability partners, routines — directly compensates for this.`
+    case 'attention_control':
+      return band === 'high'
+        ? `At ${score} (${pStr}), your attention control is exceptional. You can sustain focused work for extended periods, resist interruption, and manage cognitive load under pressure. Deep work is a natural strength.`
+        : band === 'mid'
+        ? `Your attention control of ${score} (${pStr}) is average — you maintain focus adequately in conducive environments but are vulnerable to distraction in high-stimulation contexts. Environment design (removing interruption sources) is a direct lever.`
+        : `At ${score} (${pStr}), attention control is a development priority. You are likely drawn to novelty and frequent context-switching. This is energizing in the short term but reduces output quality on tasks requiring sustained depth.`
+    case 'systems_thinking':
+      return band === 'high'
+        ? `Your systems thinking score of ${score} (${pStr}) is elite. You see interdependencies others miss, model how changes propagate through complex structures, and understand second-order effects intuitively. This is one of the rarest and most valuable cognitive capabilities.`
+        : band === 'mid'
+        ? `At ${score} (${pStr}), your systems thinking is above average. You can follow complex causal chains and appreciate interdependencies when you take time to map them. With deliberate practice, this can become a genuine strength.`
+        : `Your systems thinking score of ${score} (${pStr}) indicates a preference for linear, concrete problem-solving over systemic analysis. You are most effective when working within well-defined scope and less effective when problems require modeling many interacting variables.`
+    case 'creative_intelligence':
+      return band === 'high'
+        ? `At ${score} (${pStr}), your creative intelligence is highly developed. Your associative network is unusually dense — you connect ideas across distant domains and generate original framings naturally. This capacity is rare and compounding.`
+        : band === 'mid'
+        ? `Your creative intelligence of ${score} (${pStr}) reflects solid generative thinking. You produce novel ideas in domains you know well and have real potential to develop broader creative range with cross-domain exposure.`
+        : `At ${score} (${pStr}), creative intelligence is a growth area. You are more effective refining and executing existing ideas than generating new ones. This is not a fixed trait — creative output scales with exposure to diverse inputs and deliberate practice.`
+    default:
+      return `Score: ${score} · ${pStr}`
+  }
 }
 
 const STYLE_DESCRIPTIONS: Record<string, string> = {
@@ -62,15 +93,19 @@ export function ReportSection4({ result }: { result: AssessmentResult }) {
       </div>
 
       <div className="space-y-3">
-        {COG_DIMS.map(dim => (
-          <div key={dim} className="p-4 rounded-xl bg-white border border-slate-100">
-            <div className="flex justify-between items-center mb-1">
-              <span className="font-medium text-sm text-text">{COG_LABELS[dim]}</span>
-              <span className="text-indigo font-bold text-sm">{result.scores[dim]} · p{Math.round(getPercentile(dim, result.scores[dim]))}</span>
+        {COG_DIMS.map(dim => {
+          const score = result.scores[dim]
+          const p = Math.round(getPercentile(dim, score))
+          return (
+            <div key={dim} className="p-4 rounded-xl bg-white border border-slate-100">
+              <div className="flex justify-between items-center mb-2">
+                <span className="font-medium text-sm text-text">{COG_LABELS[dim]}</span>
+                <span className="text-indigo font-bold text-sm">{score} · p{p}</span>
+              </div>
+              <p className="text-sm text-slate-600 leading-relaxed">{cogInsight(dim, score, p)}</p>
             </div>
-            <p className="text-xs text-slate-500 leading-relaxed">{COG_DESC[dim]}</p>
-          </div>
-        ))}
+          )
+        })}
       </div>
 
       <div className="p-5 rounded-2xl bg-slate-50 border border-slate-100">

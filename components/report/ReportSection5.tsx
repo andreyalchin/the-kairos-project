@@ -18,9 +18,27 @@ const DESCRIPTIONS: Record<string, string> = {
   competitive_drive: 'Your need to outperform others and measure your output against external benchmarks.',
 }
 
+const HIGH_SIGNALS: Record<string, string> = {
+  achievement_drive: 'You are energized by ambitious targets. You need to feel like you\'re making progress toward something that matters.',
+  risk_tolerance: 'Uncertainty doesn\'t repel you — it draws you. You are most alive when the outcome isn\'t guaranteed.',
+  autonomy_need: 'Self-direction is fuel for you. You do your best work when the "how" is yours to define.',
+  purpose_orientation: 'Meaning is non-negotiable. Work that connects to a larger mission sustains you in ways that pure achievement cannot.',
+  competitive_drive: 'You measure yourself against others and that measurement motivates you. Knowing the score sharpens your performance.',
+}
+
+const LOW_SIGNALS: Record<string, string> = {
+  achievement_drive: 'Environments of constant performance pressure will erode your motivation and quality over time.',
+  risk_tolerance: 'Chronic uncertainty, high-stakes ambiguity, and frequent pivots will be draining rather than energizing.',
+  autonomy_need: 'Micromanagement and over-specified processes will suppress your performance below your actual ceiling.',
+  purpose_orientation: 'Work that feels purely transactional, without connection to a mission you believe in, will not sustain your engagement.',
+  competitive_drive: 'Relentless competitive framing — ranking systems, constant comparison, zero-sum environments — will feel hollow or counterproductive.',
+}
+
 export function ReportSection5({ result, archetype }: { result: AssessmentResult; archetype: ArchetypeDefinition }) {
   const { motivational_architecture: mot } = result.hpif_profile
   const sorted = [...MOT_DIMS].sort((a, b) => result.scores[b] - result.scores[a])
+  const drivers = sorted.slice(0, 3)
+  const drains = sorted.slice(-2)
 
   return (
     <section className="space-y-8 py-8">
@@ -29,31 +47,60 @@ export function ReportSection5({ result, archetype }: { result: AssessmentResult
       <div className="grid grid-cols-2 gap-4">
         <div className="p-5 rounded-2xl bg-teal-50 border border-teal-100">
           <p className="text-xs text-teal-600 uppercase tracking-widest font-medium mb-1">Primary Driver</p>
-          <p className="text-2xl font-bold text-teal">{mot.primary_driver}</p>
+          <p className="text-xl font-bold text-teal">{mot.primary_driver}</p>
         </div>
         <div className="p-5 rounded-2xl bg-indigo-50 border border-indigo-100">
           <p className="text-xs text-indigo uppercase tracking-widest font-medium mb-1">Secondary Driver</p>
-          <p className="text-2xl font-bold text-indigo">{mot.secondary_driver}</p>
+          <p className="text-xl font-bold text-indigo">{mot.secondary_driver}</p>
         </div>
       </div>
 
       <p className="text-slate-600 leading-relaxed">{mot.description}</p>
 
-      <div className="space-y-5">
-        <h3 className="font-semibold text-text">Motivation Breakdown</h3>
-        {sorted.map((d, i) => (
-          <div key={d}>
-            <div className="flex items-center justify-between mb-1">
+      {/* Top Drivers */}
+      <div className="space-y-4">
+        <div>
+          <h3 className="font-semibold text-text">What Fuels You</h3>
+          <p className="text-xs text-slate-400 mt-0.5">Your highest-scoring motivational dimensions — the conditions under which you operate at full capacity.</p>
+        </div>
+        {drivers.map((d, i) => (
+          <div key={d} className="p-4 rounded-2xl bg-teal-50 border border-teal-100">
+            <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-2">
-                <span className="w-5 h-5 rounded-full bg-indigo text-white text-xs flex items-center justify-center shrink-0">{i + 1}</span>
-                <span className="text-sm font-medium text-text">{LABELS[d]}</span>
+                <span className="w-5 h-5 rounded-full bg-teal text-white text-xs font-bold flex items-center justify-center shrink-0">{i + 1}</span>
+                <span className="text-sm font-semibold text-teal-800">{LABELS[d]}</span>
               </div>
-              <span className="font-bold text-indigo text-sm">{result.scores[d]}</span>
+              <span className="font-bold text-teal text-sm">{result.scores[d]}</span>
             </div>
-            <div className="h-2 bg-slate-100 rounded-full mb-1">
-              <div className="h-full bg-gradient-to-r from-indigo to-teal rounded-full" style={{ width: `${result.scores[d]}%` }} />
+            <div className="h-1.5 bg-teal-100 rounded-full mb-2">
+              <div className="h-full bg-teal rounded-full" style={{ width: `${result.scores[d]}%` }} />
             </div>
-            <p className="text-xs text-slate-500">{DESCRIPTIONS[d]}</p>
+            <p className="text-xs text-slate-500 mb-1">{DESCRIPTIONS[d]}</p>
+            <p className="text-xs text-teal-700 font-medium">{HIGH_SIGNALS[d]}</p>
+          </div>
+        ))}
+      </div>
+
+      {/* Energy Drains */}
+      <div className="space-y-4">
+        <div>
+          <h3 className="font-semibold text-text">What Drains You</h3>
+          <p className="text-xs text-slate-400 mt-0.5">Your lowest-scoring motivational dimensions — conditions that erode engagement and performance over time.</p>
+        </div>
+        {drains.map((d) => (
+          <div key={d} className="p-4 rounded-2xl bg-slate-50 border border-slate-200">
+            <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center gap-2">
+                <span className="w-5 h-5 rounded-full bg-slate-300 text-slate-600 text-xs font-bold flex items-center justify-center shrink-0">↓</span>
+                <span className="text-sm font-semibold text-slate-600">{LABELS[d]}</span>
+              </div>
+              <span className="font-bold text-slate-400 text-sm">{result.scores[d]}</span>
+            </div>
+            <div className="h-1.5 bg-slate-200 rounded-full mb-2">
+              <div className="h-full bg-slate-300 rounded-full" style={{ width: `${result.scores[d]}%` }} />
+            </div>
+            <p className="text-xs text-slate-500 mb-1">{DESCRIPTIONS[d]}</p>
+            <p className="text-xs text-slate-500 italic">{LOW_SIGNALS[d]}</p>
           </div>
         ))}
       </div>
@@ -87,7 +134,7 @@ export function ReportSection5({ result, archetype }: { result: AssessmentResult
         )}
         {archetype.warning_signals && (
           <div>
-            <h3 className="font-semibold text-red-400 mb-3">What Drains You</h3>
+            <h3 className="font-semibold text-red-400 mb-3">Warning Signals</h3>
             <ul className="space-y-2">
               {archetype.warning_signals.map((s) => (
                 <li key={s} className="flex gap-2 text-sm text-slate-600">
