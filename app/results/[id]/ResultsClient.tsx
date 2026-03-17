@@ -1,5 +1,6 @@
 'use client'
-import { useRef, useState, useCallback } from 'react'
+import { useRef, useState, useCallback, useEffect } from 'react'
+import { createClient } from '@/lib/supabase/client'
 import { AuthGateOverlay } from '@/components/report/AuthGate'
 import { ReportSection1 } from '@/components/report/ReportSection1'
 import { ReportSection2 } from '@/components/report/ReportSection2'
@@ -21,6 +22,18 @@ export function ResultsClient({ result, archetypeContent }: Props) {
   const [showGate, setShowGate] = useState(false)
   const observerRef = useRef<IntersectionObserver | null>(null)
   const sessionToken = typeof window !== 'undefined' ? localStorage.getItem('kairos_session') ?? '' : ''
+
+  // Check for existing Supabase session on mount
+  useEffect(() => {
+    const supabase = createClient()
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) setAuthenticated(true)
+    })
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setAuthenticated(!!session)
+    })
+    return () => subscription.unsubscribe()
+  }, [])
 
   const sentinelRef = useCallback((el: HTMLDivElement | null) => {
     if (observerRef.current) { observerRef.current.disconnect(); observerRef.current = null }
