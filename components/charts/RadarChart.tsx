@@ -24,10 +24,10 @@ interface CustomTickProps {
 }
 
 function CustomTick({ x = 0, y = 0, payload, textAnchor }: CustomTickProps) {
-  const label: string = payload.value
+  const label: string = payload?.value ?? ''
   const words = label.split(' ')
 
-  if (words.length === 1 || label.length <= 12) {
+  if (!label || words.length === 1 || label.length <= 12) {
     return (
       <text x={x} y={y} textAnchor={textAnchor} fill="#64748B" fontSize={11}>
         <tspan x={x} dy="0.355em">{label}</tspan>
