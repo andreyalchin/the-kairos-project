@@ -19,6 +19,7 @@ export default function AssessmentPage() {
   const [error, setError] = useState('')
 
   const questionDisplayTimeRef = useRef<number>(Date.now())
+  const submittingRef = useRef(false)
 
   useEffect(() => {
     questionDisplayTimeRef.current = Date.now()
@@ -41,6 +42,8 @@ export default function AssessmentPage() {
   }
 
   const handleAnswer = useCallback(async (value: unknown) => {
+    if (submittingRef.current) return
+    submittingRef.current = true
     const question = questions[currentIdx]
     const responseTimeMs = Date.now() - questionDisplayTimeRef.current
     try {
@@ -83,6 +86,8 @@ export default function AssessmentPage() {
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Unknown error')
       setPhase('error')
+    } finally {
+      submittingRef.current = false
     }
   }, [questions, currentIdx, sessionToken, router])
 
