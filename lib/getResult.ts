@@ -2,7 +2,7 @@ import { createServiceClient } from '@/lib/supabase/server'
 import { ARCHETYPES } from '@/lib/archetypes'
 
 export async function getResult(id: string) {
-  const supabase = await createServiceClient()
+  const supabase = createServiceClient()
   const { data: result, error } = await supabase
     .from('results')
     .select('*, assessments(id)')

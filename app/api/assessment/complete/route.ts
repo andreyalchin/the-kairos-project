@@ -13,7 +13,7 @@ export async function POST(req: Request) {
     const { sessionToken } = await req.json()
     if (!sessionToken) return Response.json({ error: 'Missing sessionToken' }, { status: 400 })
 
-    const supabase = await createServiceClient()
+    const supabase = createServiceClient()
 
     const { data: assessment, error: aErr } = await supabase
       .from('assessments')

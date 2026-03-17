@@ -24,7 +24,7 @@ function shuffleWithinTiers(questions: Question[]): Question[] {
 
 export async function POST() {
   try {
-    const supabase = await createServiceClient()
+    const supabase = createServiceClient()
     const sessionToken = crypto.randomUUID()
 
     const { data: assessment, error } = await supabase

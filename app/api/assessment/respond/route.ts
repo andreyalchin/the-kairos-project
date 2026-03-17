@@ -10,7 +10,7 @@ export async function POST(req: Request) {
       return Response.json({ error: 'Missing required fields' }, { status: 400 })
     }
 
-    const supabase = await createServiceClient()
+    const supabase = createServiceClient()
 
     // Validate session token
     const { data: assessment, error: aErr } = await supabase
