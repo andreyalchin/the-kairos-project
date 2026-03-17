@@ -1308,7 +1308,14 @@ export function assignArchetype(scores: DimensionScores, archetypes: ArchetypeDe
     ? resolveByPrimaryDimension(winner.slug, runnerUp.slug, scores, archetypes)
     : winner.slug
 
-  return { archetype: resolvedSlug, matchScore: Math.round(winner.composite) }
+  // Recalibrate match score: neutral answers (all Likert=3) produce composite ~60,
+  // which is the zero-signal baseline. Rescale so 60→25%, 80→63%, 90→81%, 100→100%.
+  // This prevents a flat/neutral profile from appearing as a 60% match.
+  const raw = winner.composite
+  const normalized = ((raw - 60) / 40) * 75 + 25
+  const matchScore = Math.max(15, Math.min(99, Math.round(normalized)))
+
+  return { archetype: resolvedSlug, matchScore }
 }
 
 function resolveByPrimaryDimension(

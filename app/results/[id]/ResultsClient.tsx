@@ -68,7 +68,7 @@ export function ResultsClient({ result, archetypeContent, resultId }: Props) {
         <ReportSection1 result={result} archetype={archetypeContent} />
         <ReportSection2 result={result} onSentinelRef={sentinelRef} />
         <div className={!authenticated && showGate ? 'blur-sm pointer-events-none select-none' : ''} style={{ transition: 'filter 0.3s' }}>
-          <ReportSection3 archetype={archetypeContent} />
+          <ReportSection3 archetype={archetypeContent} matchScore={result.match_score} />
           <ReportSection4 result={result} />
           <ReportSection5 result={result} archetype={archetypeContent} />
           <ReportSection6 result={result} archetype={archetypeContent} />

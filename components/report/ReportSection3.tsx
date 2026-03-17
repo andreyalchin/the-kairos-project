@@ -35,7 +35,7 @@ const SECTION_CONFIG = [
   },
 ]
 
-export function ReportSection3({ archetype }: { archetype: ArchetypeDefinition }) {
+export function ReportSection3({ archetype, matchScore = 99 }: { archetype: ArchetypeDefinition; matchScore?: number }) {
   const hasContent = !!(archetype.who_you_are || archetype.how_you_think || archetype.what_drives_you || archetype.how_you_show_up)
 
   return (
@@ -94,8 +94,8 @@ export function ReportSection3({ archetype }: { archetype: ArchetypeDefinition }
             </div>
           )}
 
-          {/* Famous Examples */}
-          {archetype.famous_examples && archetype.famous_examples.length > 0 && (
+          {/* Famous Examples — only shown when match confidence is meaningful */}
+          {archetype.famous_examples && archetype.famous_examples.length > 0 && matchScore >= 65 && (
             <div className="p-5 rounded-2xl bg-white border border-slate-100">
               <p className="text-xs text-slate-400 uppercase tracking-widest font-medium mb-3">Famous Examples</p>
               <div className="flex flex-wrap gap-2">

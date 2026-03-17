@@ -4,38 +4,59 @@ import type { AssessmentResult, ArchetypeDefinition } from '@/lib/types'
 
 interface Props { result: AssessmentResult; archetype: ArchetypeDefinition }
 
+function matchQuality(score: number): { label: string; color: string } {
+  if (score >= 85) return { label: 'Exceptional Match', color: 'bg-teal/20 text-teal-100' }
+  if (score >= 70) return { label: 'Strong Match', color: 'bg-white/20 text-white' }
+  if (score >= 55) return { label: 'Moderate Match', color: 'bg-amber-400/20 text-amber-100' }
+  return { label: 'Developing Profile', color: 'bg-white/10 text-indigo-200' }
+}
+
 export function ReportSection1({ result, archetype }: Props) {
+  const { label, color } = matchQuality(result.match_score)
+  const isLowConfidence = result.match_score < 50
+
   return (
-    <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-indigo to-indigo-700 text-white p-8 md:p-12">
-      <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_70%_50%,#0F766E,transparent_60%)]" />
-
-      {/* Illustration — decorative, positioned top-right */}
-      <div className="absolute -right-4 -top-4 opacity-60 pointer-events-none select-none hidden sm:block">
-        <ArchetypeIllustration archetype={archetype} />
-      </div>
-
-      <div className="relative space-y-6">
-        <div className="flex items-start justify-between gap-4">
-          <div>
-            <p className="text-indigo-200 text-sm uppercase tracking-widest mb-2">Your Archetype</p>
-            <h1 className="text-4xl md:text-5xl font-bold leading-tight">{archetype.name}</h1>
-            <p className="text-indigo-200 text-lg mt-1">{archetype.subtitle}</p>
-          </div>
-          <div className="text-right shrink-0">
-            <span className="text-5xl font-bold">{result.match_score}%</span>
-            <p className="text-indigo-200 text-sm">match confidence</p>
-          </div>
+    <div className="space-y-3">
+      <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-indigo to-indigo-700 text-white p-8 md:p-12">
+        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_70%_50%,#0F766E,transparent_60%)]" />
+        <div className="absolute -right-4 -top-4 opacity-60 pointer-events-none select-none hidden sm:block">
+          <ArchetypeIllustration archetype={archetype} />
         </div>
-        <div className="flex flex-wrap gap-2">
-          {archetype.signature3Words.map(w => (
-            <Badge key={w} className="bg-white/20 text-white border-white/20">{w}</Badge>
-          ))}
+        <div className="relative space-y-6">
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <p className="text-indigo-200 text-sm uppercase tracking-widest mb-2">Your Archetype</p>
+              <h1 className="text-4xl md:text-5xl font-bold leading-tight">{archetype.name}</h1>
+              <p className="text-indigo-200 text-lg mt-1">{archetype.subtitle}</p>
+            </div>
+            <div className="text-right shrink-0">
+              <span className="text-5xl font-bold">{result.match_score}%</span>
+              <p className="text-indigo-200 text-sm">match confidence</p>
+              <span className={`inline-block mt-1 text-xs font-medium px-2 py-0.5 rounded-full ${color}`}>
+                {label}
+              </span>
+            </div>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {archetype.signature3Words.map(w => (
+              <Badge key={w} className="bg-white/20 text-white border-white/20">{w}</Badge>
+            ))}
+          </div>
+          <blockquote className="border-l-4 border-indigo-300 pl-4 italic text-indigo-100">
+            &quot;{archetype.quote}&quot;
+          </blockquote>
+          <p className="text-indigo-200 text-sm">{archetype.rarity}</p>
         </div>
-        <blockquote className="border-l-4 border-indigo-300 pl-4 italic text-indigo-100">
-          &quot;{archetype.quote}&quot;
-        </blockquote>
-        <p className="text-indigo-200 text-sm">{archetype.rarity}</p>
-      </div>
-    </section>
+      </section>
+
+      {isLowConfidence && (
+        <div className="p-4 rounded-2xl bg-amber-50 border border-amber-200">
+          <p className="text-sm font-semibold text-amber-800 mb-1">Profile Clarity: Developing</p>
+          <p className="text-sm text-amber-700 leading-relaxed">
+            Your responses were clustered in the neutral range across most dimensions, which limits the precision of this profile. The archetype shown represents the best statistical fit to your data — but the low match confidence means it may not strongly reflect your actual disposition. For a more accurate result, retake the assessment with more decisive answers. Extreme responses (strongly agree / strongly disagree) carry more signal than neutral ones.
+          </p>
+        </div>
+      )}
+    </div>
   )
 }
