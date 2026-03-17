@@ -26,8 +26,9 @@ export function ResultsClient({ result, archetypeContent, resultId }: Props) {
   const observerRef = useRef<IntersectionObserver | null>(null)
   const sessionToken = typeof window !== 'undefined' ? localStorage.getItem('kairos_session') ?? '' : ''
 
-  // Check for existing Supabase session on mount
+  // Check for existing Supabase session on mount (skip for demo — always open)
   useEffect(() => {
+    if (isDemo) return
     const supabase = createClient()
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) setAuthenticated(true)
@@ -46,7 +47,7 @@ export function ResultsClient({ result, archetypeContent, resultId }: Props) {
       setAuthenticated(!!session)
     })
     return () => subscription.unsubscribe()
-  }, [])
+  }, [isDemo])
 
   const sentinelRef = useCallback((el: HTMLDivElement | null) => {
     if (observerRef.current) { observerRef.current.disconnect(); observerRef.current = null }
