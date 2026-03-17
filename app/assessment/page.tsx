@@ -73,6 +73,9 @@ export default function AssessmentPage() {
           body: JSON.stringify({ sessionToken }),
         })
         const completeData = await completeRes.json()
+        if (!completeRes.ok || !completeData.resultId) {
+          throw new Error(completeData.error ?? 'Failed to process results')
+        }
         const elapsed = Date.now() - processingStart
         if (elapsed < 2000) await new Promise(r => setTimeout(r, 2000 - elapsed))
         router.push(`/results/${completeData.resultId}`)

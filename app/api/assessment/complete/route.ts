@@ -38,17 +38,6 @@ export async function POST(req: Request) {
 
     if (!rawResponses?.length) return Response.json({ error: 'No responses found' }, { status: 400 })
 
-    // Validate all 29 dimensions have at least 1 response
-    const answeredDims = new Set<string>()
-    rawResponses.forEach(r => {
-      const dim = QUESTIONS.find(q => q.code === r.question_code)?.dimension
-      if (dim) answeredDims.add(dim)
-    })
-    const missing = Array.from(REQUIRED_DIMENSIONS).filter(d => d !== 'founder_potential' && !answeredDims.has(d))
-    if (missing.length > 0) {
-      return Response.json({ error: `Missing responses for: ${missing.join(', ')}` }, { status: 400 })
-    }
-
     // Map responses
     const responses: AssessmentResponse[] = rawResponses.map(r => ({
       questionCode: r.question_code,
@@ -71,18 +60,17 @@ export async function POST(req: Request) {
     })
     const inference = computeInference({ responses: inferenceResponses, constructPairs: CONSTRUCT_PAIRS })
 
-    // Apply modifiers to all raw dimension scores
-    const modifiedScores: Partial<DimensionScores> = {}
-    for (const [dim, score] of Object.entries(partialScores)) {
-      if (score !== undefined) {
-        modifiedScores[dim as keyof DimensionScores] = Math.max(0, Math.min(100,
-          score + inference.consistencyPenalty + inference.speedModifier
-        ))
-      }
+    // Apply modifiers and fill any uncovered dimensions with neutral 50
+    const modifiedScores: DimensionScores = {} as DimensionScores
+    for (const dim of Array.from(REQUIRED_DIMENSIONS)) {
+      const raw = partialScores[dim as keyof DimensionScores]
+      modifiedScores[dim as keyof DimensionScores] = raw !== undefined
+        ? Math.max(0, Math.min(100, raw + inference.consistencyPenalty + inference.speedModifier))
+        : 50
     }
 
     // Compute HPIF (also computes founder_potential)
-    const { scores: fullScores, hpif } = computeHpif(modifiedScores as DimensionScores)
+    const { scores: fullScores, hpif } = computeHpif(modifiedScores)
 
     // Assign archetype
     const { archetype, matchScore } = assignArchetype(fullScores, ARCHETYPES)
