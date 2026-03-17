@@ -38,9 +38,11 @@ export async function POST(req: Request) {
       .eq('assessment_id', assessment.id)
     const answeredCount = responses?.length ?? 0
 
+    const calibrationCount = QUESTIONS.filter(q => q.calibration && q.is_active).length
+
     // After calibration phase: compute interim scores, find ambiguous dimensions
     let nextQuestion = null
-    if (answeredCount >= 40) {
+    if (answeredCount >= calibrationCount) {
       const answeredCodes = new Set(responses!.map(r => r.question_code))
       const answeredQuestions = QUESTIONS.filter(q => answeredCodes.has(q.code))
       const mappedResponses: AssessmentResponse[] = responses!.map(r => ({
@@ -64,9 +66,9 @@ export async function POST(req: Request) {
       nextQuestion = nextQ ?? null
     }
 
-    const totalQuestions = nextQuestion === null && answeredCount >= 40
+    const totalQuestions = nextQuestion === null && answeredCount >= calibrationCount
       ? answeredCount  // done
-      : Math.max(40, answeredCount + (nextQuestion ? 1 : 0))
+      : Math.max(calibrationCount, answeredCount + (nextQuestion ? 1 : 0))
 
     return Response.json({
       nextQuestion,
