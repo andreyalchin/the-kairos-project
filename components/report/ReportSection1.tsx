@@ -13,10 +13,9 @@ function matchQuality(score: number): { label: string; color: string } {
 
 export function ReportSection1({ result, archetype }: Props) {
   const { label, color } = matchQuality(result.match_score)
-  const isLowConfidence = result.match_score < 50
 
   return (
-    <div className="space-y-3">
+    <div>
       <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-indigo to-indigo-700 text-white p-8 md:p-12">
         <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_70%_50%,#0F766E,transparent_60%)]" />
         <div className="absolute -right-4 -top-4 opacity-60 pointer-events-none select-none hidden sm:block">
@@ -49,14 +48,6 @@ export function ReportSection1({ result, archetype }: Props) {
         </div>
       </section>
 
-      {isLowConfidence && (
-        <div className="p-4 rounded-2xl bg-amber-50 border border-amber-200">
-          <p className="text-sm font-semibold text-amber-800 mb-1">Profile Clarity: Developing</p>
-          <p className="text-sm text-amber-700 leading-relaxed">
-            Your responses were clustered in the neutral range across most dimensions, which limits the precision of this profile. The archetype shown represents the best statistical fit to your data — but the low match confidence means it may not strongly reflect your actual disposition. For a more accurate result, retake the assessment with more decisive answers. Extreme responses (strongly agree / strongly disagree) carry more signal than neutral ones.
-          </p>
-        </div>
-      )}
     </div>
   )
 }

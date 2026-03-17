@@ -1,7 +1,24 @@
 import { createServiceClient } from '@/lib/supabase/server'
 import { QUESTIONS } from '@/lib/questions'
+import { ARCHETYPES } from '@/lib/archetypes'
 import { computeScores } from '@/lib/scoring'
-import type { Response as AssessmentResponse } from '@/lib/types'
+import type { Response as AssessmentResponse, DimensionScores } from '@/lib/types'
+
+const calibrationCount = QUESTIONS.filter(q => q.calibration && q.is_active).length
+
+// Compute top-2 archetype composites from interim scores to assess confidence
+function interimConfidence(scores: Partial<DimensionScores>): { topComposite: number; margin: number } {
+  const full = { ...Object.fromEntries(QUESTIONS.map(q => [q.dimension, 50])), ...scores } as DimensionScores
+  const composites = ARCHETYPES.map(a => {
+    const totalWeight = a.signature.reduce((s, d) => s + d.weight, 0)
+    const weighted = a.signature.reduce((s, d) => {
+      const v = d.direction === 'high' ? full[d.dimension] : 100 - full[d.dimension]
+      return s + v * d.weight
+    }, 0)
+    return weighted / totalWeight
+  }).sort((a, b) => b - a)
+  return { topComposite: composites[0], margin: composites[0] - composites[1] }
+}
 
 export async function POST(req: Request) {
   try {
@@ -12,7 +29,6 @@ export async function POST(req: Request) {
 
     const supabase = createServiceClient()
 
-    // Validate session token
     const { data: assessment, error: aErr } = await supabase
       .from('assessments')
       .select('id, status')
@@ -21,7 +37,6 @@ export async function POST(req: Request) {
       .single()
     if (aErr || !assessment) return Response.json({ error: 'Invalid session' }, { status: 404 })
 
-    // Upsert response
     const { error: uErr } = await supabase.from('responses').upsert({
       assessment_id: assessment.id,
       question_code: questionCode,
@@ -31,17 +46,14 @@ export async function POST(req: Request) {
     }, { onConflict: 'assessment_id,question_code' })
     if (uErr) throw uErr
 
-    // Count answered questions
     const { data: responses } = await supabase
       .from('responses')
       .select('question_code, value')
       .eq('assessment_id', assessment.id)
     const answeredCount = responses?.length ?? 0
 
-    const calibrationCount = QUESTIONS.filter(q => q.calibration && q.is_active).length
-
-    // After calibration phase: compute interim scores, find ambiguous dimensions
     let nextQuestion = null
+
     if (answeredCount >= calibrationCount) {
       const answeredCodes = new Set(responses!.map(r => r.question_code))
       const answeredQuestions = QUESTIONS.filter(q => answeredCodes.has(q.code))
@@ -54,20 +66,34 @@ export async function POST(req: Request) {
       }))
       const scores = computeScores(mappedResponses, answeredQuestions)
 
-      // Find dimensions in ambiguous zone [35, 65]
-      const ambiguous = Object.entries(scores)
-        .filter(([, s]) => s !== undefined && s >= 35 && s <= 65)
-        .map(([dim]) => dim)
+      const { topComposite, margin } = interimConfidence(scores)
+      // Confident result: strong top archetype with clear separation — no more questions needed
+      const isConfident = topComposite >= 75 && margin >= 8
 
-      // Find next unanswered question from ambiguous dimension
-      const nextQ = QUESTIONS
-        .filter(q => !q.calibration && !answeredCodes.has(q.code) && q.is_active && ambiguous.includes(q.dimension))
-        .sort((a, b) => a.order_index - b.order_index)[0]
-      nextQuestion = nextQ ?? null
+      if (!isConfident) {
+        // Ambiguous zone: score 30–70 (wider than before to keep probing unclear dimensions)
+        const ambiguous = Object.entries(scores)
+          .filter(([, s]) => s !== undefined && s >= 30 && s <= 70)
+          .map(([dim]) => dim)
+
+        // Priority 1: questions for ambiguous dimensions
+        let nextQ = QUESTIONS
+          .filter(q => !q.calibration && !answeredCodes.has(q.code) && q.is_active && ambiguous.includes(q.dimension))
+          .sort((a, b) => a.order_index - b.order_index)[0]
+
+        // Priority 2: any remaining non-calibration question (keep narrowing the profile)
+        if (!nextQ) {
+          nextQ = QUESTIONS
+            .filter(q => !q.calibration && !answeredCodes.has(q.code) && q.is_active)
+            .sort((a, b) => a.order_index - b.order_index)[0]
+        }
+
+        nextQuestion = nextQ ?? null
+      }
     }
 
     const totalQuestions = nextQuestion === null && answeredCount >= calibrationCount
-      ? answeredCount  // done
+      ? answeredCount
       : Math.max(calibrationCount, answeredCount + (nextQuestion ? 1 : 0))
 
     return Response.json({
