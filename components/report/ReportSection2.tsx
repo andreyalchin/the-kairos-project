@@ -74,6 +74,7 @@ interface DimItem {
 
 function DimensionsTable({ items }: { items: DimItem[] }) {
   const [expanded, setExpanded] = useState(false)
+  const [motionOverflow, setMotionOverflow] = useState<'hidden' | 'visible'>('hidden')
 
   return (
     <div className="space-y-3">
@@ -96,7 +97,9 @@ function DimensionsTable({ items }: { items: DimItem[] }) {
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3, ease: 'easeInOut' }}
-            style={{ overflow: 'hidden' }}
+            style={{ overflow: motionOverflow }}
+            onAnimationStart={() => setMotionOverflow('hidden')}
+            onAnimationComplete={() => setMotionOverflow('visible')}
           >
             <div className="rounded-2xl border border-slate-100 overflow-visible">
               <table className="w-full">
