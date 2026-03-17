@@ -42,7 +42,7 @@ export function ReportSection6({ result, archetype }: { result: AssessmentResult
       {archetype.dream_roles && result.match_score >= 60 && (
         <div>
           <h3 className="font-semibold text-indigo mb-1">Dream Roles</h3>
-          <p className="text-xs text-slate-400 mb-3">Roles where this archetype's profile is a strong structural fit.</p>
+          <p className="text-xs text-slate-400 mb-3">Roles where this archetype&apos;s profile is a strong structural fit.</p>
           <div className="flex flex-wrap gap-2">
             {archetype.dream_roles.map((r) => (
               <span key={r} className="px-4 py-2 bg-indigo text-white rounded-full text-sm font-medium">{r}</span>

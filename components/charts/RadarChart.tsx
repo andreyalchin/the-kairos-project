@@ -16,7 +16,14 @@ const DIMENSION_LABELS: Record<string, string> = {
   adaptability_quotient: 'Adaptability', learning_agility: 'Learning Agility',
 }
 
-function CustomTick({ x, y, payload, textAnchor }: any) {
+interface CustomTickProps {
+  x?: number
+  y?: number
+  payload?: { value: string }
+  textAnchor?: string
+}
+
+function CustomTick({ x = 0, y = 0, payload, textAnchor }: CustomTickProps) {
   const label: string = payload.value
   const words = label.split(' ')
 
