@@ -61,7 +61,7 @@ export function ResultsClient({ result, archetypeContent }: Props) {
           <ReportSection7 result={result} archetype={archetypeContent} />
           <ReportSection8 result={result} archetype={archetypeContent} />
           <ReportSection9 result={result} archetype={archetypeContent} />
-          <ReportSection10 result={result} />
+          <ReportSection10 result={result} archetype={archetypeContent} />
           <ReportSection11 result={result} archetype={archetypeContent} />
         </div>
       </div>
