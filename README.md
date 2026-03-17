@@ -94,37 +94,4 @@ supabase/migrations/    # SQL schema
 
 ---
 
-## Local Development
-
-```bash
-npm install
-npm run dev
-```
-
-Requires a `.env.local` with:
-
-```
-NEXT_PUBLIC_SUPABASE_URL=
-NEXT_PUBLIC_SUPABASE_ANON_KEY=
-SUPABASE_SERVICE_ROLE_KEY=
-NEXT_PUBLIC_APP_URL=http://localhost:3000
-```
-
-Seed the database:
-
-```bash
-npx ts-node --project tsconfig.test.json scripts/seed-questions.ts
-npx ts-node --project tsconfig.test.json scripts/seed-demo-result.ts
-```
-
-Demo report: [localhost:3000/results/demo](http://localhost:3000/results/demo)
-
----
-
-## Tests
-
-```bash
-npm test
-```
-
 Unit tests cover scoring, HPIF computation, inference, norms, and archetype matching.
