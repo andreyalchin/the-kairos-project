@@ -29,7 +29,17 @@ export function ResultsClient({ result, archetypeContent }: Props) {
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) setAuthenticated(true)
     })
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_IN' && session) {
+        const token = typeof window !== 'undefined' ? localStorage.getItem('kairos_session') ?? '' : ''
+        if (token) {
+          fetch('/api/assessment/link', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ sessionToken: token }),
+          })
+        }
+      }
       setAuthenticated(!!session)
     })
     return () => subscription.unsubscribe()

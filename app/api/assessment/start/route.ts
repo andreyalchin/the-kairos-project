@@ -1,4 +1,4 @@
-import { createServiceClient } from '@/lib/supabase/server'
+import { createClient, createServiceClient } from '@/lib/supabase/server'
 import { QUESTIONS } from '@/lib/questions'
 import type { Question } from '@/lib/types'
 
@@ -24,12 +24,14 @@ function shuffleWithinTiers(questions: Question[]): Question[] {
 
 export async function POST() {
   try {
+    const userClient = await createClient()
+    const { data: { user } } = await userClient.auth.getUser()
     const supabase = createServiceClient()
     const sessionToken = crypto.randomUUID()
 
     const { data: assessment, error } = await supabase
       .from('assessments')
-      .insert({ session_token: sessionToken })
+      .insert({ session_token: sessionToken, user_id: user?.id ?? null })
       .select('id')
       .single()
 
