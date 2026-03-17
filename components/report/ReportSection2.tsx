@@ -1,6 +1,7 @@
 'use client'
+import { useState } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
 import { DimensionRadarChart } from '@/components/charts/RadarChart'
-import { HorizontalBarChart } from '@/components/charts/BarChart'
 import { getPercentile } from '@/lib/norms'
 import type { AssessmentResult } from '@/lib/types'
 
@@ -64,6 +65,99 @@ function DimCard({ slug, score, variant }: { slug: string; score: number; varian
   )
 }
 
+interface DimItem {
+  slug: string
+  label: string
+  score: number
+  percentile: number
+}
+
+function DimensionsTable({ items }: { items: DimItem[] }) {
+  const [expanded, setExpanded] = useState(false)
+
+  return (
+    <div className="space-y-3">
+      {!expanded && (
+        <div className="flex justify-center">
+          <button
+            onClick={() => setExpanded(true)}
+            className="bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl px-5 py-2.5 text-sm font-semibold text-indigo cursor-pointer transition-colors"
+          >
+            Show all {items.length} dimensions ↓
+          </button>
+        </div>
+      )}
+
+      <AnimatePresence>
+        {expanded && (
+          <motion.div
+            key="dimensions-table"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3, ease: 'easeInOut' }}
+            style={{ overflow: 'hidden' }}
+          >
+            <div className="rounded-2xl border border-slate-100 overflow-hidden">
+              <table className="w-full">
+                <thead>
+                  <tr className="text-xs uppercase tracking-wider text-slate-400 border-b border-slate-100">
+                    <th className="text-left px-4 py-3 font-medium">Dimension</th>
+                    <th className="px-4 py-3 w-1/3" />
+                    <th className="text-right px-4 py-3 font-medium">Score</th>
+                    <th className="text-right px-4 py-3 font-medium">Percentile</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {items.map((item) => {
+                    const desc = DIM_DESCRIPTIONS[item.slug] ?? ''
+                    return (
+                      <tr key={item.slug} className="border-b border-slate-50 last:border-0">
+                        <td className="px-4 py-3 text-sm text-text whitespace-nowrap">
+                          <span className="inline-flex items-center">
+                            {item.label}
+                            {desc && (
+                              <span className="relative group cursor-default">
+                                <span className="w-4 h-4 rounded-full bg-slate-100 text-slate-400 text-[10px] font-bold inline-flex items-center justify-center ml-1.5 align-middle">i</span>
+                                <span className="absolute left-5 top-0 z-10 hidden group-hover:block w-52 bg-slate-800 text-white text-xs rounded-lg px-3 py-2 leading-relaxed shadow-lg pointer-events-none">
+                                  {desc}
+                                </span>
+                              </span>
+                            )}
+                          </span>
+                        </td>
+                        <td className="px-4 py-3">
+                          <div className="h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                            <div
+                              className="h-full bg-indigo rounded-full"
+                              style={{ width: `${item.score}%` }}
+                            />
+                          </div>
+                        </td>
+                        <td className="px-4 py-3 text-right font-semibold text-sm text-text">{item.score}</td>
+                        <td className="px-4 py-3 text-right text-xs text-slate-400">p{item.percentile}</td>
+                      </tr>
+                    )
+                  })}
+                </tbody>
+              </table>
+            </div>
+
+            <div className="flex justify-center pt-3">
+              <button
+                onClick={() => setExpanded(false)}
+                className="text-sm text-slate-400 hover:text-slate-600 cursor-pointer transition-colors"
+              >
+                ↑ Collapse
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  )
+}
+
 interface Props { result: AssessmentResult; onSentinelRef: (el: HTMLDivElement | null) => void }
 
 export function ReportSection2({ result, onSentinelRef }: Props) {
@@ -75,6 +169,7 @@ export function ReportSection2({ result, onSentinelRef }: Props) {
   const growthAreas = sorted.slice(-2)
 
   const barItems = sorted.map(([k, v]) => ({
+    slug: k,
     label: k.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()),
     score: v,
     percentile: Math.round(getPercentile(k, v)),
@@ -108,7 +203,7 @@ export function ReportSection2({ result, onSentinelRef }: Props) {
         </div>
       </div>
 
-      <HorizontalBarChart items={barItems} />
+      <DimensionsTable items={barItems} />
       <div ref={onSentinelRef} id="section-2-sentinel" className="h-px" />
     </section>
   )
