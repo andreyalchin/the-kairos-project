@@ -35,8 +35,9 @@ async function seedDemo() {
     } else if (q.type === 'allocation') {
       value = 50
     } else {
-      // likert / frequency: 1–5
-      value = q.dimension === 'openness' || q.dimension === 'leadership_drive' || q.dimension === 'cognitive_agility' ? 5
+      // likert / frequency: 1–5 — bias toward strategic_visionary signature dims
+      const highDims = ['openness', 'leadership_drive', 'cognitive_agility', 'strategic_orientation', 'systems_thinking']
+      value = highDims.includes(q.dimension) ? 5
         : q.dimension === 'conscientiousness' || q.dimension === 'emotional_stability' ? 3 : 4
     }
     return { questionCode: q.code, value, responseTimeMs: 2500, revised: false, dimension: q.dimension }
@@ -49,14 +50,14 @@ async function seedDemo() {
   })
   const inference = computeInference({ responses: inferenceResponses, constructPairs: CONSTRUCT_PAIRS })
   const { scores, hpif } = computeHpif(partialScores as DimensionScores)
-  const { archetype, matchScore } = assignArchetype(scores, ARCHETYPES)
+  const { matchScore } = assignArchetype(scores, ARCHETYPES)
 
   await supabase.from('results').upsert({
     id: DEMO_RESULT_ID,
     assessment_id: assessment.id,
     scores,
     hpif_profile: hpif,
-    archetype,
+    archetype: 'strategic_visionary',  // force demo to the fully-written archetype
     match_score: matchScore,
     inference_data: {
       avgResponseMs: inference.avgResponseMs,
@@ -66,7 +67,7 @@ async function seedDemo() {
   }, { onConflict: 'id' })
 
   console.log(`Demo result seeded: /results/${DEMO_RESULT_ID}`)
-  console.log(`Archetype: ${archetype}, Match: ${matchScore}%`)
+  console.log(`Archetype: strategic_visionary, Match: ${matchScore}%`)
 }
 
 seedDemo().catch(console.error)
