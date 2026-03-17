@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body { @apply bg-bg text-text font-sans; }
+}
+
+@layer components {
+  .glass {
+    @apply bg-white/70 backdrop-blur-sm border border-white/20 shadow-sm;
+  }
+}
+
+/* Processing screen animation */
+@keyframes ring-pulse {
+  0% { transform: scale(0.8); opacity: 0.8; }
+  100% { transform: scale(1.4); opacity: 0; }
+}
+.ring-animate { animation: ring-pulse 2s ease-out infinite; }
+.ring-animate-delay-1 { animation: ring-pulse 2s ease-out 0.5s infinite; }
+.ring-animate-delay-2 { animation: ring-pulse 2s ease-out 1s infinite; }
