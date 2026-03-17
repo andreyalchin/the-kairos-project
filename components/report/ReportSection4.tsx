@@ -1,4 +1,5 @@
 import { GaugeChart } from '@/components/charts/GaugeChart'
+import { InfoTip } from '@/components/ui/InfoTip'
 import { getPercentile } from '@/lib/norms'
 import type { AssessmentResult, DimensionSlug } from '@/lib/types'
 
@@ -10,6 +11,14 @@ const COG_LABELS: Record<string, string> = {
   attention_control: 'Attention Control',
   systems_thinking: 'Systems Thinking',
   creative_intelligence: 'Creative Intelligence',
+}
+
+const COG_DESCRIPTIONS: Record<string, string> = {
+  cognitive_agility: 'Speed and fluidity of adapting your thinking across different domains and problem types. High scorers shift cognitive gears with minimal friction — a core differentiator in fast-changing environments.',
+  executive_function: 'Your capacity to plan, sequence, prioritize, and sustain goal-directed behavior under competing demands. High scorers translate intention into action reliably, even when complexity is high.',
+  attention_control: 'Your ability to sustain focused work for extended periods and resist distraction under cognitive load. High scorers achieve deep work states more consistently and produce higher quality output on complex tasks.',
+  systems_thinking: 'Your ability to model interdependencies and understand how changes propagate through complex structures. High scorers see second-order effects others miss — one of the rarest and most leveraged cognitive capabilities.',
+  creative_intelligence: 'The richness of your associative network and capacity for generative thinking. High scorers connect ideas across distant domains and produce original framings that others cannot reach through linear reasoning.',
 }
 
 function cogInsight(dim: string, score: number, p: number): string {
@@ -75,11 +84,23 @@ export function ReportSection4({ result }: { result: AssessmentResult }) {
       <div className="p-6 rounded-2xl bg-gradient-to-r from-indigo-50 to-teal-50 border border-indigo-100">
         <div className="flex items-start justify-between mb-3">
           <div>
-            <p className="text-xs text-indigo uppercase tracking-widest font-medium mb-1">Cognitive Operating System</p>
+            <div className="flex items-center gap-1 mb-1">
+              <p className="text-xs text-indigo uppercase tracking-widest font-medium">Cognitive Operating System</p>
+              <InfoTip
+                title="Cognitive Operating System"
+                body="A composite of your 5 cognitive dimensions — agility, executive function, attention control, systems thinking, and creative intelligence. It describes your natural information processing style and the cognitive contexts where you create the most value."
+              />
+            </div>
             <p className="text-2xl font-bold text-text">{cos.primary_style}</p>
           </div>
           <div className="text-right">
-            <p className="text-3xl font-bold text-indigo">{cos.composite}</p>
+            <div className="flex items-center justify-end gap-1">
+              <p className="text-3xl font-bold text-indigo">{cos.composite}</p>
+              <InfoTip
+                title="Cognitive Composite"
+                body="Equally weighted average of your 5 cognitive dimension scores. 50 = population average. 70+ represents high cognitive performance across this cluster. This composite predicts performance in complex, ambiguous, and intellectually demanding roles."
+              />
+            </div>
             <p className="text-xs text-slate-500">composite</p>
           </div>
         </div>
@@ -99,7 +120,13 @@ export function ReportSection4({ result }: { result: AssessmentResult }) {
           return (
             <div key={dim} className="p-4 rounded-xl bg-white border border-slate-100">
               <div className="flex justify-between items-center mb-2">
-                <span className="font-medium text-sm text-text">{COG_LABELS[dim]}</span>
+                <div className="flex items-center gap-1">
+                  <span className="font-medium text-sm text-text">{COG_LABELS[dim]}</span>
+                  <InfoTip
+                    title={COG_LABELS[dim]}
+                    body={COG_DESCRIPTIONS[dim] ?? ''}
+                  />
+                </div>
                 <span className="text-indigo font-bold text-sm">{score} · p{p}</span>
               </div>
               <p className="text-sm text-slate-600 leading-relaxed">{cogInsight(dim, score, p)}</p>
@@ -109,7 +136,13 @@ export function ReportSection4({ result }: { result: AssessmentResult }) {
       </div>
 
       <div className="p-5 rounded-2xl bg-slate-50 border border-slate-100">
-        <p className="text-xs text-slate-400 uppercase tracking-widest font-medium mb-1">Behavioral Signal · Processing Speed</p>
+        <div className="flex items-center gap-1 mb-1">
+          <p className="text-xs text-slate-400 uppercase tracking-widest font-medium">Behavioral Signal · Processing Speed</p>
+          <InfoTip
+            title="What Processing Speed Measures"
+            body="Your average time between seeing a question and committing to an answer. This captures cognitive processing rhythm and self-certainty — not raw intelligence. Rapid responders show strong self-clarity or high decisiveness. Deliberate responders show thorough self-reflection."
+          />
+        </div>
         <p className="font-semibold text-text mb-1">{rs.label}</p>
         <p className="text-sm text-slate-600 leading-relaxed">{rs.desc}</p>
         <p className="text-xs text-slate-400 mt-2">Avg response time: {(avgResponseMs / 1000).toFixed(1)}s per question</p>
