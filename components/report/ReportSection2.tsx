@@ -98,7 +98,7 @@ function DimensionsTable({ items }: { items: DimItem[] }) {
             transition={{ duration: 0.3, ease: 'easeInOut' }}
             style={{ overflow: 'hidden' }}
           >
-            <div className="rounded-2xl border border-slate-100 overflow-hidden">
+            <div className="rounded-2xl border border-slate-100 overflow-visible">
               <table className="w-full">
                 <thead>
                   <tr className="text-xs uppercase tracking-wider text-slate-400 border-b border-slate-100">
@@ -119,7 +119,7 @@ function DimensionsTable({ items }: { items: DimItem[] }) {
                             {desc && (
                               <span className="relative group cursor-default">
                                 <span className="w-4 h-4 rounded-full bg-slate-100 text-slate-400 text-[10px] font-bold inline-flex items-center justify-center ml-1.5 align-middle">i</span>
-                                <span className="absolute left-5 top-0 z-10 hidden group-hover:block w-52 bg-slate-800 text-white text-xs rounded-lg px-3 py-2 leading-relaxed shadow-lg pointer-events-none">
+                                <span className="absolute bottom-full left-0 mb-2 z-50 hidden group-hover:block w-64 bg-slate-800 text-white text-xs rounded-xl px-3 py-2.5 leading-relaxed shadow-xl pointer-events-none">
                                   {desc}
                                 </span>
                               </span>
