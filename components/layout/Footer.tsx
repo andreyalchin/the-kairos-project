@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { Mail } from 'lucide-react'
 
 export function Footer() {
   return (
@@ -22,6 +23,24 @@ export function Footer() {
             </div>
           </div>
         </div>
+
+        {/* HR / Hiring Manager contact strip */}
+        <div className="mt-10 pt-8 border-t border-slate-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div>
+            <p className="text-sm font-medium text-text">HR &amp; Talent Teams</p>
+            <p className="text-xs text-slate-500 mt-0.5">
+              Interested in using Kairos for hiring or team assessment? Reach out directly.
+            </p>
+          </div>
+          <Link
+            href="mailto:andrey.alchin@gmail.com?subject=HR%20%2F%20Talent%20inquiry%20—%20Kairos"
+            className="inline-flex items-center gap-2 bg-indigo text-white text-sm font-semibold px-5 py-2.5 rounded-xl hover:bg-indigo-600 transition-colors whitespace-nowrap"
+          >
+            <Mail size={15} />
+            Get in touch
+          </Link>
+        </div>
+
         <p className="text-xs text-slate-400 mt-8">© 2026 Kairos. All rights reserved.</p>
       </div>
     </footer>
