@@ -20,7 +20,7 @@ interface Particle {
   activeRadius: number;
   color: RGB;
   targetColor: RGB;
-  colorT: number; // 0 (rest) to 1 (awakened)
+  colorT: number;
   colorSpeed: number;
   archetypeColor: RGB;
   hueIndex: number;
@@ -35,26 +35,29 @@ interface Shockwave {
 }
 
 const PARTICLE_COUNT = 1800;
-// Tailwind indigo-800: #3730A3
 const REST_COLOR: RGB = { r: 55, g: 48, b: 163 };
-const REST_OPACITY = 0.35;
+const REST_OPACITY = 0.15;
 const AWAKENED_OPACITY = 0.9;
-// Tailwind slate-50 with low opacity for trails: #F8FAFC
 const CANVAS_CLEAR_COLOR = 'rgba(248, 250, 252, 0.18)';
 
-// Archetype Palette
+// Fraction of the canvas (centered) where particles are sparse — keeps text readable
+const TEXT_ZONE_X0 = 0.15;
+const TEXT_ZONE_X1 = 0.85;
+const TEXT_ZONE_Y0 = 0.1;
+const TEXT_ZONE_Y1 = 0.9;
+const TEXT_ZONE_DENSITY = 0.08; // only 8% of particles land in the text zone
+
 const ARCHETYPE_COLORS: RGB[] = [
-  { r: 79, g: 70, b: 229 },  // 0: #4F46E5 (indigo-600)
-  { r: 236, g: 72, b: 153 }, // 1: #EC4899 (pink-500)
-  { r: 16, g: 185, b: 129 }, // 2: #10B981 (emerald-500)
-  { r: 245, g: 158, b: 11 }, // 3: #F59E0B (amber-500)
-  { r: 6, g: 182, b: 212 },  // 4: #06B6D4 (cyan-500)
-  { r: 139, g: 92, b: 246 }, // 5: #8B5CF6 (violet-500)
-  { r: 249, g: 115, b: 22 }, // 6: #F97316 (orange-500)
-  { r: 20, g: 184, b: 166 }, // 7: #14B8A6 (teal-500)
+  { r: 79, g: 70, b: 229 },
+  { r: 236, g: 72, b: 153 },
+  { r: 16, g: 185, b: 129 },
+  { r: 245, g: 158, b: 11 },
+  { r: 6, g: 182, b: 212 },
+  { r: 139, g: 92, b: 246 },
+  { r: 249, g: 115, b: 22 },
+  { r: 20, g: 184, b: 166 },
 ];
 
-// Interaction Constants
 const HOVER_ACTIVATION_RADIUS = 130;
 const IMMEDIATE_ACTIVATION_RADIUS = 40;
 const DIFFUSION_RADIUS = 90;
@@ -62,7 +65,7 @@ const DIFFUSION_RADIUS_SQ = DIFFUSION_RADIUS * DIFFUSION_RADIUS;
 const CLICK_BURST_RADIUS = 280;
 const DRAG_RADIUS = 80;
 const SHOCKWAVE_MAX_RADIUS = 300;
-const SHOCKWAVE_DURATION = 600; // ms
+const SHOCKWAVE_DURATION = 600;
 
 // ═══════════════════════════════════════════
 // HELPER FUNCTIONS
@@ -73,22 +76,21 @@ function lerp(a: number, b: number, t: number): number {
 }
 
 function lerpColor(a: RGB, b: RGB, t: number): RGB {
-  const clampedT = Math.min(1, Math.max(0, t));
+  const ct = Math.min(1, Math.max(0, t));
   return {
-    r: Math.round(a.r + (b.r - a.r) * clampedT),
-    g: Math.round(a.g + (b.g - a.g) * clampedT),
-    b: Math.round(a.b + (b.b - a.b) * clampedT),
+    r: Math.round(a.r + (b.r - a.r) * ct),
+    g: Math.round(a.g + (b.g - a.g) * ct),
+    b: Math.round(a.b + (b.b - a.b) * ct),
   };
 }
 
 function alterColor(color: RGB, variation: number): RGB {
   const channels: (keyof RGB)[] = ['r', 'g', 'b'];
-  const channelToChange = channels[Math.floor(Math.random() * 3)];
+  const ch = channels[Math.floor(Math.random() * 3)];
   const shift = (Math.random() - 0.5) * 2 * variation;
-
   return {
     ...color,
-    [channelToChange]: Math.max(0, Math.min(255, Math.round(color[channelToChange] + shift))),
+    [ch]: Math.max(0, Math.min(255, Math.round(color[ch] + shift))),
   };
 }
 
@@ -97,12 +99,12 @@ function randomInRange(min: number, max: number): number {
 }
 
 function shuffleArray<T>(array: T[]): T[] {
-  const shuffled = [...array];
-  for (let i = shuffled.length - 1; i > 0; i--) {
+  const arr = [...array];
+  for (let i = arr.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    [arr[i], arr[j]] = [arr[j], arr[i]];
   }
-  return shuffled;
+  return arr;
 }
 
 // ═══════════════════════════════════════════
@@ -132,13 +134,10 @@ export function HeroCanvas() {
   });
 
   const shockwaveRef = useRef<Shockwave>({
-    x: 0,
-    y: 0,
-    radius: 0,
-    startTime: 0,
-    active: false,
+    x: 0, y: 0, radius: 0, startTime: 0, active: false,
   });
 
+  // ─── Init ───────────────────────────────────────────────────────────
   const initParticles = (width: number, height: number) => {
     const newParticles: Particle[] = [];
 
@@ -149,16 +148,25 @@ export function HeroCanvas() {
     hueIndices = hueIndices.slice(0, PARTICLE_COUNT);
 
     for (let i = 0; i < PARTICLE_COUNT; i++) {
-      const x = Math.random() * width;
-      const y = Math.random() * height;
+      let x: number, y: number;
+
+      // Keep retrying until the particle lands in an acceptable spot.
+      // Text zone accepts only TEXT_ZONE_DENSITY fraction of attempts.
+      do {
+        x = Math.random() * width;
+        y = Math.random() * height;
+        const inTextZone =
+          x > width * TEXT_ZONE_X0 && x < width * TEXT_ZONE_X1 &&
+          y > height * TEXT_ZONE_Y0 && y < height * TEXT_ZONE_Y1;
+        if (!inTextZone) break;
+      } while (Math.random() > TEXT_ZONE_DENSITY);
+
       const baseRadius = randomInRange(1.2, 2.8);
       const hueIndex = hueIndices[i];
 
       newParticles.push({
-        x,
-        y,
-        baseX: x,
-        baseY: y,
+        x, y,
+        baseX: x, baseY: y,
         vx: randomInRange(-0.15, 0.15),
         vy: randomInRange(-0.15, 0.15),
         baseRadius,
@@ -175,6 +183,7 @@ export function HeroCanvas() {
     particlesRef.current = newParticles;
   };
 
+  // ─── Render loop ────────────────────────────────────────────────────
   const animate = (timestamp: number) => {
     const ctx = ctxRef.current;
     const canvas = canvasRef.current;
@@ -207,6 +216,7 @@ export function HeroCanvas() {
     mouse.prevX = mouse.x;
     mouse.prevY = mouse.y;
 
+    // Diffusion pass every 3rd frame
     if (frameCounter.current % 3 === 0) {
       for (let i = 0; i < particles.length; i++) {
         const p = particles[i];
@@ -217,9 +227,7 @@ export function HeroCanvas() {
             if (n.colorT < 0.3) {
               const dx = p.x - n.x;
               const dy = p.y - n.y;
-              const distSq = dx * dx + dy * dy;
-
-              if (distSq < DIFFUSION_RADIUS_SQ) {
+              if (dx * dx + dy * dy < DIFFUSION_RADIUS_SQ) {
                 n.targetColor = alterColor(p.archetypeColor, 10);
                 n.colorSpeed = randomInRange(0.005, 0.012);
               }
@@ -240,8 +248,7 @@ export function HeroCanvas() {
 
       const dxMouse = p.x - scaledSmoothX;
       const dyMouse = p.y - scaledSmoothY;
-      const distMouseSq = dxMouse * dxMouse + dyMouse * dyMouse;
-      const distMouse = Math.sqrt(distMouseSq);
+      const distMouse = Math.sqrt(dxMouse * dxMouse + dyMouse * dyMouse);
 
       let targetRadius = p.baseRadius;
 
@@ -249,10 +256,8 @@ export function HeroCanvas() {
         if (isDragging) {
           const dxRaw = p.x - scaledMouseX;
           const dyRaw = p.y - scaledMouseY;
-          const distRawSq = dxRaw * dxRaw + dyRaw * dyRaw;
           const scaledDragRadius = DRAG_RADIUS * dprRef.current;
-
-          if (distRawSq < scaledDragRadius * scaledDragRadius) {
+          if (dxRaw * dxRaw + dyRaw * dyRaw < scaledDragRadius * scaledDragRadius) {
             p.targetColor = p.archetypeColor;
             p.colorSpeed = 0.06;
             p.vx += dragDX * 0.08 * dprRef.current;
@@ -261,16 +266,11 @@ export function HeroCanvas() {
         } else {
           const scaledActRadius = HOVER_ACTIVATION_RADIUS * dprRef.current;
           const scaledImmRadius = IMMEDIATE_ACTIVATION_RADIUS * dprRef.current;
-
           if (distMouse < scaledActRadius) {
             p.targetColor = p.archetypeColor;
-
-            if (distMouse < scaledImmRadius) {
-              p.colorSpeed = randomInRange(0.03, 0.05);
-            } else {
-              p.colorSpeed = randomInRange(0.015, 0.04);
-            }
-
+            p.colorSpeed = distMouse < scaledImmRadius
+              ? randomInRange(0.03, 0.05)
+              : randomInRange(0.015, 0.04);
             const proximityFactor = 1 - distMouse / scaledActRadius;
             targetRadius = p.baseRadius * (1 + 0.6 * proximityFactor);
           }
@@ -281,7 +281,6 @@ export function HeroCanvas() {
 
       p.vx += (p.baseX - p.x) * 0.0008;
       p.vy += (p.baseY - p.y) * 0.0008;
-
       p.vx += randomInRange(-0.02, 0.02);
       p.vy += randomInRange(-0.02, 0.02);
 
@@ -296,16 +295,14 @@ export function HeroCanvas() {
       if (p.y < 0) { p.y = 0; p.vy *= -1; }
       else if (p.y > height) { p.y = height; p.vy *= -1; }
 
-      const isHeadingToRest = p.targetColor.r === REST_COLOR.r && p.targetColor.b === REST_COLOR.b;
+      const isHeadingToRest =
+        p.targetColor.r === REST_COLOR.r && p.targetColor.b === REST_COLOR.b;
 
-      if (isHeadingToRest) {
-        p.colorT = Math.max(0, p.colorT - p.colorSpeed);
-      } else {
-        p.colorT = Math.min(1, p.colorT + p.colorSpeed);
-      }
+      p.colorT = isHeadingToRest
+        ? Math.max(0, p.colorT - p.colorSpeed)
+        : Math.min(1, p.colorT + p.colorSpeed);
 
       const renderColor = lerpColor(REST_COLOR, p.targetColor, p.colorT);
-
       const opacity = lerp(REST_OPACITY, AWAKENED_OPACITY, p.colorT);
       const drawRadius = lerp(p.baseRadius, p.activeRadius, p.colorT);
 
@@ -315,37 +312,24 @@ export function HeroCanvas() {
       ctx.fill();
     }
 
+    // Shockwave
     const sw = shockwaveRef.current;
     if (sw.active) {
       const elapsed = timestamp - sw.startTime;
       const progress = Math.min(1, elapsed / SHOCKWAVE_DURATION);
-
       if (progress >= 1) {
         sw.active = false;
       } else {
         const dpr = dprRef.current;
         const currentRadius = lerp(0, SHOCKWAVE_MAX_RADIUS * dpr, progress);
         const opacity = lerp(0.8, 0, progress);
-
-        ctx.lineWidth = 2 * dpr;
-        const centerX = sw.x * dpr;
-        const centerY = sw.y * dpr;
-
         const colorOffset = Math.floor(frameCounter.current / 10) % 8;
-
+        ctx.lineWidth = 2 * dpr;
         for (let i = 0; i < 4; i++) {
-          const colorIndex = (colorOffset + i * 2) % 8;
-          const c = ARCHETYPE_COLORS[colorIndex];
+          const c = ARCHETYPE_COLORS[(colorOffset + i * 2) % 8];
           ctx.strokeStyle = `rgba(${c.r}, ${c.g}, ${c.b}, ${opacity})`;
-
           ctx.beginPath();
-          ctx.arc(
-            centerX,
-            centerY,
-            currentRadius,
-            (i * Math.PI) / 2,
-            ((i + 1) * Math.PI) / 2
-          );
+          ctx.arc(sw.x * dpr, sw.y * dpr, currentRadius, (i * Math.PI) / 2, ((i + 1) * Math.PI) / 2);
           ctx.stroke();
         }
       }
@@ -354,6 +338,7 @@ export function HeroCanvas() {
     animationFrameId.current = requestAnimationFrame(animate);
   };
 
+  // ─── Canvas setup + ResizeObserver ──────────────────────────────────
   useEffect(() => {
     const canvas = canvasRef.current;
     const container = containerRef.current;
@@ -366,92 +351,85 @@ export function HeroCanvas() {
     const handleResize = (entries: ResizeObserverEntry[]) => {
       for (const entry of entries) {
         const { width, height } = entry.contentRect;
+        if (width <= 0 || height <= 0) return;
         const dpr = window.devicePixelRatio || 1;
         dprRef.current = dpr;
-
-        if (width <= 0 || height <= 0) return;
-
-        dimensionsRef.current = {
-          width: width * dpr,
-          height: height * dpr,
-        };
-
+        dimensionsRef.current = { width: width * dpr, height: height * dpr };
         canvas.width = width * dpr;
         canvas.height = height * dpr;
-
         initParticles(width * dpr, height * dpr);
       }
     };
 
-    const resizeObserver = new ResizeObserver(handleResize);
-    resizeObserver.observe(container);
-
-    return () => {
-      resizeObserver.disconnect();
-    };
+    const ro = new ResizeObserver(handleResize);
+    ro.observe(container);
+    return () => ro.disconnect();
   }, []);
 
+  // ─── Animation loop ─────────────────────────────────────────────────
   useEffect(() => {
     animationFrameId.current = requestAnimationFrame(animate);
 
-    const handleVisibilityChange = () => {
+    const handleVisibility = () => {
       if (document.hidden) {
         cancelAnimationFrame(animationFrameId.current);
       } else {
         animationFrameId.current = requestAnimationFrame(animate);
       }
     };
-
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-
+    document.addEventListener('visibilitychange', handleVisibility);
     return () => {
       cancelAnimationFrame(animationFrameId.current);
-      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      document.removeEventListener('visibilitychange', handleVisibility);
     };
   }, []);
 
+  // ─── Mouse events — listen on window so text overlay doesn't block ──
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    const getMousePos = (e: MouseEvent) => {
+    const getCanvasPos = (e: MouseEvent) => {
       const rect = canvas.getBoundingClientRect();
       return {
         x: e.clientX - rect.left,
         y: e.clientY - rect.top,
+        inBounds:
+          e.clientX >= rect.left &&
+          e.clientX <= rect.right &&
+          e.clientY >= rect.top &&
+          e.clientY <= rect.bottom,
       };
     };
 
     const handleMouseMove = (e: MouseEvent) => {
-      const pos = getMousePos(e);
-      mouseRef.current.x = pos.x;
-      mouseRef.current.y = pos.y;
-      mouseRef.current.active = true;
+      const { x, y, inBounds } = getCanvasPos(e);
+      const mouse = mouseRef.current;
+
+      if (inBounds) {
+        if (!mouse.active) {
+          // Snap smooth on first entry to avoid slide-in from off-screen
+          mouse.smoothX = x;
+          mouse.smoothY = y;
+          mouse.prevX = x;
+          mouse.prevY = y;
+        }
+        mouse.x = x;
+        mouse.y = y;
+        mouse.active = true;
+      } else if (mouse.active) {
+        mouse.active = false;
+        mouse.isDown = false;
+        particlesRef.current.forEach((p) => {
+          p.targetColor = { ...REST_COLOR };
+          p.colorSpeed = randomInRange(0.003, 0.008);
+        });
+      }
     };
 
-    const handleMouseEnter = (e: MouseEvent) => {
-      const pos = getMousePos(e);
-      mouseRef.current.smoothX = pos.x;
-      mouseRef.current.smoothY = pos.y;
-      mouseRef.current.prevX = pos.x;
-      mouseRef.current.prevY = pos.y;
-      mouseRef.current.x = pos.x;
-      mouseRef.current.y = pos.y;
-      mouseRef.current.active = true;
-    };
-
-    const handleMouseLeave = () => {
-      mouseRef.current.active = false;
-      mouseRef.current.isDown = false;
-
-      particlesRef.current.forEach((p) => {
-        p.targetColor = { ...REST_COLOR };
-        p.colorSpeed = randomInRange(0.003, 0.008);
-      });
-    };
-
-    const handleMouseDown = () => {
-      mouseRef.current.isDown = true;
+    const handleMouseDown = (e: MouseEvent) => {
+      const { inBounds } = getCanvasPos(e);
+      if (inBounds) mouseRef.current.isDown = true;
     };
 
     const handleMouseUp = () => {
@@ -459,32 +437,27 @@ export function HeroCanvas() {
     };
 
     const handleClick = (e: MouseEvent) => {
-      const pos = getMousePos(e);
+      const { x, y, inBounds } = getCanvasPos(e);
+      if (!inBounds) return;
+
       const dpr = dprRef.current;
-      const scaledClickX = pos.x * dpr;
-      const scaledClickY = pos.y * dpr;
+      const scaledClickX = x * dpr;
+      const scaledClickY = y * dpr;
       const scaledBurstRadius = CLICK_BURST_RADIUS * dpr;
 
       shockwaveRef.current = {
-        x: pos.x,
-        y: pos.y,
-        radius: 0,
-        startTime: performance.now(),
-        active: true,
+        x, y, radius: 0, startTime: performance.now(), active: true,
       };
 
       particlesRef.current.forEach((p) => {
         const dx = p.x - scaledClickX;
         const dy = p.y - scaledClickY;
         const distSq = dx * dx + dy * dy;
-
         if (distSq < scaledBurstRadius * scaledBurstRadius) {
           const dist = Math.sqrt(distSq);
           const proximityFactor = 1 - dist / scaledBurstRadius;
-
           p.targetColor = p.archetypeColor;
           p.colorSpeed = randomInRange(0.04, 0.08);
-
           const angle = Math.atan2(dy, dx);
           const speed = proximityFactor * 3.5 * dpr;
           p.vx += Math.cos(angle) * speed;
@@ -493,32 +466,27 @@ export function HeroCanvas() {
       });
     };
 
-    canvas.addEventListener('mousemove', handleMouseMove);
-    canvas.addEventListener('mouseenter', handleMouseEnter);
-    canvas.addEventListener('mouseleave', handleMouseLeave);
-    canvas.addEventListener('mousedown', handleMouseDown);
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mousedown', handleMouseDown);
     window.addEventListener('mouseup', handleMouseUp);
-    canvas.addEventListener('click', handleClick);
+    window.addEventListener('click', handleClick);
 
     return () => {
-      canvas.removeEventListener('mousemove', handleMouseMove);
-      canvas.removeEventListener('mouseenter', handleMouseEnter);
-      canvas.removeEventListener('mouseleave', handleMouseLeave);
-      canvas.removeEventListener('mousedown', handleMouseDown);
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mousedown', handleMouseDown);
       window.removeEventListener('mouseup', handleMouseUp);
-      canvas.removeEventListener('click', handleClick);
+      window.removeEventListener('click', handleClick);
     };
   }, []);
 
   return (
     <div
       ref={containerRef}
-      className="absolute inset-0 z-0 w-full h-full overflow-hidden"
-      style={{ isolation: 'isolate' }}
+      className="absolute inset-0 z-0 w-full h-full overflow-hidden pointer-events-none"
     >
       <canvas
         ref={canvasRef}
-        className="block w-full h-full touch-none"
+        className="block w-full h-full"
         style={{ cursor: 'default' }}
       />
     </div>
