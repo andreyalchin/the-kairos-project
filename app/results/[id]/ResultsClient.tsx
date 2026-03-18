@@ -15,34 +15,44 @@ import { ReportSection10 } from '@/components/report/ReportSection10'
 import { ReportSection11 } from '@/components/report/ReportSection11'
 import type { AssessmentResult, ArchetypeDefinition } from '@/lib/types'
 
-interface Props { result: AssessmentResult; archetypeContent: ArchetypeDefinition; resultId: string }
+interface Props { result: AssessmentResult; archetypeContent: ArchetypeDefinition; resultId: string; isAuthenticated?: boolean }
 
 const DEMO_ID = '00000000-0000-0000-0000-000000000002'
 
-export function ResultsClient({ result, archetypeContent, resultId }: Props) {
+export function ResultsClient({ result, archetypeContent, resultId, isAuthenticated = false }: Props) {
   const isDemo = resultId === DEMO_ID
-  const [authenticated, setAuthenticated] = useState(isDemo)
+  const [authenticated, setAuthenticated] = useState(isDemo || isAuthenticated)
   const [showGate, setShowGate] = useState(false)
   const observerRef = useRef<IntersectionObserver | null>(null)
   const sessionToken = typeof window !== 'undefined' ? localStorage.getItem('kairos_session') ?? '' : ''
 
-  // Check for existing Supabase session on mount (skip for demo — always open)
+  // Link session token and sync auth state
   useEffect(() => {
     if (isDemo) return
     const supabase = createClient()
+
+    // Try to link the current session token regardless of event type
+    const tryLink = (token: string) => {
+      if (!token) return
+      fetch('/api/assessment/link', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ sessionToken: token }),
+      })
+    }
+
     supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) setAuthenticated(true)
+      if (session) {
+        setAuthenticated(true)
+        const token = typeof window !== 'undefined' ? localStorage.getItem('kairos_session') ?? '' : ''
+        tryLink(token)
+      }
     })
+
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === 'SIGNED_IN' && session) {
         const token = typeof window !== 'undefined' ? localStorage.getItem('kairos_session') ?? '' : ''
-        if (token) {
-          fetch('/api/assessment/link', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ sessionToken: token }),
-          })
-        }
+        tryLink(token)
       }
       setAuthenticated(!!session)
     })
