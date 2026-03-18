@@ -12,6 +12,11 @@
   }
 }
 
+/* Hero radar draw-in animation */
+@keyframes drawIn {
+  to { stroke-dashoffset: 0; }
+}
+
 /* Processing screen animation */
 @keyframes ring-pulse {
   0% { transform: scale(0.8); opacity: 0.8; }
