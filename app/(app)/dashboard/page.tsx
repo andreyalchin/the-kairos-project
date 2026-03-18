@@ -8,22 +8,30 @@ export default async function DashboardPage() {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login')
 
-  // Use service client so RLS on results doesn't silently block the join
   const serviceClient = createServiceClient()
+
   const { data: assessments } = await serviceClient
     .from('assessments')
-    .select('id, completed_at, results(id, archetype, match_score)')
+    .select('id, completed_at')
     .eq('user_id', user.id)
     .eq('status', 'completed')
     .order('completed_at', { ascending: false })
 
-  type Assessment = {
-    id: string
-    completed_at: string
-    results?: { id: string; archetype?: string; match_score?: number }[]
-  }
+  const assessmentIds = (assessments ?? []).map(a => a.id)
 
-  const list = (assessments ?? []) as Assessment[]
+  const { data: results } = assessmentIds.length > 0
+    ? await serviceClient
+        .from('results')
+        .select('id, archetype, match_score, assessment_id')
+        .in('assessment_id', assessmentIds)
+    : { data: [] }
+
+  const resultMap = new Map((results ?? []).map(r => [r.assessment_id, r]))
+
+  const list = (assessments ?? []).map(a => ({
+    ...a,
+    result: resultMap.get(a.id) ?? null,
+  }))
 
   return (
     <div className="min-h-screen bg-bg">
@@ -61,7 +69,7 @@ export default async function DashboardPage() {
         ) : (
           <div className="space-y-3">
             {list.map((a, i) => {
-              const result = a.results?.[0]
+              const result = a.result
               const archetypeName = result?.archetype?.replace(/_/g, ' ') ?? 'Assessment'
               const date = new Date(a.completed_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
               return (

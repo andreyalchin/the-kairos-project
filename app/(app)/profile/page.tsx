@@ -19,12 +19,30 @@ export default async function ProfilePage() {
   if (!user) redirect('/login')
 
   const serviceClient = createServiceClient()
+
   const { data: assessments } = await serviceClient
     .from('assessments')
-    .select('id, completed_at, results(id, archetype, match_score, scores)')
+    .select('id, completed_at')
     .eq('user_id', user.id)
     .eq('status', 'completed')
     .order('completed_at', { ascending: false })
+
+  const assessmentIds = (assessments ?? []).map(a => a.id)
+
+  const { data: results } = assessmentIds.length > 0
+    ? await serviceClient
+        .from('results')
+        .select('id, archetype, match_score, scores, assessment_id')
+        .in('assessment_id', assessmentIds)
+    : { data: [] }
+
+  const resultMap = new Map((results ?? []).map(r => [r.assessment_id, r]))
+
+  const merged: AssessmentWithResult[] = (assessments ?? []).map(a => ({
+    id: a.id,
+    completed_at: a.completed_at,
+    results: resultMap.has(a.id) ? [resultMap.get(a.id)!] : [],
+  }))
 
   return (
     <ProfileClient
@@ -34,7 +52,7 @@ export default async function ProfilePage() {
         created_at: user.created_at,
         user_metadata: user.user_metadata,
       }}
-      assessments={(assessments ?? []) as AssessmentWithResult[]}
+      assessments={merged}
     />
   )
 }
