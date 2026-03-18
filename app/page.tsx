@@ -163,63 +163,40 @@ export default function HomePage() {
 
       {/* ── Pricing ── */}
       <section className="bg-white py-20">
-        <div className="max-w-6xl mx-auto px-4">
-          <h2 className="text-3xl font-bold text-text text-center mb-3">Simple Pricing</h2>
-          <p className="text-slate-500 text-center mb-10">
-            Paid plans launching later in 2026. Lock in free access now.
-          </p>
-          <div className="grid md:grid-cols-2 gap-6 max-w-2xl mx-auto">
-            <Card>
-              <div className="space-y-4">
-                <p className="font-bold text-text text-lg">Free</p>
-                <p className="text-3xl font-bold text-indigo">$0 <span className="text-sm font-normal text-slate-400">forever</span></p>
-                <ul className="space-y-1.5">
-                  {['First 2 report sections', 'No account required', 'Archetype + Fingerprint'].map(f => (
-                    <li key={f} className="text-sm text-slate-600 flex gap-2">
-                      <span className="text-teal">✓</span>{f}
-                    </li>
-                  ))}
-                </ul>
-                <Link
-                  href="/assessment"
-                  className="block text-center border border-indigo text-indigo px-4 py-2.5 rounded-xl text-sm font-semibold hover:bg-indigo-50 transition-colors"
-                >
-                  Take Free Assessment
-                </Link>
-              </div>
-            </Card>
-            <Card className="border-2 border-indigo">
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <p className="font-bold text-text text-lg">Early Access</p>
-                  <Badge variant="teal">Most Popular</Badge>
-                </div>
-                <p className="text-3xl font-bold text-indigo">$0 <span className="text-sm font-normal text-slate-400">during beta</span></p>
-                <ul className="space-y-1.5">
-                  {[
-                    'Full 11-section report',
-                    'Requires free account',
-                    'Retakes + history',
-                    'Growth tracking',
-                    'Priority support',
-                  ].map(f => (
-                    <li key={f} className="text-sm text-slate-600 flex gap-2">
-                      <span className="text-teal">✓</span>{f}
-                    </li>
-                  ))}
-                </ul>
-                <Link
-                  href="/assessment"
-                  className="block text-center bg-indigo text-white px-4 py-2.5 rounded-xl text-sm font-semibold hover:bg-indigo-600 transition-colors"
-                >
-                  Unlock Full Report
-                </Link>
-              </div>
-            </Card>
+        <div className="max-w-3xl mx-auto px-4 text-center space-y-6">
+          <div className="space-y-2">
+            <h2 className="text-3xl font-bold text-text">Free during beta. Honest pricing after.</h2>
+            <p className="text-slate-500">
+              Full individual reports are $0 right now. Corporate, Recruiter, and API plans launching in 2026.
+            </p>
           </div>
-          <p className="text-center text-slate-400 text-sm mt-6">
-            Free forever for individuals during early access.
-          </p>
+          <div className="grid sm:grid-cols-3 gap-4 text-left">
+            {[
+              { label: 'Individual', price: '$0', sub: 'during beta · $4.99 after' },
+              { label: 'Corporate', price: '$9.99', sub: 'per candidate' },
+              { label: 'Recruiter Network', price: '$99', sub: 'per month' },
+            ].map(({ label, price, sub }) => (
+              <div key={label} className="bg-bg rounded-xl border border-slate-100 px-4 py-3">
+                <p className="text-xs text-slate-400">{label}</p>
+                <p className="text-xl font-bold text-indigo mt-0.5">{price}</p>
+                <p className="text-xs text-slate-400">{sub}</p>
+              </div>
+            ))}
+          </div>
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <Link
+              href="/assessment"
+              className="bg-indigo text-white px-6 py-3 rounded-xl font-semibold hover:bg-indigo-600 transition-colors"
+            >
+              Take Free Assessment
+            </Link>
+            <Link
+              href="/pricing"
+              className="border border-slate-200 text-slate-600 px-6 py-3 rounded-xl font-semibold hover:border-indigo hover:text-indigo transition-colors"
+            >
+              See Full Pricing →
+            </Link>
+          </div>
         </div>
       </section>
 
