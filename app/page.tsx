@@ -23,6 +23,7 @@ export default function HomePage() {
             are <span className="text-slate-400">guessing.</span><br />
             Kairos <span className="text-indigo">measures.</span>
           </h1>
+          {/* PLACEHOLDER: replace with validated timing */}
           <p className="text-xl text-slate-600 max-w-2xl mx-auto">
             29 scientifically validated dimensions. 32 distinct archetypes. Behavioral
             inference that catches what self-report misses. Your complete intelligence
@@ -53,17 +54,25 @@ export default function HomePage() {
       <section className="border-y border-slate-100 bg-white py-6">
         <div className="max-w-6xl mx-auto px-4 flex flex-wrap justify-center gap-8 md:gap-16">
           {/* PLACEHOLDER: replace all four values with real verified stats */}
-          {[
-            { value: '10,847', label: 'Assessments completed' },
-            { value: '29', label: 'Dimensions measured' },
-            { value: '32', label: 'Archetypes identified' },
-            { value: 'Big Five + HEXACO', label: 'Scientific foundation' },
-          ].map(({ value, label }) => (
-            <div key={label} className="text-center">
-              <p className="text-3xl font-bold text-indigo">{value}</p>
-              <p className="text-sm text-slate-500 mt-1">{label}</p>
-            </div>
-          ))}
+          <div className="text-center">
+            <p className="text-3xl font-bold text-indigo">10,847</p>
+            <p className="text-sm text-slate-500 mt-1">Assessments completed</p>
+          </div>
+          <div className="hidden md:block w-px h-8 bg-slate-200 self-center" aria-hidden="true" />
+          <div className="text-center">
+            <p className="text-3xl font-bold text-indigo">29</p>
+            <p className="text-sm text-slate-500 mt-1">Dimensions measured</p>
+          </div>
+          <div className="hidden md:block w-px h-8 bg-slate-200 self-center" aria-hidden="true" />
+          <div className="text-center">
+            <p className="text-3xl font-bold text-indigo">32</p>
+            <p className="text-sm text-slate-500 mt-1">Archetypes identified</p>
+          </div>
+          <div className="hidden md:block w-px h-8 bg-slate-200 self-center" aria-hidden="true" />
+          <div className="text-center">
+            <p className="text-3xl font-bold text-indigo">Big Five + HEXACO</p>
+            <p className="text-sm text-slate-500 mt-1">Scientific foundation</p>
+          </div>
         </div>
       </section>
 
@@ -216,6 +225,7 @@ export default function HomePage() {
 
       {/* ── Final CTA ── */}
       <section className="max-w-6xl mx-auto px-4 py-20 text-center space-y-6">
+        {/* PLACEHOLDER: replace with validated timing */}
         <h2 className="text-4xl font-bold text-text">
           12 minutes. 29 dimensions. One profile that&apos;s actually you.
         </h2>

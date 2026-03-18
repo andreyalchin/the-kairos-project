@@ -1,4 +1,5 @@
 // components/home/ArchetypeShowcase.tsx
+import Link from 'next/link'
 import { Card } from '@/components/ui/Card'
 
 const archetypes = [
@@ -94,7 +95,7 @@ export function ArchetypeShowcase() {
           ))}
         </div>
         <p className="text-center mt-8 text-sm text-indigo font-medium">
-          <a href="/archetypes">+ 26 more archetypes →</a>
+          <Link href="/assessment">+ 26 more archetypes →</Link>
         </p>
       </div>
     </section>

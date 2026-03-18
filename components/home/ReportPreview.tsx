@@ -5,6 +5,7 @@ const sectionNames = [
   'Archetype Profile', 'Psychological Fingerprint', 'Cognitive Profile',
   'Motivational DNA', 'Career Intelligence', 'Leadership Profile',
   'Team Compatibility', 'Founder Score', 'Work Environment', 'Growth Roadmap',
+  'Action Plan',
 ]
 
 const blurredSections = ['Psychological Fingerprint', 'Cognitive Profile', 'Career Intelligence']
