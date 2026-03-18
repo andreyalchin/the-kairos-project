@@ -32,12 +32,12 @@ export function CompetitorContrast() {
             <div className="px-5 py-3 bg-slate-50 border-b border-slate-100">
               <p className="font-semibold text-text text-sm">{title}</p>
             </div>
-            <div className="p-5 space-y-3 flex-1 flex flex-col justify-between">
-              <div className="flex gap-3 items-start">
+            <div className="p-5 space-y-3">
+              <div className="flex gap-3 items-start min-h-[54px]">
                 <span className="text-slate-300 font-bold mt-0.5">✕</span>
                 <p className="text-sm text-slate-400">{others}</p>
               </div>
-              <div className="flex gap-3 items-start bg-indigo-50 rounded-xl px-3 py-2">
+              <div className="flex gap-3 items-start bg-indigo-50 rounded-xl px-3 py-2 min-h-[72px]">
                 <span className="text-indigo font-bold mt-0.5">✓</span>
                 <p className="text-sm text-text font-medium">{kairos}</p>
               </div>
