@@ -28,11 +28,11 @@ export function CompetitorContrast() {
       </p>
       <div className="grid md:grid-cols-3 gap-6">
         {contrasts.map(({ title, others, kairos }) => (
-          <div key={title} className="rounded-2xl border border-slate-100 overflow-hidden">
+          <div key={title} className="rounded-2xl border border-slate-100 overflow-hidden flex flex-col">
             <div className="px-5 py-3 bg-slate-50 border-b border-slate-100">
               <p className="font-semibold text-text text-sm">{title}</p>
             </div>
-            <div className="p-5 space-y-3">
+            <div className="p-5 space-y-3 flex-1 flex flex-col justify-between">
               <div className="flex gap-3 items-start">
                 <span className="text-slate-300 font-bold mt-0.5">✕</span>
                 <p className="text-sm text-slate-400">{others}</p>
