@@ -1,5 +1,6 @@
 'use client'
 import { useState } from 'react'
+import { createPortal } from 'react-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { DimensionRadarChart } from '@/components/charts/RadarChart'
 import { getPercentile } from '@/lib/norms'
@@ -35,6 +36,38 @@ const DIM_DESCRIPTIONS: Record<string, string> = {
   growth_mindset: 'Belief in the malleability of ability and orientation toward development.',
   adaptability_quotient: 'Effectiveness at adjusting to changing conditions and new environments.',
   learning_agility: 'Speed and effectiveness of acquiring and applying new knowledge.',
+}
+
+function DimTooltip({ text }: { text: string }) {
+  const [pos, setPos] = useState<{ x: number; y: number } | null>(null)
+
+  return (
+    <span
+      className="inline-flex items-center"
+      onMouseEnter={(e) => {
+        const rect = (e.currentTarget as HTMLElement).getBoundingClientRect()
+        setPos({ x: rect.left + rect.width / 2, y: rect.top })
+      }}
+      onMouseLeave={() => setPos(null)}
+    >
+      <span className="w-4 h-4 rounded-full bg-slate-100 text-slate-400 text-[10px] font-bold inline-flex items-center justify-center ml-1.5 align-middle cursor-default select-none">i</span>
+      {pos && createPortal(
+        <span
+          style={{
+            position: 'fixed',
+            left: Math.min(pos.x, window.innerWidth - 272),
+            top: pos.y - 8,
+            transform: 'translateY(-100%)',
+            zIndex: 9999,
+          }}
+          className="w-64 bg-slate-800 text-white text-xs rounded-xl px-3 py-2.5 leading-relaxed shadow-xl pointer-events-none"
+        >
+          {text}
+        </span>,
+        document.body
+      )}
+    </span>
+  )
 }
 
 function DimCard({ slug, score, variant }: { slug: string; score: number; variant: 'super' | 'growth' }) {
@@ -119,14 +152,7 @@ function DimensionsTable({ items }: { items: DimItem[] }) {
                         <td className="px-4 py-3 text-sm text-text whitespace-nowrap">
                           <span className="inline-flex items-center">
                             {item.label}
-                            {desc && (
-                              <span className="relative group cursor-default">
-                                <span className="w-4 h-4 rounded-full bg-slate-100 text-slate-400 text-[10px] font-bold inline-flex items-center justify-center ml-1.5 align-middle">i</span>
-                                <span className="absolute bottom-full left-0 mb-2 z-50 hidden group-hover:block w-64 bg-slate-800 text-white text-xs rounded-xl px-3 py-2.5 leading-relaxed shadow-xl pointer-events-none">
-                                  {desc}
-                                </span>
-                              </span>
-                            )}
+                            {desc && <DimTooltip text={desc} />}
                           </span>
                         </td>
                         <td className="px-4 py-3">
