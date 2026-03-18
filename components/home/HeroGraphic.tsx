@@ -48,8 +48,9 @@ const DRAW_IN_DURATION = 1200;
 const BREATHING_DURATION = 4000;
 const BREATHING_RANGE = 0.08;
 const BASE_ROTATION_RATE = 0.007;
-const VELOCITY_MULTIPLIER = 0.03;
-const VELOCITY_DECAY = 0.92;
+const VELOCITY_MULTIPLIER = 0.0003;
+const VELOCITY_DECAY = 0.90;
+const MAX_ROTATION_BOOST = 0.02;
 const LERP_FACTOR = 0.12;
 const SPRING_BACK_FACTOR = 0.04;
 const ATTRACTION_K = 6000;
@@ -182,7 +183,10 @@ export function HeroGraphic() {
       ms.x += (ms.targetX - ms.x) * LERP_FACTOR;
       ms.y += (ms.targetY - ms.y) * LERP_FACTOR;
 
-      rotationBoostRef.current = (rotationBoostRef.current + ms.speed * VELOCITY_MULTIPLIER) * VELOCITY_DECAY;
+      rotationBoostRef.current = Math.min(
+        MAX_ROTATION_BOOST,
+        (rotationBoostRef.current + ms.speed * VELOCITY_MULTIPLIER) * VELOCITY_DECAY
+      );
       rotationAngleRef.current += BASE_ROTATION_RATE + rotationBoostRef.current;
 
       if (rotationGroupRef.current) {
