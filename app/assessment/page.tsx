@@ -52,6 +52,7 @@ export default function AssessmentPage() {
     if (nextAlreadyLoaded) {
       setAnswered(a => a + 1)
       setCurrentIdx(i => i + 1)
+      submittingRef.current = false  // release lock so next question is immediately clickable
     }
 
     try {
@@ -100,8 +101,9 @@ export default function AssessmentPage() {
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Unknown error')
       setPhase('error')
-    } finally {
       submittingRef.current = false
+    } finally {
+      if (!nextAlreadyLoaded) submittingRef.current = false
     }
   }, [questions, currentIdx, sessionToken, router])
 
