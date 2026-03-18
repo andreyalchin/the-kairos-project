@@ -78,7 +78,7 @@ const TIERS: Tier[] = [
     priceSub: 'pay per assessment · no seat minimum',
     badge: 'Coming soon',
     cta: 'Join the Waitlist',
-    ctaHref: 'mailto:hello@kairos.so?subject=Corporate plan interest',
+    ctaHref: 'mailto:andrey.alchin@gmail.com?subject=Corporate plan interest',
     ctaStyle: 'outline',
     features: [
       { text: 'Everything in Individual', live: true },
@@ -105,7 +105,7 @@ const TIERS: Tier[] = [
     priceSub: 'unlimited candidate assessments included',
     badge: 'Coming soon',
     cta: 'Join the Waitlist',
-    ctaHref: 'mailto:hello@kairos.so?subject=Recruiter plan interest',
+    ctaHref: 'mailto:andrey.alchin@gmail.com?subject=Recruiter plan interest',
     ctaStyle: 'outline',
     features: [
       { text: 'Everything in Corporate', live: true },
@@ -132,7 +132,7 @@ const TIERS: Tier[] = [
     priceSub: 'pay per call · volume discounts available',
     badge: 'Coming soon',
     cta: 'Request API Access',
-    ctaHref: 'mailto:hello@kairos.so?subject=API access interest',
+    ctaHref: 'mailto:andrey.alchin@gmail.com?subject=API access interest',
     ctaStyle: 'outline',
     features: [
       { text: 'Full 29 dimension scores as JSON', live: false },

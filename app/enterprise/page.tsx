@@ -120,7 +120,7 @@ export default function EnterprisePage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center pt-2">
             <Link
-              href="mailto:hello@kairos.so?subject=Enterprise inquiry"
+              href="mailto:andrey.alchin@gmail.com?subject=Enterprise inquiry"
               className="bg-indigo text-white px-8 py-3.5 rounded-xl font-semibold hover:bg-indigo-600 transition-colors"
             >
               Contact Sales
@@ -325,7 +325,7 @@ export default function EnterprisePage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <a
-              href="mailto:hello@kairos.so?subject=Enterprise inquiry"
+              href="mailto:andrey.alchin@gmail.com?subject=Enterprise inquiry"
               className="bg-white text-indigo font-semibold px-6 py-3 rounded-xl hover:bg-slate-50 transition-colors"
             >
               Contact Sales
