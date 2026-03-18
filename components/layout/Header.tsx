@@ -16,6 +16,7 @@ export function Header() {
           </div>
         </Link>
         <nav className="hidden md:flex items-center gap-6 text-sm text-text">
+          <Link href="/" className="hover:text-indigo transition-colors">Home</Link>
           <Link href="/science" className="hover:text-indigo transition-colors">Science</Link>
           <Link href="/pricing" className="hover:text-indigo transition-colors">Pricing</Link>
           <Link href="/enterprise" className="hover:text-indigo transition-colors">Enterprise</Link>
