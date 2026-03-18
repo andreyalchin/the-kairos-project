@@ -9,7 +9,7 @@ export function SituationalQuestion({ question, onAnswer }: { question: Question
 
   const handleSelect = (idx: number) => {
     setSelected(idx)
-    setTimeout(() => onAnswer(idx), 300)
+    setTimeout(() => onAnswer(idx), 150)
   }
 
   return (

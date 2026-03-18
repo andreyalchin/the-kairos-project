@@ -9,7 +9,7 @@ export function LikertQuestion({ question, onAnswer }: { question: Question; onA
 
   const handleSelect = (val: number) => {
     setSelected(val)
-    setTimeout(() => onAnswer(val), 300)
+    setTimeout(() => onAnswer(val), 150)
   }
 
   return (

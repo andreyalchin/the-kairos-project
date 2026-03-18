@@ -38,7 +38,7 @@ export function QuestionCard({ question, onAnswer }: QuestionCardProps) {
         initial={{ opacity: 0, x: 40 }}
         animate={{ opacity: 1, x: 0 }}
         exit={{ opacity: 0, x: -40 }}
-        transition={{ duration: 0.25 }}
+        transition={{ duration: 0.15 }}
         className="space-y-6"
       >
         <div className="space-y-1">

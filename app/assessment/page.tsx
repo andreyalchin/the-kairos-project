@@ -46,6 +46,14 @@ export default function AssessmentPage() {
     submittingRef.current = true
     const question = questions[currentIdx]
     const responseTimeMs = Date.now() - questionDisplayTimeRef.current
+    const nextAlreadyLoaded = currentIdx + 1 < questions.length
+
+    // Optimistically advance when next question is already available
+    if (nextAlreadyLoaded) {
+      setAnswered(a => a + 1)
+      setCurrentIdx(i => i + 1)
+    }
+
     try {
       const res = await fetch('/api/assessment/respond', {
         method: 'POST',
@@ -59,29 +67,35 @@ export default function AssessmentPage() {
         }),
       })
       const data = await res.json()
-      setAnswered(a => a + 1)
 
       if (data.nextQuestion) {
         setQuestions(q => [...q, data.nextQuestion])
         setTotal(data.progress.total)
-        setCurrentIdx(i => i + 1)
-      } else if (currentIdx + 1 < questions.length) {
-        setCurrentIdx(i => i + 1)
-      } else {
-        setPhase('processing')
-        const processingStart = Date.now()
-        const completeRes = await fetch('/api/assessment/complete', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ sessionToken }),
-        })
-        const completeData = await completeRes.json()
-        if (!completeRes.ok || !completeData.resultId) {
-          throw new Error(completeData.error ?? 'Failed to process results')
+        if (!nextAlreadyLoaded) {
+          setAnswered(a => a + 1)
+          setCurrentIdx(i => i + 1)
         }
-        const elapsed = Date.now() - processingStart
-        if (elapsed < 2000) await new Promise(r => setTimeout(r, 2000 - elapsed))
-        router.push(`/results/${completeData.resultId}`)
+      } else if (!nextAlreadyLoaded) {
+        if (currentIdx + 1 < questions.length) {
+          setAnswered(a => a + 1)
+          setCurrentIdx(i => i + 1)
+        } else {
+          setAnswered(a => a + 1)
+          setPhase('processing')
+          const processingStart = Date.now()
+          const completeRes = await fetch('/api/assessment/complete', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ sessionToken }),
+          })
+          const completeData = await completeRes.json()
+          if (!completeRes.ok || !completeData.resultId) {
+            throw new Error(completeData.error ?? 'Failed to process results')
+          }
+          const elapsed = Date.now() - processingStart
+          if (elapsed < 2000) await new Promise(r => setTimeout(r, 2000 - elapsed))
+          router.push(`/results/${completeData.resultId}`)
+        }
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Unknown error')

@@ -10,7 +10,7 @@ export function VisualQuestion({ question, onAnswer }: { question: Question; onA
 
   const handleSelect = (idx: number) => {
     setSelected(idx)
-    setTimeout(() => onAnswer(idx), 400)
+    setTimeout(() => onAnswer(idx), 200)
   }
 
   return (
