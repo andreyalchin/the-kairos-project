@@ -20,6 +20,10 @@
 .DS_Store
 *.pem
 
+# Claude Code local settings (may contain shell history with secrets)
+.claude/settings.local.json
+.superpowers/
+
 # debug
 npm-debug.log*
 yarn-debug.log*
