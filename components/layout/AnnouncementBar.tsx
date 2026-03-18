@@ -24,6 +24,7 @@ export function AnnouncementBar() {
     <div className="relative bg-teal text-white text-sm text-center py-2 px-10">
       Early access — full reports free while we grow. No credit card required.
       <button
+        type="button"
         onClick={dismiss}
         className="absolute right-3 top-1/2 -translate-y-1/2 hover:opacity-70 transition-opacity"
         aria-label="Dismiss"
