@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { Badge } from '@/components/ui/Badge'
 import { Card } from '@/components/ui/Card'
 import { Target, Network, TrendingUp, Building2 } from 'lucide-react'
-import { HeroGraphic } from '@/components/home/HeroGraphic'
+import { HeroCanvas } from '@/components/home/HeroCanvas'
 import { CompetitorContrast } from '@/components/home/CompetitorContrast'
 import { SciencePillars } from '@/components/home/SciencePillars'
 import { ArchetypeShowcase } from '@/components/home/ArchetypeShowcase'
@@ -15,50 +15,30 @@ export default function HomePage() {
     <div className="min-h-screen bg-bg">
 
       {/* ── Hero ── */}
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_60%_30%,#3730A315,transparent_60%),radial-gradient(ellipse_at_20%_80%,#0F766E10,transparent_50%)]" />
-        <div className="relative max-w-6xl mx-auto px-4 pt-20 pb-16">
-          <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-16">
-
-            {/* Left: text */}
-            <div className="flex-1 space-y-7 text-center lg:text-left">
-              <Badge variant="indigo">Built on Big Five + HEXACO + Adaptive IRT</Badge>
-              <h1 className="text-5xl md:text-6xl font-bold text-text leading-tight">
-                Most personality tests<br />
-                are <span className="text-slate-400">guessing.</span><br />
-                Kairos <span className="text-indigo">measures.</span>
-              </h1>
-              {/* PLACEHOLDER: replace with validated timing */}
-              <p className="text-xl text-slate-600 max-w-xl">
-                29 scientifically validated dimensions. 32 distinct archetypes. Behavioral
-                inference that catches what self-report misses. Your complete intelligence
-                profile in 12 minutes — free.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                <Link
-                  href="/assessment"
-                  className="bg-indigo text-white px-8 py-4 rounded-xl text-lg font-semibold hover:bg-indigo-600 transition-colors"
-                >
-                  Take the Free Assessment
-                </Link>
-                <Link
-                  href="/results/demo"
-                  className="border border-indigo text-indigo px-8 py-4 rounded-xl text-lg font-semibold hover:bg-indigo-50 transition-colors"
-                >
-                  See a Sample Report
-                </Link>
-              </div>
-              {/* PLACEHOLDER: replace 10,000+ with real verified number */}
-              <p className="text-sm text-slate-400">
-                No account required · 40–82 adaptive questions · Used by 10,000+ professionals
-              </p>
-            </div>
-
-            {/* Right: animated radar */}
-            <div className="flex-shrink-0 w-full max-w-[340px] lg:max-w-[440px]">
-              <HeroGraphic />
-            </div>
-
+      <section className="relative overflow-hidden" style={{ minHeight: '560px' }}>
+        <HeroCanvas />
+        <div className="relative z-10 flex flex-col items-center justify-center text-center px-4 py-28 min-h-[560px]">
+          <Badge variant="indigo" className="mb-6">Built on Big Five + HEXACO + Adaptive IRT</Badge>
+          <h1 className="text-5xl md:text-6xl font-bold text-text leading-tight max-w-3xl">
+            Most personality tests are <span className="text-slate-400">guessing.</span><br />
+            Kairos <span className="text-indigo">measures.</span>
+          </h1>
+          <p className="mt-5 text-lg text-slate-600 max-w-xl">
+            29 validated dimensions · 32 archetypes · behavioral inference. Your complete profile — free.
+          </p>
+          <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
+            <Link
+              href="/assessment"
+              className="bg-indigo text-white px-8 py-4 rounded-xl text-lg font-semibold hover:bg-indigo-600 transition-colors"
+            >
+              Take the Free Assessment
+            </Link>
+            <Link
+              href="/results/demo"
+              className="border border-indigo text-indigo px-8 py-4 rounded-xl text-lg font-semibold hover:bg-indigo-50 transition-colors"
+            >
+              See a Sample Report
+            </Link>
           </div>
         </div>
       </section>
