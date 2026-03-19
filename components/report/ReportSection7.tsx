@@ -1,10 +1,17 @@
 import type { AssessmentResult, ArchetypeDefinition } from '@/lib/types'
+import { getPercentile } from '@/lib/norms'
 
 const TIER_DESCRIPTIONS: Record<string, string> = {
   Visionary: 'You operate at the highest tier of leadership drive — oriented toward large-scale impact and leading organizations at full scale. You are most energized when the mandate is real, the stakes are high, and you have room to shape direction.',
   Established: 'Your leadership drive is strong and well-developed. You are capable of leading teams and organizations with real authority. People follow you because you\'ve demonstrated you can deliver results while navigating complexity.',
   Rising: 'Your leadership potential is developing. You have the instincts and the drive — the work now is building the track record and the confidence that comes from repeated high-stakes delivery.',
   Emerging: 'You are in the early stages of building your leadership identity. The foundation is here. Deliberate investment in leadership experience now will accelerate your development significantly.',
+}
+
+const MANAGING_OTHERS_INSIGHT = {
+  high: 'Your managing others score reflects a strong natural orientation toward leading and developing people. You hold others accountable without damaging relationships, adapt your style to the individual, and create environments where people grow. These are rare capabilities that compound over time.',
+  mid: 'Your managing others score reflects real potential that is still developing. You can lead effectively in familiar contexts but may find high-stakes people situations — performance management, direct feedback, developing underperformers — less natural. Targeted practice in these areas will build this into a genuine strength.',
+  low: 'Managing others is a development area. You may prefer contributing independently over directing others, or find accountability conversations uncomfortable to initiate. This is entirely learnable — most strong managers developed this deliberately rather than naturally.',
 }
 
 const SOCIAL_STYLE_DESCRIPTIONS: Record<string, string> = {
@@ -102,6 +109,26 @@ export function ReportSection7({ result, archetype }: { result: AssessmentResult
             </div>
           )}
         </div>
+
+        {result.scores.managing_others !== undefined && (
+          <div className="space-y-3">
+            <h3 className="font-semibold text-text">Managing Others</h3>
+            <div className="p-4 rounded-xl bg-white border border-slate-100 hover:-translate-y-1 transition-transform duration-200">
+              <div className="flex justify-between items-center mb-2">
+                <span className="font-medium text-sm text-text">Managing Others</span>
+                <span className="text-indigo font-bold text-sm">{result.scores.managing_others} · p{Math.round(getPercentile('managing_others', result.scores.managing_others))}</span>
+              </div>
+              <div className="h-2 bg-slate-100 rounded-full mb-3 overflow-hidden">
+                <div className="h-full bg-indigo rounded-full" style={{ width: `${result.scores.managing_others}%` }} />
+              </div>
+              <p className="text-sm text-slate-600 leading-relaxed">
+                {result.scores.managing_others >= 75 ? MANAGING_OTHERS_INSIGHT.high
+                  : result.scores.managing_others >= 50 ? MANAGING_OTHERS_INSIGHT.mid
+                  : MANAGING_OTHERS_INSIGHT.low}
+              </p>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   )
