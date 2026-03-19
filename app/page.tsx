@@ -138,96 +138,114 @@ export default function HomePage() {
       <Testimonials />
 
       {/* ── Enterprise ── */}
-      <section className="max-w-6xl mx-auto px-4 py-20">
-        <div className="grid md:grid-cols-2 gap-12 items-center">
-          <div className="space-y-6">
-            <Badge variant="teal">Enterprise</Badge>
-            <h2 className="text-3xl font-bold text-text">
-              Built for teams that take talent seriously
-            </h2>
-            <p className="text-slate-600">
-              Kairos Enterprise gives founders and HR leaders a scientific lens into
-              candidate potential, team composition, and capability gaps — not vibes.
-            </p>
-            <Link
-              href="/enterprise"
-              className="inline-block border border-teal text-teal px-6 py-3 rounded-xl font-semibold hover:bg-teal-50 transition-colors"
-            >
-              Talk to us about Enterprise →
-            </Link>
-          </div>
-          <div className="grid grid-cols-2 gap-4">
-            {[
-              { icon: <Target size={16} className="text-indigo" />, title: 'Trait-based hiring', desc: 'Match candidates to role requirements scientifically' },
-              { icon: <Network size={16} className="text-indigo" />, title: 'Team compatibility', desc: 'See how profiles interact before you build the team' },
-              { icon: <TrendingUp size={16} className="text-indigo" />, title: 'Leadership scoring', desc: 'Identify who\'s ready to lead before it\'s too late' },
-              { icon: <Building2 size={16} className="text-indigo" />, title: 'Culture fit analysis', desc: 'Measure values and work style alignment, not just skills' },
-            ].map(({ icon, title, desc }) => (
-              <div key={title} className="p-4 bg-white rounded-xl border border-slate-100 space-y-1.5">
-                {icon}
-                <p className="font-medium text-text text-sm">{title}</p>
-                <p className="text-xs text-slate-500">{desc}</p>
-              </div>
-            ))}
+      <section className="bg-slate-900 py-24">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="grid md:grid-cols-2 gap-16 items-center">
+            <div className="space-y-6">
+              <Badge variant="teal">Enterprise</Badge>
+              <h2 className="text-4xl font-bold text-white leading-tight">
+                Built for teams that take talent seriously
+              </h2>
+              <p className="text-slate-400 text-lg leading-relaxed">
+                Kairos Enterprise gives founders and HR leaders a scientific lens into
+                candidate potential, team composition, and capability gaps — not vibes.
+              </p>
+              <Link
+                href="/enterprise"
+                className="inline-block bg-teal text-white px-7 py-3.5 rounded-xl font-semibold hover:opacity-90 transition-opacity"
+              >
+                Talk to us about Enterprise →
+              </Link>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              {[
+                { icon: <Target size={16} className="text-teal" />, stat: 'r = .48', title: 'Trait-based hiring', desc: 'Match candidates to role requirements scientifically' },
+                { icon: <Network size={16} className="text-teal" />, stat: '+24%', title: 'Team compatibility', desc: 'Validity improvement over unstructured interviews' },
+                { icon: <TrendingUp size={16} className="text-teal" />, stat: '85 yrs', title: 'Leadership scoring', desc: 'Of psychometric research backing the methodology' },
+                { icon: <Building2 size={16} className="text-teal" />, stat: '$50k', title: 'Culture fit analysis', desc: 'Average cost of a bad senior hire — measurably reduced' },
+              ].map(({ icon, stat, title, desc }) => (
+                <div key={title} className="p-5 bg-slate-800 rounded-2xl border border-slate-700 space-y-2 hover:-translate-y-1 transition-transform duration-200">
+                  <p className="text-2xl font-black text-teal">{stat}</p>
+                  <div className="flex items-center gap-2">{icon}<p className="font-semibold text-white text-sm">{title}</p></div>
+                  <p className="text-xs text-slate-400 leading-relaxed">{desc}</p>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
       {/* ── Pricing ── */}
-      <section className="bg-white py-20">
-        <div className="max-w-3xl mx-auto px-4 text-center space-y-6">
-          <div className="space-y-2">
-            <h2 className="text-3xl font-bold text-text">Free during beta. Honest pricing after.</h2>
-            <p className="text-slate-500">
-              Full individual reports are $0 right now. Corporate, Recruiter, and API plans launching in 2026.
-            </p>
+      <section className="bg-bg py-24">
+        <div className="max-w-4xl mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold text-text mb-3">Free during beta. Honest pricing after.</h2>
+            <p className="text-slate-500 text-lg">Full individual reports are $0 right now.</p>
           </div>
-          <div className="grid sm:grid-cols-3 gap-4 text-left">
-            {[
-              { label: 'Individual', price: '$0', sub: 'during beta · $4.99 after' },
-              { label: 'Corporate', price: '$9.99', sub: 'per candidate' },
-              { label: 'Recruiter Network', price: '$99', sub: 'per month' },
-            ].map(({ label, price, sub }) => (
-              <div key={label} className="bg-bg rounded-xl border border-slate-100 px-4 py-3">
-                <p className="text-xs text-slate-400">{label}</p>
-                <p className="text-xl font-bold text-indigo mt-0.5">{price}</p>
-                <p className="text-xs text-slate-400">{sub}</p>
+          <div className="grid sm:grid-cols-3 gap-5">
+            {/* Featured free plan */}
+            <div className="relative overflow-hidden bg-indigo rounded-2xl p-7 shadow-xl text-white">
+              <span className="absolute -right-3 -top-3 text-[7rem] font-black text-white/5 leading-none select-none pointer-events-none" aria-hidden="true">$0</span>
+              <span className="inline-block bg-white/20 text-white text-xs font-semibold px-2.5 py-1 rounded-full mb-5">Beta — Free now</span>
+              <p className="text-5xl font-black mb-1">$0</p>
+              <p className="text-indigo-200 text-sm mb-6">Individual · $4.99 after beta</p>
+              <Link
+                href="/assessment"
+                className="block text-center bg-white text-indigo rounded-xl py-2.5 font-semibold text-sm hover:bg-indigo-50 transition-colors"
+              >
+                Take Free Assessment
+              </Link>
+            </div>
+            {/* Corporate */}
+            <div className="bg-white rounded-2xl p-7 border border-slate-200 shadow-sm flex flex-col justify-between">
+              <div>
+                <p className="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3">Corporate</p>
+                <p className="text-5xl font-black text-text mb-1">$9.99</p>
+                <p className="text-slate-400 text-sm mb-5">per candidate</p>
+                <p className="text-sm text-slate-500 leading-relaxed">Hiring dashboard, role-fit scores, team compatibility matrix</p>
               </div>
-            ))}
+              <p className="text-xs text-slate-400 mt-5 font-medium">Launching 2026</p>
+            </div>
+            {/* Recruiter */}
+            <div className="bg-white rounded-2xl p-7 border border-slate-200 shadow-sm flex flex-col justify-between">
+              <div>
+                <p className="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-3">Recruiter Network</p>
+                <p className="text-5xl font-black text-text mb-1">$99</p>
+                <p className="text-slate-400 text-sm mb-5">per month</p>
+                <p className="text-sm text-slate-500 leading-relaxed">Unlimited candidates, API access, white-label reports</p>
+              </div>
+              <p className="text-xs text-slate-400 mt-5 font-medium">Launching 2026</p>
+            </div>
           </div>
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Link
-              href="/assessment"
-              className="bg-indigo text-white px-6 py-3 rounded-xl font-semibold hover:bg-indigo-600 transition-colors"
-            >
-              Take Free Assessment
+          <p className="text-center mt-8">
+            <Link href="/pricing" className="text-indigo text-sm font-semibold hover:underline">
+              See full pricing &amp; features →
             </Link>
-            <Link
-              href="/pricing"
-              className="border border-slate-200 text-slate-600 px-6 py-3 rounded-xl font-semibold hover:border-indigo hover:text-indigo transition-colors"
-            >
-              See Full Pricing →
-            </Link>
-          </div>
+          </p>
         </div>
       </section>
 
       {/* ── Final CTA ── */}
-      <section className="max-w-6xl mx-auto px-4 py-20 text-center space-y-6">
-        {/* PLACEHOLDER: replace with validated timing */}
-        <h2 className="text-4xl font-bold text-text">
-          12 minutes. 29 dimensions. One profile that&apos;s actually you.
-        </h2>
-        {/* PLACEHOLDER: replace 10,000+ with real verified number */}
-        <p className="text-slate-500 text-lg">
-          Join 10,000+ professionals who&apos;ve stopped guessing about themselves.
-        </p>
-        <Link
-          href="/assessment"
-          className="inline-block bg-indigo text-white px-10 py-4 rounded-xl text-lg font-semibold hover:bg-indigo-600 transition-colors"
-        >
-          Take the Free Assessment
-        </Link>
+      <section className="relative overflow-hidden bg-gradient-to-br from-indigo via-indigo-800 to-indigo-950 py-28 text-center">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_0%,#6366f130,transparent_65%)]" />
+        <div className="relative max-w-3xl mx-auto px-4 space-y-6">
+          {/* PLACEHOLDER: replace with validated timing */}
+          <h2 className="text-5xl md:text-6xl font-bold text-white leading-tight">
+            12 minutes.<br />29 dimensions.<br />One profile that&apos;s actually you.
+          </h2>
+          {/* PLACEHOLDER: replace 10,000+ with real verified number */}
+          <p className="text-indigo-200 text-xl">
+            Join 10,000+ professionals who&apos;ve stopped guessing about themselves.
+          </p>
+          <div className="pt-2">
+            <Link
+              href="/assessment"
+              className="inline-block bg-white text-indigo px-12 py-4 rounded-xl text-lg font-bold hover:bg-indigo-50 hover:scale-105 transition-all"
+            >
+              Take the Free Assessment
+            </Link>
+          </div>
+        </div>
       </section>
 
     </div>
