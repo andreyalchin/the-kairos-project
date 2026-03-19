@@ -80,7 +80,7 @@ export default function HomePage() {
 
             {/* Step 1 — wide */}
             <div className="md:col-span-2 relative overflow-hidden rounded-2xl border border-indigo/10 bg-gradient-to-br from-indigo-50 to-white p-8 shadow-sm hover:-translate-y-1 transition-transform duration-200">
-              <span className="absolute right-4 -top-2 text-[9rem] font-black text-indigo/5 leading-none select-none pointer-events-none">1</span>
+              <span className="absolute right-4 -top-2 text-[9rem] font-black text-indigo/5 leading-none select-none pointer-events-none" aria-hidden="true">1</span>
               <div className="relative">
                 <div className="w-10 h-10 rounded-full bg-indigo flex items-center justify-center mb-5">
                   <span className="text-white font-bold text-sm">1</span>
@@ -92,7 +92,7 @@ export default function HomePage() {
 
             {/* Step 2 */}
             <div className="relative overflow-hidden rounded-2xl border border-teal/20 bg-gradient-to-br from-teal-50 to-white p-8 shadow-sm hover:-translate-y-1 transition-transform duration-200">
-              <span className="absolute right-4 -top-2 text-[9rem] font-black text-teal/5 leading-none select-none pointer-events-none">2</span>
+              <span className="absolute right-4 -top-2 text-[9rem] font-black text-teal/5 leading-none select-none pointer-events-none" aria-hidden="true">2</span>
               <div className="relative">
                 <div className="w-10 h-10 rounded-full bg-teal flex items-center justify-center mb-5">
                   <span className="text-white font-bold text-sm">2</span>
@@ -104,7 +104,7 @@ export default function HomePage() {
 
             {/* Step 3 — full width */}
             <div className="md:col-span-3 relative overflow-hidden rounded-2xl border border-violet-200/50 bg-gradient-to-br from-violet-50 to-white p-8 shadow-sm hover:-translate-y-1 transition-transform duration-200">
-              <span className="absolute right-8 -top-2 text-[9rem] font-black text-violet-500/5 leading-none select-none pointer-events-none">3</span>
+              <span className="absolute right-8 -top-2 text-[9rem] font-black text-violet-500/5 leading-none select-none pointer-events-none" aria-hidden="true">3</span>
               <div className="relative md:flex items-center gap-12">
                 <div className="flex-shrink-0">
                   <div className="w-10 h-10 rounded-full bg-violet-600 flex items-center justify-center mb-5">
