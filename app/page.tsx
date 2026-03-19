@@ -1,7 +1,6 @@
 // app/page.tsx
 import Link from 'next/link'
 import { Badge } from '@/components/ui/Badge'
-import { Card } from '@/components/ui/Card'
 import { Target, Network, TrendingUp, Building2 } from 'lucide-react'
 import { HeroCanvas } from '@/components/home/HeroCanvas'
 import { CompetitorContrast } from '@/components/home/CompetitorContrast'
@@ -44,27 +43,27 @@ export default function HomePage() {
       </section>
 
       {/* ── Social Proof Bar ── */}
-      <section className="border-y border-slate-100 bg-white py-6">
-        <div className="max-w-6xl mx-auto px-4 flex flex-wrap justify-center gap-8 md:gap-16">
-          {/* PLACEHOLDER: replace all four values with real verified stats */}
+      <section className="bg-slate-900 py-10">
+        <div className="max-w-6xl mx-auto px-4 flex flex-wrap justify-center gap-10 md:gap-20">
+          {/* PLACEHOLDER: replace with real verified stats */}
           <div className="text-center">
-            <p className="text-3xl font-bold text-indigo">10,847</p>
-            <p className="text-sm text-slate-500 mt-1">Assessments completed</p>
+            <p className="text-5xl font-black text-white">10,847</p>
+            <p className="text-sm text-slate-400 mt-1">Assessments completed</p>
           </div>
-          <div className="hidden md:block w-px h-8 bg-slate-200 self-center" aria-hidden="true" />
+          <div className="hidden md:block w-px h-14 bg-slate-700 self-center" aria-hidden="true" />
           <div className="text-center">
-            <p className="text-3xl font-bold text-indigo">29</p>
-            <p className="text-sm text-slate-500 mt-1">Dimensions measured</p>
+            <p className="text-5xl font-black text-indigo">29</p>
+            <p className="text-sm text-slate-400 mt-1">Dimensions measured</p>
           </div>
-          <div className="hidden md:block w-px h-8 bg-slate-200 self-center" aria-hidden="true" />
+          <div className="hidden md:block w-px h-14 bg-slate-700 self-center" aria-hidden="true" />
           <div className="text-center">
-            <p className="text-3xl font-bold text-indigo">32</p>
-            <p className="text-sm text-slate-500 mt-1">Archetypes identified</p>
+            <p className="text-5xl font-black text-teal">32</p>
+            <p className="text-sm text-slate-400 mt-1">Archetypes identified</p>
           </div>
-          <div className="hidden md:block w-px h-8 bg-slate-200 self-center" aria-hidden="true" />
+          <div className="hidden md:block w-px h-14 bg-slate-700 self-center" aria-hidden="true" />
           <div className="text-center">
-            <p className="text-3xl font-bold text-indigo">Big Five + HEXACO</p>
-            <p className="text-sm text-slate-500 mt-1">Scientific foundation</p>
+            <p className="text-2xl font-black text-white leading-tight">Big Five<br />+ HEXACO</p>
+            <p className="text-sm text-slate-400 mt-1">Scientific foundation</p>
           </div>
         </div>
       </section>
@@ -73,35 +72,55 @@ export default function HomePage() {
       <CompetitorContrast />
 
       {/* ── How It Works ── */}
-      <section className="bg-white py-20">
+      <section className="bg-white py-24">
         <div className="max-w-6xl mx-auto px-4">
-          <h2 className="text-3xl font-bold text-text text-center mb-12">How Kairos Works</h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                step: '1',
-                title: 'Take the Assessment',
-                desc: '40–82 adaptive questions across 29 dimensions. No registration required.',
-              },
-              {
-                step: '2',
-                title: 'Get Your Profile',
-                desc: 'The scoring engine analyzes cognitive, motivational, behavioral, and leadership dimensions in real time.',
-              },
-              {
-                step: '3',
-                title: 'Unlock Deep Insight',
-                desc: 'Your archetype, HPIF profile, career intelligence, team compatibility, and 90-day growth plan.',
-              },
-            ].map(({ step, title, desc }) => (
-              <Card key={step} className="text-center space-y-3">
-                <div className="w-12 h-12 rounded-full bg-indigo text-white text-xl font-bold flex items-center justify-center mx-auto">
-                  {step}
+          <h2 className="text-4xl md:text-5xl font-bold text-text text-center mb-4">How Kairos Works</h2>
+          <p className="text-slate-500 text-center mb-14 text-lg">Three steps. No fluff.</p>
+          <div className="grid md:grid-cols-3 gap-5">
+
+            {/* Step 1 — wide */}
+            <div className="md:col-span-2 relative overflow-hidden rounded-2xl border border-indigo/10 bg-gradient-to-br from-indigo-50 to-white p-8 shadow-sm hover:-translate-y-1 transition-transform duration-200">
+              <span className="absolute right-4 -top-2 text-[9rem] font-black text-indigo/5 leading-none select-none pointer-events-none">1</span>
+              <div className="relative">
+                <div className="w-10 h-10 rounded-full bg-indigo flex items-center justify-center mb-5">
+                  <span className="text-white font-bold text-sm">1</span>
                 </div>
-                <h3 className="font-semibold text-text text-lg">{title}</h3>
-                <p className="text-slate-500 text-sm">{desc}</p>
-              </Card>
-            ))}
+                <h3 className="font-bold text-text text-xl mb-2">Take the Assessment</h3>
+                <p className="text-slate-500 leading-relaxed">40–82 adaptive questions across 29 dimensions. No registration required. Questions calibrate to your responses in real time.</p>
+              </div>
+            </div>
+
+            {/* Step 2 */}
+            <div className="relative overflow-hidden rounded-2xl border border-teal/20 bg-gradient-to-br from-teal-50 to-white p-8 shadow-sm hover:-translate-y-1 transition-transform duration-200">
+              <span className="absolute right-4 -top-2 text-[9rem] font-black text-teal/5 leading-none select-none pointer-events-none">2</span>
+              <div className="relative">
+                <div className="w-10 h-10 rounded-full bg-teal flex items-center justify-center mb-5">
+                  <span className="text-white font-bold text-sm">2</span>
+                </div>
+                <h3 className="font-bold text-text text-xl mb-2">Get Your Profile</h3>
+                <p className="text-slate-500 leading-relaxed">The scoring engine analyzes cognitive, motivational, behavioral, and leadership dimensions in real time.</p>
+              </div>
+            </div>
+
+            {/* Step 3 — full width */}
+            <div className="md:col-span-3 relative overflow-hidden rounded-2xl border border-violet-200/50 bg-gradient-to-br from-violet-50 to-white p-8 shadow-sm hover:-translate-y-1 transition-transform duration-200">
+              <span className="absolute right-8 -top-2 text-[9rem] font-black text-violet-500/5 leading-none select-none pointer-events-none">3</span>
+              <div className="relative md:flex items-center gap-12">
+                <div className="flex-shrink-0">
+                  <div className="w-10 h-10 rounded-full bg-violet-600 flex items-center justify-center mb-5">
+                    <span className="text-white font-bold text-sm">3</span>
+                  </div>
+                  <h3 className="font-bold text-text text-xl mb-2">Unlock Deep Insight</h3>
+                  <p className="text-slate-500 max-w-md leading-relaxed">Your archetype, HPIF profile, career intelligence, team compatibility, and 90-day growth plan — all in one report.</p>
+                </div>
+                <div className="hidden md:flex gap-2.5 flex-wrap mt-6 md:mt-0">
+                  {['Archetype', 'HPIF Profile', 'Career Intelligence', 'Team Compatibility', '90-Day Plan', 'Growth Edges', 'Blind Spots'].map(tag => (
+                    <span key={tag} className="bg-violet-100 text-violet-700 text-xs font-medium px-3 py-1.5 rounded-full">{tag}</span>
+                  ))}
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
       </section>
