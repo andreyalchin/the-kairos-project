@@ -185,12 +185,15 @@ export function ReportSection2({ result, onSentinelRef }: Props) {
   const superpowers = sorted.slice(0, 3)
   const growthAreas = sorted.slice(-2)
 
-  const barItems = sorted.map(([k, v]) => ({
-    slug: k,
-    label: k.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()),
-    score: v,
-    percentile: Math.round(getPercentile(k, v)),
-  }))
+  const allItems = Object.entries(scores)
+    .filter(([k]) => k !== 'founder_potential')
+    .sort(([, a], [, b]) => b - a)
+    .map(([k, v]) => ({
+      slug: k,
+      label: DIMENSIONS.find(d => d.slug === k)?.label ?? k.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase()),
+      score: v,
+      percentile: Math.round(getPercentile(k, v)),
+    }))
 
   return (
     <div className="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden">
@@ -224,7 +227,7 @@ export function ReportSection2({ result, onSentinelRef }: Props) {
           </div>
         </div>
 
-        <DimensionsTable items={barItems} />
+        <DimensionsTable items={allItems} />
         <div ref={onSentinelRef} id="section-2-sentinel" className="h-px" />
       </div>
     </div>
