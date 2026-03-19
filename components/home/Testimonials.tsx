@@ -58,7 +58,7 @@ export function Testimonials() {
           {/* Two smaller stacked */}
           <div className="space-y-5">
             {testimonials.slice(1).map(t => (
-              <div key={t.name} className="bg-slate-800 rounded-2xl p-6 flex flex-col justify-between h-full">
+              <div key={t.name} className="bg-slate-800 rounded-2xl p-6 flex flex-col justify-between">
                 <p className="text-slate-300 text-sm leading-relaxed italic">&ldquo;{t.quote}&rdquo;</p>
                 <div className="flex items-center gap-2.5 mt-5">
                   <div className="w-8 h-8 rounded-full bg-slate-700 flex items-center justify-center flex-shrink-0">

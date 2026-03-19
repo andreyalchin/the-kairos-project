@@ -138,7 +138,7 @@ export default function HomePage() {
       <Testimonials />
 
       {/* ── Enterprise ── */}
-      <section className="bg-slate-900 py-24">
+      <section className="bg-slate-900 py-24 border-t border-slate-800">
         <div className="max-w-6xl mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-16 items-center">
             <div className="space-y-6">

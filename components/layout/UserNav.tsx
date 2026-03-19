@@ -41,9 +41,10 @@ export function UserNav() {
   if (!user) {
     return (
       <>
-        <Link href="/login" className="text-sm text-slate-600 hover:text-indigo">Log in</Link>
-        <Link href="/assessment" className="text-sm bg-indigo text-white px-4 py-2 rounded-lg hover:bg-indigo-600 transition-colors font-medium">
-          Take Assessment
+        <Link href="/login" className="text-sm text-slate-600 hover:text-indigo whitespace-nowrap">Log in</Link>
+        <Link href="/assessment" className="text-sm bg-indigo text-white px-3 sm:px-4 py-2 rounded-lg hover:bg-indigo-600 transition-colors font-medium whitespace-nowrap">
+          <span className="sm:hidden">Assess</span>
+          <span className="hidden sm:inline">Take Assessment</span>
         </Link>
       </>
     )

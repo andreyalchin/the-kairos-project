@@ -67,7 +67,7 @@ export function ReportPreview() {
           </div>
 
           {/* Section list */}
-          <div className="mt-10 md:mt-0 flex-1">
+          <div className="mt-10 md:mt-0 flex-1 w-full max-w-sm mx-auto md:max-w-none md:mx-0">
             <p className="text-indigo-200 text-sm font-semibold uppercase tracking-wider mb-5">What&apos;s inside</p>
             <div className="space-y-2">
               {sectionNames.map((name, i) => (

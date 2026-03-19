@@ -55,10 +55,12 @@ export function SciencePillars() {
                 key={title}
                 className={`rounded-2xl p-7 border ${s.ring} bg-slate-800/60 hover:-translate-y-1 transition-transform duration-200`}
               >
-                <div className={`w-11 h-11 rounded-xl ${s.circle} flex items-center justify-center text-xl mb-5`}>
-                  {symbol}
+                <div className="flex items-center gap-3 mb-4">
+                  <div className={`w-11 h-11 rounded-xl ${s.circle} flex items-center justify-center text-xl flex-shrink-0`}>
+                    {symbol}
+                  </div>
+                  <h3 className="font-bold text-white text-lg">{title}</h3>
                 </div>
-                <h3 className="font-bold text-white text-lg mb-2">{title}</h3>
                 <p className="text-slate-400 text-sm leading-relaxed">{desc}</p>
               </div>
             )

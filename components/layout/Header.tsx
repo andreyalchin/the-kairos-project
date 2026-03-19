@@ -12,7 +12,7 @@ export function Header() {
           </svg>
           <div>
             <p className="text-xl font-bold text-indigo leading-none">Kairos</p>
-            <p className="text-xs text-slate-400 leading-none mt-0.5">Human Potential Intelligence</p>
+            <p className="hidden sm:block text-xs text-slate-400 leading-none mt-0.5">Human Potential Intelligence</p>
           </div>
         </Link>
         <nav className="hidden md:flex items-center gap-6 text-sm text-text">
