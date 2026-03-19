@@ -29,14 +29,14 @@ export function Testimonials() {
   return (
     <section className="bg-slate-900 py-24">
       <div className="max-w-6xl mx-auto px-4">
-        <h2 className="text-4xl md:text-5xl font-bold text-white text-center mb-14">
+        <h2 className="text-3xl md:text-5xl font-bold text-white text-center mb-14">
           What people do with their results
         </h2>
 
         <div className="grid md:grid-cols-3 gap-5">
 
           {/* Featured — spans 2 cols */}
-          <div className="md:col-span-2 bg-white rounded-2xl p-8 shadow-lg flex flex-col justify-between">
+          <div className="md:col-span-2 bg-white rounded-2xl p-8 shadow-lg flex flex-col justify-between overflow-hidden">
             <div>
               <span className="text-7xl text-indigo/10 font-serif leading-none block -mb-2 select-none" aria-hidden="true">&ldquo;</span>
               <p className="text-slate-700 text-lg leading-relaxed mt-2">{testimonials[0].quote}</p>

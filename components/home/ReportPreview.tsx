@@ -14,11 +14,11 @@ export function ReportPreview() {
       <div className="max-w-5xl mx-auto px-4">
 
         <div className="text-center mb-14">
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">An 11-Section Deep Report</h2>
+          <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">An 11-Section Deep Report</h2>
           <p className="text-indigo-200 text-lg">Every dimension scored. Every insight explained.</p>
         </div>
 
-        <div className="md:flex gap-10 items-start">
+        <div className="flex flex-col md:flex-row gap-10 items-start">
 
           {/* Mockup card */}
           <div className="flex-shrink-0 mx-auto md:mx-0 w-full max-w-xs" style={{ transform: 'rotate(-1.5deg)' }}>

@@ -40,7 +40,7 @@ export function SciencePillars() {
       <div className="max-w-6xl mx-auto px-4">
 
         <div className="text-center mb-14">
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+          <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">
             The science isn&apos;t a feature.<br />It&apos;s the foundation.
           </h2>
           <p className="text-slate-400 text-lg">Built on decades of peer-reviewed research.</p>
@@ -66,7 +66,7 @@ export function SciencePillars() {
         </div>
 
         {/* Pull quote */}
-        <div className="relative rounded-2xl bg-indigo/10 border border-indigo/20 px-8 py-10 md:px-14">
+        <div className="relative rounded-2xl bg-indigo/10 border border-indigo/20 px-8 py-10 md:px-14 overflow-hidden">
           <span className="absolute top-4 left-6 text-8xl text-indigo/20 font-serif leading-none select-none pointer-events-none" aria-hidden="true">&ldquo;</span>
           <p className="relative text-white/90 italic text-xl leading-relaxed text-center max-w-3xl mx-auto">
             Kairos uses the same psychometric frameworks deployed by Fortune 500 HR

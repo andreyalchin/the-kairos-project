@@ -50,7 +50,7 @@ export function ArchetypeShowcase() {
   return (
     <section className="bg-bg py-24">
       <div className="max-w-6xl mx-auto px-4">
-        <h2 className="text-4xl md:text-5xl font-bold text-text text-center mb-4">32 Human Archetypes</h2>
+        <h2 className="text-3xl md:text-5xl font-bold text-text text-center mb-4">32 Human Archetypes</h2>
         <p className="text-slate-500 text-center mb-14 text-lg max-w-xl mx-auto">
           Each archetype is a precise pattern of dimensions — not a horoscope, not a bucket.
         </p>
