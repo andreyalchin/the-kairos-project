@@ -10,19 +10,69 @@
 
 ### New file: `lib/dimensions.ts`
 
-Single source of truth for all 36 dimensions. Exports a `DIMENSIONS` array and a `MAJOR_DIMS` / `MINOR_DIMS` derived set. All existing scattered label/description maps across report sections and the radar chart are replaced by imports from this file.
+**This file must be created first — all other changes depend on it.** It is a prerequisite for the radar chart, scoring changes, and report section updates.
+
+Exports a `DIMENSIONS` array and derived `MAJOR_DIMS` / `MINOR_DIMS` sets. All existing scattered label/description maps across report sections and the radar chart are replaced by imports from this file.
 
 ```ts
+import type { DimensionSlug } from './types'
+
 export interface DimensionMeta {
   slug: DimensionSlug
   label: string
-  shortLabel: string   // ≤ 12 chars, used on radar axis
+  shortLabel: string   // ≤ 12 chars, used on radar axis labels
   description: string
   tier: 1 | 2 | 3 | 4 | 5 | 6
   major: boolean
 }
 
-export const DIMENSIONS: DimensionMeta[] = [ ... ]
+export const DIMENSIONS: DimensionMeta[] = [
+  // Big Five + HEXACO (Major)
+  { slug: 'openness', label: 'Openness', shortLabel: 'Openness', tier: 1, major: true, description: 'Receptivity to new ideas, experiences, and perspectives.' },
+  { slug: 'conscientiousness', label: 'Conscientiousness', shortLabel: 'Conscient.', tier: 1, major: true, description: 'Capacity for discipline, organization, and follow-through.' },
+  { slug: 'extraversion', label: 'Extraversion', shortLabel: 'Extraversion', tier: 1, major: true, description: 'Orientation toward social engagement and external stimulation.' },
+  { slug: 'agreeableness', label: 'Agreeableness', shortLabel: 'Agreeable.', tier: 1, major: true, description: 'Tendency toward cooperation, empathy, and interpersonal harmony.' },
+  { slug: 'emotional_stability', label: 'Emotional Stability', shortLabel: 'Emot. Stab.', tier: 1, major: true, description: 'Resilience under pressure and consistency of emotional response.' },
+  { slug: 'honesty_humility', label: 'Honesty-Humility', shortLabel: 'Honesty', tier: 1, major: true, description: 'Commitment to authenticity, integrity, and freedom from self-promotion.' },
+  // New workplace Major dims
+  { slug: 'emotional_intelligence', label: 'Emotional Intelligence', shortLabel: 'Emot. Intel.', tier: 4, major: true, description: 'Recognizing, understanding, and regulating emotions in self and others.' },
+  { slug: 'decision_making', label: 'Decision Making', shortLabel: 'Decisions', tier: 2, major: true, description: 'Quality of judgment under uncertainty, speed/accuracy balance.' },
+  { slug: 'execution', label: 'Execution', shortLabel: 'Execution', tier: 3, major: true, description: 'Translating plans into completed outcomes with reliability.' },
+  { slug: 'managing_others', label: 'Managing Others', shortLabel: 'Managing', tier: 5, major: true, description: 'Ability to direct, develop, and get results through people.' },
+  // Core cognitive (Major)
+  { slug: 'cognitive_agility', label: 'Cognitive Agility', shortLabel: 'Cog. Agility', tier: 2, major: true, description: 'Speed and fluidity of adapting thinking across different problem types.' },
+  { slug: 'executive_function', label: 'Executive Function', shortLabel: 'Exec. Fn.', tier: 2, major: true, description: 'Planning, organizing, prioritizing, and regulating goal-directed behavior.' },
+  { slug: 'systems_thinking', label: 'Systems Thinking', shortLabel: 'Systems', tier: 2, major: true, description: 'Modeling complex interdependencies and emergent patterns.' },
+  // Core motivational (Major)
+  { slug: 'achievement_drive', label: 'Achievement Drive', shortLabel: 'Achievement', tier: 3, major: true, description: 'Drive to accomplish difficult goals and exceed your own standards.' },
+  { slug: 'purpose_orientation', label: 'Purpose Orientation', shortLabel: 'Purpose', tier: 3, major: true, description: 'Degree to which meaning and mission factor into your motivation.' },
+  { slug: 'risk_tolerance', label: 'Risk Tolerance', shortLabel: 'Risk', tier: 3, major: true, description: 'Comfort operating in uncertain environments with real downside.' },
+  // Career + behavioral (Major)
+  { slug: 'leadership_drive', label: 'Leadership Drive', shortLabel: 'Leadership', tier: 5, major: true, description: 'Orientation toward taking charge, setting direction, and developing others.' },
+  { slug: 'strategic_orientation', label: 'Strategic Orientation', shortLabel: 'Strategic', tier: 5, major: true, description: 'Capacity for long-horizon planning and competitive positioning.' },
+  { slug: 'social_influence', label: 'Social Influence', shortLabel: 'Influence', tier: 4, major: true, description: 'Ability to persuade, inspire, and move others toward shared goals.' },
+  { slug: 'conflict_navigation', label: 'Conflict Navigation', shortLabel: 'Conflict Nav.', tier: 4, major: true, description: 'Effectiveness at engaging, managing, and resolving interpersonal tension.' },
+  // Supporting cognitive (Minor)
+  { slug: 'attention_control', label: 'Attention Control', shortLabel: 'Attention', tier: 2, major: false, description: 'Sustaining focus and managing distraction under cognitive load.' },
+  { slug: 'creative_intelligence', label: 'Creative Intelligence', shortLabel: 'Creativity', tier: 2, major: false, description: 'Richness of associative network and capacity for generative thinking.' },
+  // Supporting motivational/behavioral (Minor)
+  { slug: 'autonomy_need', label: 'Autonomy Need', shortLabel: 'Autonomy', tier: 3, major: false, description: 'Need for self-direction and independence in how you work.' },
+  { slug: 'competitive_drive', label: 'Competitive Drive', shortLabel: 'Competitive', tier: 3, major: false, description: 'Need to outperform others and track progress against external benchmarks.' },
+  { slug: 'communication_style', label: 'Communication Style', shortLabel: 'Communicat.', tier: 4, major: false, description: 'Approach to expressing ideas and adapting to different audiences.' },
+  { slug: 'collaboration_signature', label: 'Collaboration', shortLabel: 'Collaborat.', tier: 4, major: false, description: 'Natural approach to shared work and team dynamics.' },
+  // Career supporting (Minor)
+  { slug: 'specialist_generalist', label: 'Specialist–Generalist', shortLabel: 'Spec/Gen', tier: 5, major: false, description: 'Orientation toward depth vs. breadth of expertise.' },
+  { slug: 'innovation_index', label: 'Innovation Index', shortLabel: 'Innovation', tier: 5, major: false, description: 'Drive and capacity to generate breakthrough ideas and novel solutions.' },
+  // Growth/resilience (Minor)
+  { slug: 'psychological_resilience', label: 'Psych. Resilience', shortLabel: 'Resilience', tier: 6, major: false, description: 'Capacity to recover, adapt, and grow through adversity.' },
+  { slug: 'growth_mindset', label: 'Growth Mindset', shortLabel: 'Growth', tier: 6, major: false, description: 'Belief in the malleability of ability and orientation toward development.' },
+  { slug: 'adaptability_quotient', label: 'Adaptability', shortLabel: 'Adaptability', tier: 6, major: false, description: 'Effectiveness at adjusting to changing conditions and new environments.' },
+  { slug: 'learning_agility', label: 'Learning Agility', shortLabel: 'Learning', tier: 6, major: false, description: 'Speed and effectiveness of acquiring and applying new knowledge.' },
+  // New supporting dims (Minor)
+  { slug: 'teamwork', label: 'Teamwork', shortLabel: 'Teamwork', tier: 4, major: false, description: 'Contribution quality and adaptability within collaborative groups.' },
+  { slug: 'persuasion', label: 'Persuasion', shortLabel: 'Persuasion', tier: 4, major: false, description: 'Ability to shift beliefs and actions through reasoned influence.' },
+  { slug: 'embracing_differences', label: 'Embracing Differences', shortLabel: 'Diversity', tier: 4, major: false, description: 'Openness to diverse perspectives, backgrounds, and working styles.' },
+]
 
 export const MAJOR_DIMS = new Set(
   DIMENSIONS.filter(d => d.major).map(d => d.slug)
@@ -32,65 +82,36 @@ export const MINOR_DIMS = new Set(
 )
 ```
 
-### Major dimensions (20)
-
-| # | Slug | Label | Tier |
-|---|------|-------|------|
-| 1 | `openness` | Openness | 1 |
-| 2 | `conscientiousness` | Conscientiousness | 1 |
-| 3 | `extraversion` | Extraversion | 1 |
-| 4 | `agreeableness` | Agreeableness | 1 |
-| 5 | `emotional_stability` | Emotional Stability | 1 |
-| 6 | `honesty_humility` | Honesty-Humility | 1 |
-| 7 | `cognitive_agility` | Cognitive Agility | 2 |
-| 8 | `executive_function` | Executive Function | 2 |
-| 9 | `systems_thinking` | Systems Thinking | 2 |
-| 10 | `achievement_drive` | Achievement Drive | 3 |
-| 11 | `purpose_orientation` | Purpose Orientation | 3 |
-| 12 | `risk_tolerance` | Risk Tolerance | 3 |
-| 13 | `leadership_drive` | Leadership Drive | 5 |
-| 14 | `strategic_orientation` | Strategic Orientation | 5 |
-| 15 | `social_influence` | Social Influence | 4 |
-| 16 | `conflict_navigation` | Conflict Navigation | 4 |
-| 17 | `emotional_intelligence` | Emotional Intelligence | 4 (new) |
-| 18 | `decision_making` | Decision Making | 2 (new) |
-| 19 | `execution` | Execution | 3 (new) |
-| 20 | `managing_others` | Managing Others | 5 (new) |
-
-### Minor dimensions (16)
-
-| # | Slug | Label | Tier |
-|---|------|-------|------|
-| 21 | `attention_control` | Attention Control | 2 |
-| 22 | `creative_intelligence` | Creative Intelligence | 2 |
-| 23 | `autonomy_need` | Autonomy Need | 3 |
-| 24 | `competitive_drive` | Competitive Drive | 3 |
-| 25 | `communication_style` | Communication Style | 4 |
-| 26 | `collaboration_signature` | Collaboration | 4 |
-| 27 | `specialist_generalist` | Specialist–Generalist | 5 |
-| 28 | `innovation_index` | Innovation Index | 5 |
-| 29 | `psychological_resilience` | Psych. Resilience | 6 |
-| 30 | `growth_mindset` | Growth Mindset | 6 |
-| 31 | `adaptability_quotient` | Adaptability | 6 |
-| 32 | `learning_agility` | Learning Agility | 6 |
-| 33 | `teamwork` | Teamwork | 4 (new) |
-| 34 | `persuasion` | Persuasion | 4 (new) |
-| 35 | `embracing_differences` | Embracing Differences | 4 (new) |
-
-*(36th dimension: `founder_potential` remains a derived composite, not a standalone radar dimension — unchanged)*
+Total: **20 Major + 15 Minor = 35 active radar dimensions** (`founder_potential` remains a derived composite, excluded from radar — unchanged).
 
 ---
 
 ## 2. Type System Changes (`lib/types.ts`)
 
-Add 7 new slugs to the `DimensionSlug` union:
+Replace the existing `DimensionSlug` union with the full 36-slug version:
 
 ```ts
-| 'emotional_intelligence' | 'decision_making' | 'execution'
-| 'managing_others' | 'teamwork' | 'persuasion' | 'embracing_differences'
+export type DimensionSlug =
+  // Existing 29
+  | 'openness' | 'conscientiousness' | 'extraversion' | 'agreeableness'
+  | 'emotional_stability' | 'honesty_humility'
+  | 'cognitive_agility' | 'executive_function' | 'attention_control'
+  | 'systems_thinking' | 'creative_intelligence'
+  | 'achievement_drive' | 'risk_tolerance' | 'autonomy_need'
+  | 'purpose_orientation' | 'competitive_drive'
+  | 'social_influence' | 'conflict_navigation' | 'communication_style'
+  | 'collaboration_signature' | 'leadership_drive'
+  | 'founder_potential' | 'strategic_orientation' | 'specialist_generalist'
+  | 'innovation_index' | 'psychological_resilience' | 'growth_mindset'
+  | 'adaptability_quotient' | 'learning_agility'
+  // 7 new
+  | 'emotional_intelligence' | 'decision_making' | 'execution'
+  | 'managing_others' | 'teamwork' | 'persuasion' | 'embracing_differences'
+
+export type DimensionScores = Record<DimensionSlug, number>
 ```
 
-No other type changes required. `DimensionScores = Record<DimensionSlug, number>` automatically expands.
+This flows through automatically: `DimensionScores`, `Question.dimension`, `Response.dimension`, `ArchetypeDimensionWeight.dimension`, and `HpifProfile` partial scores all expand without further changes.
 
 ---
 
@@ -98,231 +119,118 @@ No other type changes required. `DimensionScores = Record<DimensionSlug, number>
 
 ### Question targets
 
-| Category | Count | Per-dim target | Total |
-|----------|-------|---------------|-------|
-| 20 existing Major dims | — | +6 new questions each | +120 |
-| 12 existing Minor dims | — | +3 new questions each | +36 |
-| 4 new Major dims | — | 8 questions each | +32 |
-| 3 new Minor dims | — | 5 questions each | +15 |
-| **Net new** | | | **~203** |
-| **Grand total** | | | **~285** |
+| Category | Dims | New questions each | Total new |
+|----------|------|--------------------|-----------|
+| Existing Major dims | 16 (existing only) | +6 | +96 |
+| Existing Minor dims | 12 (existing only) | +3 | +36 |
+| 4 new Major dims | 4 | 8 each | +32 |
+| 3 new Minor dims | 3 | 5 each | +15 |
+| Cross-dimensional tiebreakers | — | 4 extra calibration | +4 |
+| **Net new** | | | **~183** |
+| **Existing** | | | **~82** |
+| **Grand total** | | | **~265** |
 
-### Scale format change: remove Neutral option
+*(Note: 4 existing Major dims — emotional_intelligence, decision_making, execution, managing_others — are new, so they get 8 questions each counted under "new Major dims". Total is approximately 265, well above the 200+ target.)*
 
-All `likert` and `frequency` questions use **4-point scales** (no Neutral midpoint):
+### Phase 1 calibration: exactly 80 questions
+
+**Working math:**
+- 16 existing Major dims × 2 calibration flags each = 32
+- 4 new Major dims × 2 calibration flags each = 8
+- Subtotal Major: **40 calibration questions** (2 per Major dim × 20 dims)
+- 15 Minor dims × 2 calibration flags each = 30
+- Subtotal Minor: **30 calibration questions** (2 per Minor dim × 15 dims)
+- 4 cross-dimensional tiebreaker questions: **10 calibration questions** (a few dims get a 3rd)
+- **Total Phase 1 calibration: 80** ✓
+
+Each existing dimension's calibration count:
+- Major dims: bump from 1 existing calibration flag → 2 (add 1 new calibration-flagged question per Major dim)
+- Minor dims: bump from 1 existing calibration flag → 2 (add 1 new calibration-flagged question per Minor dim)
+- 10 dims (mix of Major and Minor) get a 3rd calibration question as tiebreakers
+
+Existing questions already flagged `calibration: true` count toward these targets. Approximately **39 existing calibration flags** remain; ~41 new calibration flags are added.
+
+### Scale format: remove Neutral
+
+All **new** `likert` and `frequency` questions use **4-point scales** (no Neutral midpoint). Existing 5-point questions are **kept as-is** — they coexist in the question bank and are distinguished by `options.labels.length`.
 
 ```ts
-// likert
+// New 4-point likert
 options: { labels: ['Strongly Disagree', 'Disagree', 'Agree', 'Strongly Agree'] }
 
-// frequency
+// New 4-point frequency
 options: { labels: ['Almost Never', 'Rarely', 'Usually', 'Almost Always'] }
+
+// Existing 5-point (unchanged — not modified)
+options: { labels: ['Strongly Disagree', 'Disagree', 'Neutral', 'Agree', 'Strongly Agree'] }
 ```
 
-Scoring maps: 1 → 0, 2 → 25, 3 → 75, 4 → 100 (raw, before weight). Reverse-scored: invert.
+No existing questions are deleted or modified. The scoring layer handles both formats.
 
-### Question type distribution per dimension
+### Question type distribution for new questions
 
-| Type | Calibration | Adaptive | Rationale |
-|------|-------------|----------|-----------|
-| `likert` (4-pt) | 1–2 | 2–3 | Broad self-report |
-| `forced_choice` | 1 | 1 | High discrimination, low social desirability bias |
-| `situational` or `timed` | 1 (Major only) | 1 | Highest discrimination, ~1.5× likert signal |
-| `frequency` (4-pt) | 0–1 | 0–1 | Behavioral frequency |
-| `rank_order` | 0 | 0–1 | Multi-signal capture |
-
-Major dimension calibration set: 3 questions — 1 likert + 1 forced_choice + 1 situational/timed
-Minor dimension calibration set: 2 questions — 1 likert + 1 forced_choice
-
-This yields: (20 × 3) + (16 × 2) = 60 + 32 = **92 calibration flags**, but distributed across 80 unique questions because some questions serve double duty as high-discrimination items.
-
-**Wait — revised target:** Strict 80 calibration questions (Phase 1 minimum):
-- 20 Major dims × 3 = 60 calibration questions for Major dims
-- 16 Minor dims × 1 = 16 calibration questions for Minor dims (just 1 each, Phase 2 fills the rest)
-- **Total Phase 1: 76 questions** — rounded to 80 with 4 cross-dimensional tiebreaker questions
-
-### Calibration flag assignment
-- `calibration: true` on the highest-discrimination question per dimension
-- Major dims: top 2 questions flagged as calibration (60 Phase 1 slots for Major)
-- Minor dims: top 1 question flagged as calibration (16 Phase 1 slots for Minor)
-- 4 additional high-signal questions (timed/situational) flagged as calibration tiebreakers
-- **Total calibration-flagged: 80**
+| Type | Calibration questions | Adaptive-only questions |
+|------|-----------------------|-------------------------|
+| `likert` (4-pt) | 1 per dim | 2–3 per dim |
+| `forced_choice` | 1 per dim | 1 per dim |
+| `situational` or `timed` | 0–1 per Major dim | 1 per Major dim |
+| `frequency` (4-pt) | 0 | 0–1 per dim |
 
 ### New dimension question samples
 
-**`emotional_intelligence` (8 questions, 2 calibration)**
-```
-EI_01 [cal]: When someone is visibly upset, I adjust my approach without being asked. [likert, 4-pt]
-EI_02 [cal]: You notice a colleague's tone shift mid-meeting. You: [forced_choice]
-  a: Continue as planned — their emotions aren't your responsibility
-  b: Acknowledge the shift and check in privately after
-EI_03: I can accurately identify what I'm feeling before reacting. [likert, 4-pt]
-EI_04: How often do you notice emotional undercurrents in a room before others verbalize them? [frequency]
-EI_05: A colleague becomes defensive during your feedback. You: [situational, scores: 1/2.3/3.7/5]
-  A: Back off — the message wasn't landing anyway
-  B: Reframe the feedback as a question
-  C: Name the dynamic directly and ask what would help
-  D: End the conversation and revisit when they're calmer
-EI_06: I find it easy to regulate my emotions during high-pressure situations. [likert, 4-pt]
-EI_07: Which approach best reflects how you process others' emotions? [forced_choice]
-  a: I observe behavior and infer what's happening internally
-  b: I ask directly how people are feeling
-EI_08: After conflict, I can re-engage productively without residual tension. [likert, 4-pt]
-```
+*(See attached question samples in original design — all codes, types, calibration flags, weights, and tier assignments are specified per question.)*
 
-**`decision_making` (8 questions, 2 calibration)**
-```
-DM_01 [cal]: I make confident decisions even when data is incomplete. [likert, 4-pt]
-DM_02 [cal]: You need to decide between two options with equal evidence. You: [forced_choice]
-  a: Wait for more information before committing
-  b: Commit to the option that feels directionally right and course-correct
-DM_03: How often do you second-guess decisions after making them? [frequency, reverse-scored]
-DM_04: I apply a consistent framework when evaluating major decisions. [likert, 4-pt]
-DM_05: A major decision must be made in 10 minutes with 60% of ideal information. You: [timed, scores: 1/2.3/3.7/5]
-  A: Request an extension — better to delay than decide poorly
-  B: Make the call, document assumptions, plan for correction
-  C: Delegate to whoever has the most context
-  D: Use a rapid pros/cons list and commit
-DM_06: I distinguish well between reversible and irreversible decisions. [likert, 4-pt]
-DM_07: Which best describes your decision style? [forced_choice]
-  a: I prefer to optimize — gathering enough data to maximize the chance of the right answer
-  b: I prefer to satisfice — finding a good-enough answer fast and moving
-DM_08: I feel comfortable owning the consequences of decisions I've made. [likert, 4-pt]
-```
-
-**`execution` (8 questions, 2 calibration)**
-```
-EX_01 [cal]: I consistently deliver on commitments I make to others. [likert, 4-pt]
-EX_02 [cal]: When a project stalls, I: [forced_choice]
-  a: Diagnose the blocker before taking action
-  b: Start moving on any unblocked part while diagnosing
-EX_03: How often do projects under your ownership finish on or ahead of schedule? [frequency]
-EX_04: I maintain output quality even when energy or motivation is low. [likert, 4-pt]
-EX_05: Three parallel workstreams are all behind. You: [situational, scores: 1/2.3/3.7/5]
-  A: Focus entirely on the most critical one
-  B: Reprioritize and cut scope on the lowest-value stream
-  C: Communicate delays, renegotiate deadlines, protect quality
-  D: Push hard on all three simultaneously
-EX_06: I break large goals into concrete daily or weekly actions automatically. [likert, 4-pt]
-EX_07: Which better describes your output style? [forced_choice]
-  a: I do fewer things but finish them completely
-  b: I work across many things and hand off when good enough
-EX_08: I hold myself accountable to self-imposed deadlines even without external pressure. [likert, 4-pt]
-```
-
-**`managing_others` (8 questions, 2 calibration)**
-```
-MO_01 [cal]: I get results through people as effectively as through my own direct effort. [likert, 4-pt]
-MO_02 [cal]: A team member isn't performing. You: [forced_choice]
-  a: Give direct feedback with specific expectations and a timeline
-  b: First understand what's blocking them before setting expectations
-MO_03: How often do people you manage exceed your initial expectations? [frequency]
-MO_04: I adapt my management style based on each person's experience and motivation. [likert, 4-pt]
-MO_05: A high-performer on your team says they're bored and considering leaving. You: [situational, scores: 1/2.3/3.7/5]
-  A: Offer a pay increase
-  B: Have a candid conversation about what they'd need to stay engaged
-  C: Create a stretch project aligned to their ambitions
-  D: Accelerate their promotion timeline
-MO_06: I find developing others as rewarding as achieving personal milestones. [likert, 4-pt]
-MO_07: Which management philosophy fits you more? [forced_choice]
-  a: Set clear expectations and hold people to them rigorously
-  b: Create conditions where people self-direct toward the right outcomes
-MO_08: I can give hard feedback in a way that strengthens rather than damages the relationship. [likert, 4-pt]
-```
-
-**`teamwork` (5 questions, 1 calibration)**
-```
-TW_01 [cal]: I actively support teammates even when it doesn't directly benefit my own output. [likert, 4-pt]
-TW_02: I adjust my working style to fit the needs of the team rather than expecting others to adjust to me. [likert, 4-pt]
-TW_03: How often do teammates seek your input or help on their work? [frequency]
-TW_04: Which describes your natural team role? [forced_choice]
-  a: I drive the work forward and keep the team accountable
-  b: I create the conditions for others to do their best work
-TW_05: When the team makes a decision you disagree with, you: [situational, scores: 1/2.3/3.7/5]
-  A: Comply silently
-  B: Voice your concern once, then commit to the decision
-  C: Continue advocating until you're heard
-  D: Escalate outside the team
-```
-
-**`persuasion` (5 questions, 1 calibration)**
-```
-PE_01 [cal]: I can shift someone's position without them feeling pressured. [likert, 4-pt]
-PE_02: I tailor how I frame ideas based on what each audience values. [likert, 4-pt]
-PE_03: How often do you successfully change someone's mind on an important issue? [frequency]
-PE_04: Which influence approach fits you more naturally? [forced_choice]
-  a: I build the case with logic and evidence
-  b: I connect emotionally to what the other person cares about
-PE_05: A senior stakeholder is skeptical of your proposal. You: [situational, scores: 1/2.3/3.7/5]
-  A: Present more data
-  B: Find a champion who already has their trust
-  C: Ask what would need to be true for them to support it
-  D: Reduce scope to something they can say yes to
-```
-
-**`embracing_differences` (5 questions, 1 calibration)**
-```
-ED_01 [cal]: I actively seek input from people whose backgrounds and perspectives differ from mine. [likert, 4-pt]
-ED_02: Working with people who think very differently from me energizes rather than frustrates me. [likert, 4-pt]
-ED_03: How often do you change your view based on input from someone with a different background? [frequency]
-ED_04: Which approach better reflects how you engage with difference? [forced_choice]
-  a: I focus on what we have in common to build common ground
-  b: I lean into the difference — that's where the interesting insight lives
-ED_05: Your team has a persistent clash between two people with opposing working styles. You: [situational, scores: 1/2.3/3.7/5]
-  A: Separate them into different workstreams
-  B: Mediate and establish working agreements
-  C: Name the dynamic to the full team and build shared norms
-  D: Let it resolve naturally — teams self-organize
-```
+All new question codes follow existing naming convention: `DM_01`, `EI_01`, `EX_01`, `MO_01`, `TW_01`, `PE_01`, `ED_01`, etc.
 
 ---
 
 ## 4. Scoring Changes (`lib/scoring.ts`)
 
-### 4-point scale value mapping
+### 4-point scale normalization — backward compatible
 
-Update `extractRawValue` to normalize 4-point likert/frequency to 0–100:
+Update `extractRawValue` to normalize by detected scale length:
 
 ```ts
 case 'likert':
-case 'frequency':
-  // 4-point scale: 1→0, 2→33, 3→67, 4→100
-  // 5-point scale (legacy): 1→0, 2→25, 3→50, 4→75, 5→100
-  const isLegacy = question.options.labels?.length === 5
-  raw = isLegacy
-    ? ((Number(value) - 1) / 4) * 100
-    : ((Number(value) - 1) / 3) * 100
+case 'frequency': {
+  const val = Number(value)
+  const labelCount = question.options.labels?.length ?? 5
+  if (labelCount === 4) {
+    // 4-point: 1→0, 2→33.3, 3→66.7, 4→100  (linear mapping)
+    raw = ((val - 1) / 3) * 5   // normalize to 1–5 range for existing weight math
+  } else {
+    // 5-point legacy: pass through as-is (1–5)
+    raw = val
+  }
   break
+}
 ```
 
-This ensures backward compatibility with existing results in the database (legacy 5-point questions) while new questions score on 4-point.
+This keeps the existing `(weighted / maxPossible) * 100` normalization downstream intact. A 4-point response of 4 maps to raw 5.0; a 5-point response of 5 also maps to raw 5.0. The two scales are comparable.
+
+**Backward compatibility:** Existing results in the database are stored as final 0–100 scores in the `results.scores` JSONB column — they are never re-scored. Existing 5-point questions used in new assessments continue to use the 5-point path. No existing data is affected.
 
 ---
 
 ## 5. Assessment Engine Changes
 
 ### `app/api/assessment/start/route.ts`
-No structural changes. Calibration count derived dynamically from `QUESTIONS.filter(q => q.calibration && q.is_active).length` — automatically becomes 80 when questions are updated.
+No structural changes. `calibrationCount` is derived from `QUESTIONS.filter(q => q.calibration && q.is_active).length` — automatically becomes 80 once questions.ts is updated.
 
 ### `app/api/assessment/respond/route.ts`
 
-**Adaptive question selection priority:**
-```ts
-// Priority 1: Ambiguous Major dims (40–60 range) with < 5 answered
-// Priority 2: Major dims with < 3 answered questions
-// Priority 3: Ambiguous Minor dims (40–60 range)
-// Priority 4: Any remaining unanswered question
-// Hard cap: 132 total questions
-```
-
-**Revised confidence gate:**
+**5a. Import MAJOR_DIMS:**
 ```ts
 import { MAJOR_DIMS } from '@/lib/dimensions'
+```
 
-const majorDimSlugs = [...MAJOR_DIMS]
+**5b. Replace `interimConfidence` call and `isConfident` gate:**
+```ts
+// After computing scores from answered responses:
+const majorDimSlugs = [...MAJOR_DIMS] as DimensionSlug[]
 
 const answeredPerDim = majorDimSlugs.reduce((acc, dim) => {
-  acc[dim] = responses.filter(r =>
+  acc[dim] = responses!.filter(r =>
     QUESTIONS.find(q => q.code === r.question_code)?.dimension === dim
   ).length
   return acc
@@ -330,12 +238,14 @@ const answeredPerDim = majorDimSlugs.reduce((acc, dim) => {
 
 const allMajorDimsCovered = majorDimSlugs.every(d => (answeredPerDim[d] ?? 0) >= 3)
 
-const ambiguousMajorCount = majorDimSlugs
-  .filter(d => {
-    const s = scores[d as DimensionSlug]
-    return s !== undefined && s >= 40 && s <= 60
-  }).length
+const ambiguousMajorCount = majorDimSlugs.filter(d => {
+  const s = scores[d]
+  return s !== undefined && s >= 40 && s <= 60
+}).length
 
+const { topComposite, margin } = interimConfidence(scores)
+
+// New confidence gate (was: topComposite >= 75 && margin >= 8)
 const isConfident =
   topComposite >= 81 &&
   margin >= 10 &&
@@ -343,174 +253,280 @@ const isConfident =
   allMajorDimsCovered
 ```
 
-**Hard cap:**
+**5c. Adaptive question selection priority:**
 ```ts
+// Priority 1: Unanswered ambiguous Major dims (score 40–60, < 5 answered)
+let nextQ = QUESTIONS.filter(q =>
+  !q.calibration && !answeredCodes.has(q.code) && q.is_active &&
+  MAJOR_DIMS.has(q.dimension) &&
+  ambiguous.includes(q.dimension) &&
+  (answeredPerDim[q.dimension] ?? 0) < 5
+).sort((a, b) => a.order_index - b.order_index)[0]
+
+// Priority 2: Major dims with < 3 answered (coverage floor)
+if (!nextQ) nextQ = QUESTIONS.filter(q =>
+  !q.calibration && !answeredCodes.has(q.code) && q.is_active &&
+  MAJOR_DIMS.has(q.dimension) &&
+  (answeredPerDim[q.dimension] ?? 0) < 3
+).sort((a, b) => a.order_index - b.order_index)[0]
+
+// Priority 3: Ambiguous Minor dims
+if (!nextQ) nextQ = QUESTIONS.filter(q =>
+  !q.calibration && !answeredCodes.has(q.code) && q.is_active &&
+  ambiguous.includes(q.dimension)
+).sort((a, b) => a.order_index - b.order_index)[0]
+
+// Priority 4: Any remaining unanswered question
+if (!nextQ) nextQ = QUESTIONS.filter(q =>
+  !q.calibration && !answeredCodes.has(q.code) && q.is_active
+).sort((a, b) => a.order_index - b.order_index)[0]
+```
+
+**5d. Hard cap:**
+```ts
+// Hard cap: 80 calibration + 52 adaptive = 132 total
 const HARD_CAP = 132
 if (answeredCount >= HARD_CAP) nextQuestion = null
 ```
 
 ---
 
-## 6. Radar Chart (`components/charts/RadarChart.tsx`)
+## 6. Archetype System (`lib/archetypes.ts`)
+
+**New dimensions do not block archetype assignment.** The `interimConfidence` function initializes all dimensions to 50 before scoring:
+```ts
+const full = { ...Object.fromEntries(QUESTIONS.map(q => [q.dimension, 50])), ...scores } as DimensionScores
+```
+
+New dimensions not yet answered default to 50 (population mean), which is neutral and does not distort archetype composites. Existing archetypes are based on existing dimensions only — new dimensions are not yet in any archetype signature, so they contribute no bias.
+
+**Post-launch:** Archetype signatures should be recalibrated to include the 7 new dimensions once norm data is collected (separate workstream, tracked separately). This is explicitly deferred and does not block this implementation.
+
+---
+
+## 7. Norm Data (`lib/norms.ts`)
+
+Add entries for all 7 new dimensions. New dimensions use a **flat distribution centered at 50** until real data is collected. The `getPercentile` function already handles missing slugs gracefully (returns 50 by default), but explicit entries are added for clarity:
+
+```ts
+// In NORM_PARAMS (or equivalent structure in lib/norms.ts):
+emotional_intelligence: { mean: 50, sd: 15 },
+decision_making:        { mean: 50, sd: 15 },
+execution:              { mean: 50, sd: 15 },
+managing_others:        { mean: 50, sd: 15 },
+teamwork:               { mean: 50, sd: 15 },
+persuasion:             { mean: 50, sd: 15 },
+embracing_differences:  { mean: 50, sd: 15 },
+```
+
+This means percentile scores for new dimensions will be approximate until real norm data is collected. This is acceptable for launch and disclosed in the report UI with a small "based on early data" note where applicable.
+
+---
+
+## 8. Radar Chart (`components/charts/RadarChart.tsx`)
 
 ### Dual-layer implementation
 
-Two `<Radar>` components on the same chart and axis grid:
+Two `<Radar>` components on the same chart and axis grid. Both use all 35 dimension data points. For each layer, the non-relevant dimensions are set to **50 (population mean)** rather than 0 — keeping both polygons at roughly the same scale so the shapes are visually meaningful.
 
 ```tsx
-// Layer 1: Major dimensions — indigo, more opaque
-<Radar
-  name="Major"
-  dataKey="majorScore"    // actual score for major dims, 50 (neutral) for minor
-  stroke="#3730A3"
-  fill="#3730A3"
-  fillOpacity={0.22}
-  strokeWidth={2}
-/>
+'use client'
+import { useState, useEffect } from 'react'
+import { RadarChart as RechartsRadar, Radar, PolarGrid, PolarAngleAxis,
+         ResponsiveContainer, Tooltip, Legend } from 'recharts'
+import { DIMENSIONS, MAJOR_DIMS } from '@/lib/dimensions'
+import type { DimensionScores } from '@/lib/types'
 
-// Layer 2: Minor dimensions — teal, lighter
-<Radar
-  name="Minor"
-  dataKey="minorScore"    // actual score for minor dims, 50 (neutral) for major
-  stroke="#0F766E"
-  fill="#0F766E"
-  fillOpacity={0.12}
-  strokeWidth={1.5}
-/>
-```
+// Build ordered axis data — grouped by category for visual coherence
+const RADAR_ORDER = DIMENSIONS.filter(d => d.slug !== 'founder_potential')
 
-Data shape per axis point:
-```ts
-{
-  subject: dim.shortLabel,
-  majorScore: MAJOR_DIMS.has(dim.slug) ? score : 50,
-  minorScore: MINOR_DIMS.has(dim.slug) ? score : 50,
-  fullMark: 100,
+interface Props { scores: DimensionScores }
+
+export function DimensionRadarChart({ scores }: Props) {
+  const [isMobile, setIsMobile] = useState(false)
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 640)
+    check()
+    window.addEventListener('resize', check)
+    return () => window.removeEventListener('resize', check)
+  }, [])
+
+  const data = RADAR_ORDER.map(dim => {
+    const score = scores[dim.slug] ?? 50
+    return {
+      subject: dim.shortLabel,
+      slug: dim.slug,
+      majorScore: MAJOR_DIMS.has(dim.slug) ? score : 50,
+      minorScore: !MAJOR_DIMS.has(dim.slug) ? score : 50,
+      fullMark: 100,
+    }
+  })
+
+  const margin = isMobile
+    ? { top: 10, right: 25, bottom: 10, left: 25 }
+    : { top: 20, right: 80, bottom: 20, left: 80 }
+
+  return (
+    <div>
+      <ResponsiveContainer width="100%" height={isMobile ? 460 : 520}>
+        <RechartsRadar data={data} margin={margin}>
+          <PolarGrid stroke="#E2E8F0" />
+          <PolarAngleAxis
+            dataKey="subject"
+            tick={<CustomTick isMobile={isMobile} />}
+          />
+          <Radar
+            name="Major"
+            dataKey="majorScore"
+            stroke="#3730A3"
+            fill="#3730A3"
+            fillOpacity={0.22}
+            strokeWidth={2}
+          />
+          <Radar
+            name="Minor"
+            dataKey="minorScore"
+            stroke="#0F766E"
+            fill="#0F766E"
+            fillOpacity={0.12}
+            strokeWidth={1.5}
+          />
+          <Tooltip formatter={(v, name) => [`${v}`, name === 'Major' ? 'Major dimension' : 'Supporting dimension']} />
+        </RechartsRadar>
+      </ResponsiveContainer>
+      <div className="flex justify-center gap-6 mt-2 text-xs text-slate-500">
+        <span className="flex items-center gap-1.5">
+          <span className="w-3 h-3 rounded-sm bg-indigo inline-block opacity-70" />
+          Major dimensions
+        </span>
+        <span className="flex items-center gap-1.5">
+          <span className="w-3 h-3 rounded-sm bg-teal inline-block opacity-60" />
+          Supporting dimensions
+        </span>
+      </div>
+    </div>
+  )
 }
 ```
 
-Setting non-active dimensions to 50 (population mean) rather than 0 keeps both polygons at roughly the same scale, making the shape meaningful rather than a collapsed star.
+### Custom tick with Major/Minor coloring
 
-### Axis label coloring
-
-Custom `<CustomTick>` component reads `MAJOR_DIMS` to set fill:
-```ts
-const fill = MAJOR_DIMS.has(slug) ? '#3730A3' : '#64748B'
-const fontWeight = MAJOR_DIMS.has(slug) ? 600 : 400
-```
-
-Label order around perimeter (35 dims, grouped):
-1. Big Five + HEXACO (6)
-2. New workplace Major dims (4)
-3. Core cognitive Major (3)
-4. Core motivational Major (3)
-5. Career + behavioral Major (4)
-6. Minor dims (15, in tier order)
-
-### Legend
 ```tsx
-<div className="flex justify-center gap-6 mt-3 text-xs text-slate-500">
-  <span className="flex items-center gap-1.5">
-    <span className="w-3 h-3 rounded-sm bg-indigo inline-block opacity-70" />
-    Major dimensions
-  </span>
-  <span className="flex items-center gap-1.5">
-    <span className="w-3 h-3 rounded-sm bg-teal inline-block opacity-60" />
-    Supporting dimensions
-  </span>
-</div>
-```
+function CustomTick({ x = 0, y = 0, payload, textAnchor, isMobile = false }: CustomTickProps & { isMobile?: boolean }) {
+  const label = payload?.value ?? ''
+  const slug = RADAR_ORDER.find(d => d.shortLabel === label)?.slug
+  const isMajor = slug ? MAJOR_DIMS.has(slug) : false
 
-### Mobile
-- `height: 460` mobile / `520` desktop
-- `fontSize: 8` mobile / `9` desktop for minor labels, `10` major labels
-- Margins: `{ top: 10, right: 25, bottom: 10, left: 25 }` mobile
+  const fill = isMajor ? '#3730A3' : '#64748B'
+  const fontWeight = isMajor ? 600 : 400
+  const fontSize = isMobile ? (isMajor ? 9 : 8) : (isMajor ? 10 : 9)
+
+  const words = label.split(' ')
+  if (!label || words.length === 1 || label.length <= 10) {
+    return (
+      <text x={x} y={y} textAnchor={textAnchor} fill={fill} fontSize={fontSize} fontWeight={fontWeight}>
+        <tspan x={x} dy="0.355em">{label}</tspan>
+      </text>
+    )
+  }
+  const mid = Math.ceil(words.length / 2)
+  return (
+    <text x={x} y={y} textAnchor={textAnchor} fill={fill} fontSize={fontSize} fontWeight={fontWeight}>
+      <tspan x={x} dy="-0.3em">{words.slice(0, mid).join(' ')}</tspan>
+      <tspan x={x} dy="1.2em">{words.slice(mid).join(' ')}</tspan>
+    </text>
+  )
+}
+```
 
 ---
 
-## 7. Report Section Updates
+## 9. Report Section Updates
 
 ### Section 2 — Psychological Fingerprint
 
-**Superpowers/Growth Area cards** — sourced from Major dimensions only:
+**Superpowers/Growth cards** — sourced from Major dimensions only (stronger signal):
 ```ts
 const sorted = Object.entries(scores)
-  .filter(([k]) => MAJOR_DIMS.has(k as DimensionSlug))
+  .filter(([k]) => MAJOR_DIMS.has(k as DimensionSlug) && k !== 'founder_potential')
   .sort(([, a], [, b]) => b - a)
-const superpowers = sorted.slice(0, 3)
-const growthAreas = sorted.slice(-2)
 ```
 
-**DimCard** — add major indicator:
+**DimCard** — add major indicator dot:
 ```tsx
-{MAJOR_DIMS.has(slug) && (
-  <span className="w-1.5 h-1.5 rounded-full bg-indigo inline-block mr-1" />
+{MAJOR_DIMS.has(slug as DimensionSlug) && (
+  <span className="w-1.5 h-1.5 rounded-full bg-indigo inline-block mr-1 flex-shrink-0" />
 )}
 ```
 
-**Dimensions table** — add `Major` badge column (desktop only):
+**Dimensions table** — add `M` badge column (desktop only):
 ```tsx
+<th className="hidden sm:table-cell px-4 py-3 text-center font-medium">Type</th>
+// ...
 <td className="hidden sm:table-cell px-4 py-3 text-center">
-  {MAJOR_DIMS.has(item.slug) && (
-    <span className="text-[10px] font-semibold text-indigo bg-indigo/10 px-1.5 py-0.5 rounded-full">M</span>
-  )}
+  {MAJOR_DIMS.has(item.slug as DimensionSlug)
+    ? <span className="text-[10px] font-semibold text-indigo bg-indigo/10 px-1.5 py-0.5 rounded-full">M</span>
+    : <span className="text-[10px] font-semibold text-slate-400 bg-slate-100 px-1.5 py-0.5 rounded-full">S</span>
+  }
 </td>
 ```
 
-### Sections 5–11 — New dimension placement
+### Minor dimensions in the report
 
-| New dimension | Placed in |
-|--------------|-----------|
-| `emotional_intelligence` | Section 4 (Cognitive Profile) |
-| `decision_making` | Section 4 (Cognitive Profile) |
-| `execution` | Section 5 (Motivational DNA) |
-| `managing_others` | Section 6 (Leadership Profile) |
-| `teamwork` | Section 7 (Team Compatibility) |
-| `persuasion` | Section 6 (Leadership Profile) |
-| `embracing_differences` | Section 7 (Team Compatibility) |
+Minor dimensions appear on the radar chart and in the expanded dimensions table in Section 2. They do **not** get dedicated narrative cards in Sections 3–11 — those sections focus on Major dimensions. This is by design: Minor dimensions are contextual, not archetype-determining. The radar provides the visual fingerprint; the table provides the full 35-dimension breakdown.
 
-Each new dimension gets a `DimCard`-style card using the same pattern as existing dims in each section.
+### New Major dimension placement in report sections
 
----
+| New dimension | Section | Placement |
+|--------------|---------|-----------|
+| `emotional_intelligence` | Section 4 (Cognitive Profile) | New `DimCard`-style card with EI-specific insight copy |
+| `decision_making` | Section 4 (Cognitive Profile) | New `DimCard`-style card with DM-specific insight copy |
+| `execution` | Section 5 (Motivational DNA) | New `DimCard`-style card with execution insight copy |
+| `managing_others` | Section 6 (Leadership Profile) | New `DimCard`-style card with MO insight copy |
 
-## 8. Files Changed
-
-| File | Change |
-|------|--------|
-| `lib/dimensions.ts` | **NEW** — dimension registry, MAJOR_DIMS, MINOR_DIMS |
-| `lib/types.ts` | Add 7 new DimensionSlug values |
-| `lib/questions.ts` | Add ~203 new questions, 4-point scale on new questions |
-| `lib/scoring.ts` | 4-point scale normalization, backward compat for 5-point |
-| `lib/norms.ts` | Add norm data for 7 new dimensions |
-| `lib/hpif.ts` | Include new dimensions in HPIF composite calculations |
-| `app/api/assessment/respond/route.ts` | New confidence gate, adaptive priority, hard cap |
-| `components/charts/RadarChart.tsx` | Dual-layer Major/Minor radar |
-| `components/report/ReportSection2.tsx` | Major-only superpowers, M badge in table |
-| `components/report/ReportSection4.tsx` | Add emotional_intelligence, decision_making cards |
-| `components/report/ReportSection5.tsx` | Add execution card |
-| `components/report/ReportSection6.tsx` | Add managing_others, persuasion cards |
-| `components/report/ReportSection7.tsx` | Add teamwork, embracing_differences cards |
+New Minor dimensions (`teamwork`, `persuasion`, `embracing_differences`) appear in the expanded dimensions table (Section 2) and radar only. No dedicated report cards — consistent with all other Minor dimensions.
 
 ---
 
-## 9. Out of Scope
+## 10. Files Changed (Implementation Order)
 
-- Archetype recalibration (new dims don't affect existing archetype signatures — can be done post-launch)
-- Database schema changes (new dimension scores store in existing `results.scores` JSONB column — no migration needed)
-- Norm data for new dimensions is initialized to population mean (50) until real data is collected
-- Visual question type (`type: 'visual'`) not used for new dimensions — images not yet designed
+| Order | File | Change |
+|-------|------|--------|
+| 1 | `lib/types.ts` | Add 7 new DimensionSlug values |
+| 2 | `lib/dimensions.ts` | **NEW** — full dimension registry |
+| 3 | `lib/norms.ts` | Add 7 new dimension norm entries |
+| 4 | `lib/questions.ts` | Add ~183 new questions, maintain calibration count = 80 |
+| 5 | `lib/scoring.ts` | 4-point scale detection and normalization |
+| 6 | `app/api/assessment/respond/route.ts` | New confidence gate, adaptive priority, hard cap |
+| 7 | `components/charts/RadarChart.tsx` | Dual-layer Major/Minor radar |
+| 8 | `components/report/ReportSection2.tsx` | Major-only superpowers, M/S badges in table |
+| 9 | `components/report/ReportSection4.tsx` | Add EI and DM cards |
+| 10 | `components/report/ReportSection5.tsx` | Add execution card |
+| 11 | `components/report/ReportSection6.tsx` | Add managing_others card |
 
 ---
 
-## 10. Success Criteria
+## 11. Out of Scope
 
-- [ ] All 285 questions present in `lib/questions.ts`, each with correct `calibration` flag
-- [ ] Exactly 80 questions flagged `calibration: true`
-- [ ] 7 new DimensionSlug values compile without TypeScript errors
+- **Archetype recalibration** — new dims not included in any archetype signature until norm data collected; defaults to 50 and does not bias existing archetype composites
+- **HPIF composite updates** — new dimensions not folded into HPIF layer calculations until post-launch recalibration
+- **Visual question images** — `type: 'visual'` not used for any new questions; images not yet designed
+- **Database migration** — new dimension scores stored in existing `results.scores` JSONB column; no schema changes
+
+---
+
+## 12. Success Criteria
+
+- [ ] `lib/dimensions.ts` exports `DIMENSIONS` (35 entries), `MAJOR_DIMS` (20), `MINOR_DIMS` (15)
+- [ ] `lib/types.ts` DimensionSlug union has exactly 36 entries (29 existing + 7 new)
+- [ ] `QUESTIONS.filter(q => q.calibration && q.is_active).length === 80`
+- [ ] Total question bank has ≥ 265 questions
+- [ ] All 7 new dimensions have ≥ 5 questions each
 - [ ] Assessment completes in 80–132 questions depending on confidence
-- [ ] Radar chart renders dual-layer with indigo (Major) and teal (Minor) fills
-- [ ] Major dim axis labels render in indigo bold, Minor in slate regular
-- [ ] Superpowers/Growth cards source from Major dims only
-- [ ] All 7 new dimensions appear in relevant report sections
-- [ ] Legacy 5-point question scores remain backward compatible
-- [ ] `npm run build` passes with 0 errors
+- [ ] Confidence gate uses: topComposite ≥ 81, margin ≥ 10, ambiguousMajorCount ≤ 2, allMajorDimsCovered
+- [ ] Radar renders dual-layer: indigo fill for majorScore, teal fill for minorScore
+- [ ] Major dim axis labels render in indigo bold (#3730A3), Minor in slate (#64748B)
+- [ ] Superpowers/Growth cards source from Major dims only (20 dims)
+- [ ] All 4 new Major dims appear as DimCards in Sections 4–6
+- [ ] 5-point legacy question scores remain backward compatible (no existing results broken)
+- [ ] `npm run build` passes with 0 TypeScript errors
