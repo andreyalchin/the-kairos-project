@@ -1,4 +1,5 @@
 import type { AssessmentResult, ArchetypeDefinition, DimensionSlug } from '@/lib/types'
+import { getPercentile } from '@/lib/norms'
 
 const MOT_DIMS: DimensionSlug[] = ['achievement_drive', 'risk_tolerance', 'autonomy_need', 'purpose_orientation', 'competitive_drive']
 
@@ -24,6 +25,12 @@ const HIGH_SIGNALS: Record<string, string> = {
   autonomy_need: 'Self-direction is fuel for you. You do your best work when the "how" is yours to define.',
   purpose_orientation: 'Meaning is non-negotiable. Work that connects to a larger mission sustains you in ways that pure achievement cannot.',
   competitive_drive: 'You measure yourself against others and that measurement motivates you. Knowing the score sharpens your performance.',
+}
+
+const EXECUTION_INSIGHT = {
+  high: 'Your execution score reflects a strong ability to translate intentions into completed outcomes. You follow through on commitments reliably, navigate ambiguity without losing momentum, and deliver results others can count on. This is among the most leveraged capabilities in any high-performance context.',
+  mid: 'Your execution is solid in familiar territory. You deliver reliably when the path is clear and expectations are explicit. Where you can grow: strengthening your follow-through in ambiguous situations where the definition of done is yours to set.',
+  low: 'Execution is a development priority. You may have strong ideas and good intentions that don\'t consistently convert into finished outcomes. Focus on reducing the gap between starting and completing by building explicit accountability structures into your workflow.',
 }
 
 const LOW_SIGNALS: Record<string, string> = {
@@ -109,6 +116,30 @@ export function ReportSection5({ result, archetype }: { result: AssessmentResult
               </div>
             ))}
           </div>
+
+          {/* Execution — standalone Major dimension card */}
+          {result.scores.execution !== undefined && (
+            <div className="space-y-3">
+              <div>
+                <h3 className="font-semibold text-text">Execution</h3>
+                <p className="text-xs text-slate-400 mt-0.5">How reliably you translate plans and intentions into completed outcomes.</p>
+              </div>
+              <div className="p-4 rounded-2xl bg-white border border-slate-100 hover:-translate-y-1 transition-transform duration-200">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="font-medium text-sm text-text">Execution</span>
+                  <span className="text-indigo font-bold text-sm">{result.scores.execution} · p{Math.round(getPercentile('execution', result.scores.execution))}</span>
+                </div>
+                <div className="h-2 bg-slate-100 rounded-full mb-3 overflow-hidden">
+                  <div className="h-full bg-indigo rounded-full" style={{ width: `${result.scores.execution}%` }} />
+                </div>
+                <p className="text-sm text-slate-600 leading-relaxed">
+                  {result.scores.execution >= 75 ? EXECUTION_INSIGHT.high
+                    : result.scores.execution >= 50 ? EXECUTION_INSIGHT.mid
+                    : EXECUTION_INSIGHT.low}
+                </p>
+              </div>
+            </div>
+          )}
 
           {archetype.reward_ranking && (
             <div>
