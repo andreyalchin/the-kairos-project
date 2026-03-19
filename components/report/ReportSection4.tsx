@@ -3,7 +3,7 @@ import { InfoTip } from '@/components/ui/InfoTip'
 import { getPercentile } from '@/lib/norms'
 import type { AssessmentResult, DimensionSlug } from '@/lib/types'
 
-const COG_DIMS: DimensionSlug[] = ['cognitive_agility', 'executive_function', 'attention_control', 'systems_thinking', 'creative_intelligence']
+const COG_DIMS: DimensionSlug[] = ['cognitive_agility', 'executive_function', 'attention_control', 'systems_thinking', 'creative_intelligence', 'emotional_intelligence', 'decision_making']
 
 const COG_LABELS: Record<string, string> = {
   cognitive_agility: 'Cognitive Agility',
@@ -11,6 +11,8 @@ const COG_LABELS: Record<string, string> = {
   attention_control: 'Attention Control',
   systems_thinking: 'Systems Thinking',
   creative_intelligence: 'Creative Intelligence',
+  emotional_intelligence: 'Emotional Intelligence',
+  decision_making: 'Decision Making',
 }
 
 const COG_DESCRIPTIONS: Record<string, string> = {
@@ -19,6 +21,8 @@ const COG_DESCRIPTIONS: Record<string, string> = {
   attention_control: 'Your ability to sustain focused work for extended periods and resist distraction under cognitive load. High scorers achieve deep work states more consistently and produce higher quality output on complex tasks.',
   systems_thinking: 'Your ability to model interdependencies and understand how changes propagate through complex structures. High scorers see second-order effects others miss — one of the rarest and most leveraged cognitive capabilities.',
   creative_intelligence: 'The richness of your associative network and capacity for generative thinking. High scorers connect ideas across distant domains and produce original framings that others cannot reach through linear reasoning.',
+  emotional_intelligence: 'Your ability to accurately read emotions in yourself and others and use that awareness to guide behavior. High scorers navigate interpersonal situations with precision — they detect tension early, adapt their approach in real time, and build trust consistently.',
+  decision_making: 'Quality of judgment under uncertainty — how well you balance speed with accuracy, gather the right information without overloading, and commit to choices with appropriate confidence. High scorers make better calls faster with less second-guessing.',
 }
 
 function cogInsight(dim: string, score: number, p: number): string {
@@ -55,6 +59,18 @@ function cogInsight(dim: string, score: number, p: number): string {
         : band === 'mid'
         ? `Your creative intelligence of ${score} (${pStr}) reflects solid generative thinking. You produce novel ideas in domains you know well and have real potential to develop broader creative range with cross-domain exposure.`
         : `At ${score} (${pStr}), creative intelligence is a growth area. You are more effective refining and executing existing ideas than generating new ones. This is not a fixed trait — creative output scales with exposure to diverse inputs and deliberate practice.`
+    case 'emotional_intelligence':
+      return band === 'high'
+        ? `At ${score} (${pStr}), your emotional intelligence is a genuine edge. You read rooms and people with accuracy, adapt your approach in real time, and build trust where others create friction. In leadership and collaboration contexts, this is compounding.`
+        : band === 'mid'
+        ? `Your emotional intelligence score of ${score} (${pStr}) is solid. You pick up on emotional cues when you're paying attention and can regulate your responses under moderate pressure. Developing more consistent awareness in high-stakes interactions will move this higher.`
+        : `At ${score} (${pStr}), emotional intelligence is a development area. You may miss interpersonal signals that affect outcomes — not because you lack empathy, but because explicit attention to emotional dynamics isn't yet habitual. This is highly learnable with deliberate practice.`
+    case 'decision_making':
+      return band === 'high'
+        ? `Your decision making score of ${score} (${pStr}) reflects strong judgment under uncertainty. You gather sufficient information, commit with appropriate confidence, and avoid the twin traps of analysis paralysis and premature closure. This is a rare and high-leverage capability.`
+        : band === 'mid'
+        ? `At ${score} (${pStr}), your decision making is functional but variable. You perform well in familiar domains where your models are calibrated. In novel or high-stakes situations, building explicit decision frameworks — even simple ones — will improve consistency.`
+        : `Your decision making score of ${score} (${pStr}) suggests that judgment under uncertainty is a development priority. You may over-rely on incomplete information, avoid committing until certainty arrives, or reverse decisions under pressure. Deliberate exposure to low-stakes decision practice builds this capacity over time.`
     default:
       return `Score: ${score} · ${pStr}`
   }
