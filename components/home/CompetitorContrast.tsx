@@ -19,33 +19,47 @@ const contrasts = [
 
 export function CompetitorContrast() {
   return (
-    <section className="max-w-6xl mx-auto px-4 py-20">
-      <h2 className="text-3xl font-bold text-text text-center mb-4">
-        Other tests tell you a story. Kairos tells you the truth.
-      </h2>
-      <p className="text-slate-500 text-center mb-12">
-        The difference isn&apos;t just depth — it&apos;s methodology.
-      </p>
-      <div className="grid md:grid-cols-3 gap-6">
+    <section className="max-w-6xl mx-auto px-4 py-24">
+      <div className="text-center mb-14">
+        <h2 className="text-4xl md:text-5xl font-bold text-text mb-4">
+          Other tests tell you a story.<br />Kairos tells you the truth.
+        </h2>
+        <p className="text-slate-500 text-lg">The difference isn&apos;t just depth — it&apos;s methodology.</p>
+      </div>
+
+      {/* Column headers */}
+      <div className="grid grid-cols-[1fr_48px_1fr] mb-3 px-2">
+        <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider text-right pr-4">Everyone else</p>
+        <div />
+        <p className="text-xs font-semibold text-indigo uppercase tracking-wider pl-4">Kairos</p>
+      </div>
+
+      <div className="space-y-3">
         {contrasts.map(({ title, others, kairos }) => (
-          <div key={title} className="rounded-2xl border border-slate-100 overflow-hidden flex flex-col">
-            <div className="px-5 py-3 bg-slate-50 border-b border-slate-100">
-              <p className="font-semibold text-text text-sm">{title}</p>
-            </div>
-            <div className="p-5 space-y-3">
-              <div className="flex gap-3 items-start min-h-[54px]">
-                <span className="text-slate-300 font-bold mt-0.5">✕</span>
-                <p className="text-sm text-slate-400">{others}</p>
+          <div key={title} className="grid grid-cols-[1fr_48px_1fr] items-stretch rounded-2xl overflow-hidden border border-slate-100 shadow-sm">
+            {/* Others */}
+            <div className="bg-slate-50 px-6 py-5 flex items-center justify-end">
+              <div className="text-right">
+                <p className="text-xs text-slate-400 mb-1 font-medium">{title}</p>
+                <p className="text-sm text-slate-500 leading-relaxed">{others}</p>
               </div>
-              <div className="flex gap-3 items-start bg-indigo-50 rounded-xl px-3 py-2 min-h-[72px]">
-                <span className="text-indigo font-bold mt-0.5">✓</span>
-                <p className="text-sm text-text font-medium">{kairos}</p>
+            </div>
+            {/* vs divider */}
+            <div className="flex items-center justify-center bg-white border-x border-slate-100">
+              <span className="text-xs font-bold text-slate-300">vs</span>
+            </div>
+            {/* Kairos */}
+            <div className="bg-indigo px-6 py-5 flex items-center">
+              <div>
+                <p className="text-xs text-indigo-300 mb-1 font-medium">{title}</p>
+                <p className="text-sm text-white font-medium leading-relaxed">{kairos}</p>
               </div>
             </div>
           </div>
         ))}
       </div>
-      <p className="text-center text-slate-500 mt-8 text-sm italic">
+
+      <p className="text-center text-slate-400 mt-8 text-sm italic">
         Most popular assessments measure broad buckets. Kairos measures you.
       </p>
     </section>
