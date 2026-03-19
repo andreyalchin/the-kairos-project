@@ -32,6 +32,14 @@ const NORMS: NormTable = {
   growth_mindset:       [{ score: 0, percentile: 1 },{ score: 28, percentile: 10 },{ score: 44, percentile: 25 },{ score: 58, percentile: 50 },{ score: 71, percentile: 75 },{ score: 82, percentile: 90 },{ score: 100, percentile: 99 }],
   adaptability_quotient:[{ score: 0, percentile: 1 },{ score: 24, percentile: 10 },{ score: 38, percentile: 25 },{ score: 52, percentile: 50 },{ score: 65, percentile: 75 },{ score: 76, percentile: 90 },{ score: 100, percentile: 99 }],
   learning_agility:     [{ score: 0, percentile: 1 },{ score: 26, percentile: 10 },{ score: 40, percentile: 25 },{ score: 54, percentile: 50 },{ score: 67, percentile: 75 },{ score: 78, percentile: 90 },{ score: 100, percentile: 99 }],
+  // New dimensions — flat distribution centered at 50 until real data collected
+  emotional_intelligence: [{ score: 0, percentile: 1 },{ score: 20, percentile: 10 },{ score: 35, percentile: 25 },{ score: 50, percentile: 50 },{ score: 65, percentile: 75 },{ score: 80, percentile: 90 },{ score: 100, percentile: 99 }],
+  decision_making:        [{ score: 0, percentile: 1 },{ score: 20, percentile: 10 },{ score: 35, percentile: 25 },{ score: 50, percentile: 50 },{ score: 65, percentile: 75 },{ score: 80, percentile: 90 },{ score: 100, percentile: 99 }],
+  execution:              [{ score: 0, percentile: 1 },{ score: 20, percentile: 10 },{ score: 35, percentile: 25 },{ score: 50, percentile: 50 },{ score: 65, percentile: 75 },{ score: 80, percentile: 90 },{ score: 100, percentile: 99 }],
+  managing_others:        [{ score: 0, percentile: 1 },{ score: 20, percentile: 10 },{ score: 35, percentile: 25 },{ score: 50, percentile: 50 },{ score: 65, percentile: 75 },{ score: 80, percentile: 90 },{ score: 100, percentile: 99 }],
+  teamwork:               [{ score: 0, percentile: 1 },{ score: 20, percentile: 10 },{ score: 35, percentile: 25 },{ score: 50, percentile: 50 },{ score: 65, percentile: 75 },{ score: 80, percentile: 90 },{ score: 100, percentile: 99 }],
+  persuasion:             [{ score: 0, percentile: 1 },{ score: 20, percentile: 10 },{ score: 35, percentile: 25 },{ score: 50, percentile: 50 },{ score: 65, percentile: 75 },{ score: 80, percentile: 90 },{ score: 100, percentile: 99 }],
+  embracing_differences:  [{ score: 0, percentile: 1 },{ score: 20, percentile: 10 },{ score: 35, percentile: 25 },{ score: 50, percentile: 50 },{ score: 65, percentile: 75 },{ score: 80, percentile: 90 },{ score: 100, percentile: 99 }],
 }
 
 export function getPercentile(dimension: string, score: number): number {
