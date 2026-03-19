@@ -69,7 +69,7 @@ const STYLE_DESCRIPTIONS: Record<string, string> = {
 function responseStyle(avgMs: number) {
   if (avgMs < 5000) return { label: 'Rapid Processor', desc: 'You answered quickly throughout the assessment — a signal of fast, decisive processing. Your first impressions are strong and you act on them. Watch for situations where slowing down produces better outcomes.' }
   if (avgMs < 15000) return { label: 'Balanced Thinker', desc: 'You took adequate time before committing to each answer — neither impulsive nor overthinking. This suggests you engage thoughtfully with what\'s asked before responding, which tends to produce accurate and stable self-assessments.' }
-  return { label: 'Deliberate Reasoner', desc: 'You took more time than average per question — a signal of thorough, careful processing. You think before you speak. This depth of reflection tends to produce high-accuracy self-assessment, with the trade-off of slower initial response.' }
+  return { label: 'Deliberate Reasoner', desc: 'You took more time than average — a signal of thorough, careful processing. You think before you speak. This depth of reflection tends to produce high-accuracy self-assessment, with the trade-off of slower initial response.' }
 }
 
 export function ReportSection4({ result }: { result: AssessmentResult }) {
