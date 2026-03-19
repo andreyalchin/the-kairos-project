@@ -21,7 +21,7 @@ export function CompetitorContrast() {
   return (
     <section className="max-w-6xl mx-auto px-4 py-24">
       <div className="text-center mb-14">
-        <h2 className="text-3xl md:text-5xl font-bold text-text mb-4">
+        <h2 className="text-2xl md:text-5xl font-bold text-text mb-4">
           Other tests tell you a story.<br />Kairos tells you the truth.
         </h2>
         <p className="text-slate-500 text-lg">The difference isn&apos;t just depth — it&apos;s methodology.</p>

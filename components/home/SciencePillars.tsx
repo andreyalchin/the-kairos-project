@@ -40,7 +40,7 @@ export function SciencePillars() {
       <div className="max-w-6xl mx-auto px-4">
 
         <div className="text-center mb-14">
-          <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">
+          <h2 className="text-2xl md:text-5xl font-bold text-white mb-4">
             The science isn&apos;t a feature.<br />It&apos;s the foundation.
           </h2>
           <p className="text-slate-400 text-lg">Built on decades of peer-reviewed research.</p>

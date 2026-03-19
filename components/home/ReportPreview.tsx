@@ -83,7 +83,7 @@ export function ReportPreview() {
                 </div>
               ))}
             </div>
-            <div className="mt-8">
+            <div className="mt-8 text-center md:text-left">
               <Link
                 href="/results/demo"
                 className="inline-block bg-white text-indigo px-8 py-3.5 rounded-xl font-semibold hover:bg-indigo-50 hover:scale-105 transition-all"

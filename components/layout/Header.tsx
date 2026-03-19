@@ -1,9 +1,10 @@
 import Link from 'next/link'
 import { UserNav } from './UserNav'
+import { MobileNav } from './MobileNav'
 
 export function Header() {
   return (
-    <header className="sticky top-0 z-30 bg-bg/80 backdrop-blur-sm border-b border-slate-100">
+    <header className="sticky top-0 z-30 bg-bg/80 backdrop-blur-sm border-b border-slate-100 relative">
       <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2">
           <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
@@ -21,7 +22,8 @@ export function Header() {
           <Link href="/pricing" className="hover:text-indigo transition-colors">Pricing</Link>
           <Link href="/enterprise" className="hover:text-indigo transition-colors">Enterprise</Link>
         </nav>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
+          <MobileNav />
           <UserNav />
         </div>
       </div>
