@@ -4,38 +4,12 @@ import { createPortal } from 'react-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import { DimensionRadarChart } from '@/components/charts/RadarChart'
 import { getPercentile } from '@/lib/norms'
-import type { AssessmentResult } from '@/lib/types'
+import { DIMENSIONS, MAJOR_DIMS } from '@/lib/dimensions'
+import type { AssessmentResult, DimensionSlug } from '@/lib/types'
 
 const DIM_DESCRIPTIONS: Record<string, string> = {
-  openness: 'Receptivity to new ideas, experiences, and perspectives.',
-  conscientiousness: 'Capacity for discipline, organization, and follow-through.',
-  extraversion: 'Orientation toward social engagement and external stimulation.',
-  agreeableness: 'Tendency toward cooperation, empathy, and interpersonal harmony.',
-  emotional_stability: 'Resilience under pressure and consistency of emotional response.',
-  honesty_humility: 'Commitment to authenticity, integrity, and freedom from self-promotion.',
-  cognitive_agility: 'Speed and fluidity of adapting thinking across different problem types.',
-  executive_function: 'Planning, organizing, prioritizing, and regulating goal-directed behavior.',
-  attention_control: 'Sustaining focus and managing distraction under cognitive load.',
-  systems_thinking: 'Modeling complex interdependencies and emergent patterns.',
-  creative_intelligence: 'Richness of associative network and capacity for generative thinking.',
-  achievement_drive: 'Drive to accomplish difficult goals and exceed your own standards.',
-  risk_tolerance: 'Comfort operating in uncertain environments with real downside.',
-  autonomy_need: 'Need for self-direction and independence in how you work.',
-  purpose_orientation: 'Degree to which meaning and mission factor into your motivation.',
-  competitive_drive: 'Need to outperform others and track progress against external benchmarks.',
-  social_influence: 'Ability to persuade, inspire, and move others toward shared goals.',
-  conflict_navigation: 'Effectiveness at engaging, managing, and resolving interpersonal tension.',
-  communication_style: 'Approach to expressing ideas and adapting to different audiences.',
-  collaboration_signature: 'Natural approach to shared work and team dynamics.',
-  leadership_drive: 'Orientation toward taking charge, setting direction, and developing others.',
+  ...Object.fromEntries(DIMENSIONS.map(d => [d.slug, d.description])),
   founder_potential: 'Composite readiness to build, lead, and sustain new ventures.',
-  strategic_orientation: 'Capacity for long-horizon planning and competitive positioning.',
-  specialist_generalist: 'Orientation toward depth vs. breadth of expertise.',
-  innovation_index: 'Drive and capacity to generate breakthrough ideas and novel solutions.',
-  psychological_resilience: 'Capacity to recover, adapt, and grow through adversity.',
-  growth_mindset: 'Belief in the malleability of ability and orientation toward development.',
-  adaptability_quotient: 'Effectiveness at adjusting to changing conditions and new environments.',
-  learning_agility: 'Speed and effectiveness of acquiring and applying new knowledge.',
 }
 
 function DimTooltip({ text }: { text: string }) {
@@ -79,7 +53,12 @@ function DimCard({ slug, score, variant }: { slug: string; score: number; varian
   return (
     <div className={`p-4 rounded-2xl border hover:-translate-y-1 transition-transform duration-200 ${isSuper ? 'bg-teal-50 border-teal-100' : 'bg-slate-50 border-slate-100'}`}>
       <div className="flex items-center justify-between mb-2">
-        <span className={`text-sm font-semibold ${isSuper ? 'text-teal-800' : 'text-slate-600'}`}>{label}</span>
+        <span className={`text-sm font-semibold ${isSuper ? 'text-teal-800' : 'text-slate-600'}`}>
+          {MAJOR_DIMS.has(slug as DimensionSlug) && (
+            <span className="w-1.5 h-1.5 rounded-full bg-indigo inline-block mr-1.5 align-middle flex-shrink-0" />
+          )}
+          {label}
+        </span>
         <div className="flex items-center gap-2">
           <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${isSuper ? 'bg-teal text-white' : 'bg-slate-200 text-slate-600'}`}>
             p{percentile}
@@ -142,6 +121,7 @@ function DimensionsTable({ items }: { items: DimItem[] }) {
                     <th className="text-left px-4 py-3 font-medium">Dimension</th>
                     <th className="hidden sm:table-cell px-4 py-3 w-1/3" />
                     <th className="text-right px-4 py-3 font-medium">Score</th>
+                    <th className="hidden sm:table-cell px-4 py-3 text-center font-medium w-10">Type</th>
                     <th className="text-right px-4 py-3 font-medium">Pct</th>
                   </tr>
                 </thead>
@@ -165,6 +145,12 @@ function DimensionsTable({ items }: { items: DimItem[] }) {
                           </div>
                         </td>
                         <td className="px-4 py-3 text-right font-semibold text-sm text-text">{item.score}</td>
+                        <td className="hidden sm:table-cell px-4 py-3 text-center">
+                          {MAJOR_DIMS.has(item.slug as DimensionSlug)
+                            ? <span className="text-[10px] font-semibold text-indigo bg-indigo/10 px-1.5 py-0.5 rounded-full">M</span>
+                            : <span className="text-[10px] font-semibold text-slate-400 bg-slate-100 px-1.5 py-0.5 rounded-full">S</span>
+                          }
+                        </td>
                         <td className="px-4 py-3 text-right text-xs text-slate-400">p{item.percentile}</td>
                       </tr>
                     )
@@ -194,7 +180,7 @@ interface Props { result: AssessmentResult; onSentinelRef: (el: HTMLDivElement |
 export function ReportSection2({ result, onSentinelRef }: Props) {
   const scores = result.scores
   const sorted = Object.entries(scores)
-    .filter(([k]) => k !== 'founder_potential')
+    .filter(([k]) => MAJOR_DIMS.has(k as DimensionSlug))
     .sort(([, a], [, b]) => b - a)
   const superpowers = sorted.slice(0, 3)
   const growthAreas = sorted.slice(-2)
