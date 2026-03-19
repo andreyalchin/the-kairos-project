@@ -5,6 +5,7 @@ export type QuestionType =
   | 'rank_order' | 'allocation' | 'visual' | 'timed'
 
 export type DimensionSlug =
+  // Existing 29
   | 'openness' | 'conscientiousness' | 'extraversion' | 'agreeableness'
   | 'emotional_stability' | 'honesty_humility'
   | 'cognitive_agility' | 'executive_function' | 'attention_control'
@@ -17,6 +18,9 @@ export type DimensionSlug =
   | 'specialist_generalist' | 'innovation_index'
   | 'psychological_resilience' | 'growth_mindset'
   | 'adaptability_quotient' | 'learning_agility'
+  // 7 new
+  | 'emotional_intelligence' | 'decision_making' | 'execution'
+  | 'managing_others' | 'teamwork' | 'persuasion' | 'embracing_differences'
 
 export type DimensionScores = Record<DimensionSlug, number>
 
