@@ -149,7 +149,7 @@ export function ReportSection4({ result }: { result: AssessmentResult }) {
                   body="Your average time between seeing a question and committing to an answer. This captures cognitive processing rhythm and self-certainty — not raw intelligence. Rapid responders show strong self-clarity or high decisiveness. Deliberate responders show thorough self-reflection."
                 />
               </div>
-              <span className="text-indigo font-bold text-sm">{(avgResponseMs / 1000).toFixed(1)}s</span>
+              <span className="text-indigo font-bold text-sm ml-auto text-right">{(avgResponseMs / 1000).toFixed(1)}s</span>
             </div>
             <p className="text-xs text-slate-500 font-medium mb-1">{rs.label}</p>
             <p className="text-sm text-slate-600 leading-relaxed">{rs.desc}</p>
