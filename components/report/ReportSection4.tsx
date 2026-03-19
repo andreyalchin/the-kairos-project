@@ -140,17 +140,19 @@ export function ReportSection4({ result }: { result: AssessmentResult }) {
             })}
           </div>
 
-          <div className="p-5 rounded-2xl bg-slate-50 border border-slate-100 hover:-translate-y-1 transition-transform duration-200">
-            <div className="flex items-center gap-1 mb-1">
-              <p className="text-xs text-slate-400 uppercase tracking-widest font-medium">Behavioral Signal · Processing Speed</p>
-              <InfoTip
-                title="What Processing Speed Measures"
-                body="Your average time between seeing a question and committing to an answer. This captures cognitive processing rhythm and self-certainty — not raw intelligence. Rapid responders show strong self-clarity or high decisiveness. Deliberate responders show thorough self-reflection."
-              />
+          <div className="p-4 rounded-xl bg-white border border-slate-100 hover:-translate-y-1 transition-transform duration-200">
+            <div className="flex justify-between items-center mb-2">
+              <div className="flex items-center gap-1">
+                <span className="font-medium text-sm text-text">Processing Speed</span>
+                <InfoTip
+                  title="What Processing Speed Measures"
+                  body="Your average time between seeing a question and committing to an answer. This captures cognitive processing rhythm and self-certainty — not raw intelligence. Rapid responders show strong self-clarity or high decisiveness. Deliberate responders show thorough self-reflection."
+                />
+              </div>
+              <span className="text-indigo font-bold text-sm">{(avgResponseMs / 1000).toFixed(1)}s</span>
             </div>
-            <p className="font-semibold text-text mb-1">{rs.label}</p>
+            <p className="text-xs text-slate-500 font-medium mb-1">{rs.label}</p>
             <p className="text-sm text-slate-600 leading-relaxed">{rs.desc}</p>
-            <p className="text-xs text-slate-400 mt-2">Avg response time: {(avgResponseMs / 1000).toFixed(1)}s per question</p>
           </div>
         </div>
       </div>

@@ -140,9 +140,9 @@ function DimensionsTable({ items }: { items: DimItem[] }) {
                 <thead>
                   <tr className="text-xs uppercase tracking-wider text-slate-400 border-b border-slate-100">
                     <th className="text-left px-4 py-3 font-medium">Dimension</th>
-                    <th className="px-4 py-3 w-1/3" />
+                    <th className="hidden sm:table-cell px-4 py-3 w-1/3" />
                     <th className="text-right px-4 py-3 font-medium">Score</th>
-                    <th className="text-right px-4 py-3 font-medium">Percentile</th>
+                    <th className="text-right px-4 py-3 font-medium">Pct</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -156,7 +156,7 @@ function DimensionsTable({ items }: { items: DimItem[] }) {
                             {desc && <DimTooltip text={desc} />}
                           </span>
                         </td>
-                        <td className="px-4 py-3">
+                        <td className="hidden sm:table-cell px-4 py-3">
                           <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
                             <div
                               className="h-full bg-indigo rounded-full"
