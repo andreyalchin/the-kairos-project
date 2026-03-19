@@ -11,7 +11,7 @@ const inter = Inter({ subsets: ['latin'], variable: '--font-geist', display: 'sw
 
 export const metadata: Metadata = {
   title: 'Kairos — Know your moment.',
-  description: 'Discover your Human Potential Intelligence Profile. 29 dimensions, 32 archetypes.',
+  description: 'Discover your Human Potential Intelligence Profile. 36 dimensions, 32 archetypes.',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

@@ -14,7 +14,7 @@ const USE_CASES = [
     tag: 'Talent Development',
     tagColor: 'bg-teal/10 text-teal',
     body: "Judge et al.'s landmark 2002 meta-analysis across 222 studies found that the Big Five personality composite correlates r = .48 with leadership emergence and effectiveness — a stronger predictor than many situational factors organizations traditionally rely on. Extraversion, Conscientiousness, Openness, and low Neuroticism are the strongest individual contributors.",
-    outcome: "Identify high-potential leaders earlier using Kairos's Leadership Tier scoring (Emerging → Rising → Established → Visionary) and 29-dimension behavioral profile.",
+    outcome: "Identify high-potential leaders earlier using Kairos's Leadership Tier scoring (Emerging → Rising → Established → Visionary) and 36-dimension behavioral profile.",
     cite: 'Judge et al., 2002',
   },
   {
@@ -262,7 +262,7 @@ export default function EnterprisePage() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
             {[
               { step: '01', title: 'Send assessment link', body: 'Candidates complete the Kairos assessment in 15–20 minutes. No registration required on their end.', color: 'bg-indigo-50 border-indigo/10' },
-              { step: '02', title: 'Receive structured data', body: 'You get a full 29-dimension profile per candidate, including HPIF layers, archetype, and role fit scores.', color: 'bg-teal-50 border-teal/10' },
+              { step: '02', title: 'Receive structured data', body: 'You get a full 36-dimension profile per candidate, including HPIF layers, archetype, and role fit scores.', color: 'bg-teal-50 border-teal/10' },
               { step: '03', title: 'Compare against role profile', body: 'Match candidate dimensions to the behavioral profile of your highest performers in that role.', color: 'bg-violet-50 border-violet-200/50' },
               { step: '04', title: 'Structure the interview', body: 'Use dimension gaps and strengths to build a targeted interview guide — asking about what matters, not what is comfortable.', color: 'bg-amber-50 border-amber-200/50' },
             ].map(({ step, title, body, color }) => (
@@ -287,7 +287,7 @@ export default function EnterprisePage() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             {[
-              { title: '29 dimensions, not 4 types', body: "Most popular assessments assign candidates to one of 16 types or 4 letters. Kairos measures 29 continuous dimensions — providing actual data for every role requirement rather than a label that obscures more than it reveals.", accent: 'border-teal/30' },
+              { title: '36 dimensions, not 4 types', body: "Most popular assessments assign candidates to one of 16 types or 4 letters. Kairos measures 36 continuous dimensions — providing actual data for every role requirement rather than a label that obscures more than it reveals.", accent: 'border-teal/30' },
               { title: 'Behavioral inference layer', body: "Response latency and revision patterns are scored on every assessment. Candidates cannot game a system that measures how they respond, not just what they say. This is particularly valuable for senior-level and leadership hires where impression management is highest.", accent: 'border-indigo/30' },
               { title: 'HEXACO includes integrity', body: "We measure Honesty-Humility — the dimension most predictive of counterproductive work behavior, theft, manipulation, and leadership derailment. Most tools skip it. We include it because organizations deserve a complete picture.", accent: 'border-violet-500/30' },
               { title: 'Built on open science', body: "The Big Five and HEXACO emerged from decades of open, peer-reviewed research across 56+ languages and cultures. Our framework is not proprietary pseudo-science. Every dimension we measure has published academic validation behind it.", accent: 'border-amber-500/30' },

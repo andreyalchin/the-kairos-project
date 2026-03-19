@@ -23,7 +23,7 @@ export default function HomePage() {
             Kairos <span className="text-indigo">measures.</span>
           </h1>
           <p className="mt-5 text-base sm:text-lg text-slate-600 max-w-xl">
-            29 validated dimensions · 32 archetypes · behavioral inference. Your complete profile — free.
+            36 validated dimensions · 32 archetypes · behavioral inference. Your complete profile — free.
           </p>
           <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
             <Link
@@ -52,7 +52,7 @@ export default function HomePage() {
           </div>
           <div className="hidden md:block w-px h-14 bg-slate-700 self-center" aria-hidden="true" />
           <div className="text-center">
-            <p className="text-3xl sm:text-5xl font-black text-indigo">29</p>
+            <p className="text-3xl sm:text-5xl font-black text-indigo">36</p>
             <p className="text-sm text-slate-400 mt-1">Dimensions measured</p>
           </div>
           <div className="hidden md:block w-px h-14 bg-slate-700 self-center" aria-hidden="true" />
@@ -86,7 +86,7 @@ export default function HomePage() {
                   <span className="text-white font-bold text-sm">1</span>
                 </div>
                 <h3 className="font-bold text-text text-xl mb-2">Take the Assessment</h3>
-                <p className="text-slate-500 leading-relaxed">40–82 adaptive questions across 29 dimensions. No registration required. Questions calibrate to your responses in real time.</p>
+                <p className="text-slate-500 leading-relaxed">80 calibration questions + adaptive targeting across 36 dimensions. No registration required. Questions calibrate to your responses in real time.</p>
               </div>
             </div>
 
@@ -231,7 +231,7 @@ export default function HomePage() {
         <div className="relative max-w-3xl mx-auto px-4 space-y-6">
           {/* PLACEHOLDER: replace with validated timing */}
           <h2 className="text-3xl sm:text-5xl md:text-6xl font-bold text-white leading-tight">
-            12 minutes.<br />29 dimensions.<br />One profile that&apos;s actually you.
+            12 minutes.<br />36 dimensions.<br />One profile that&apos;s actually you.
           </h2>
           {/* PLACEHOLDER: replace 10,000+ with real verified number */}
           <p className="text-indigo-200 text-base sm:text-xl">

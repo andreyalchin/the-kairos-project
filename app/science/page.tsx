@@ -189,8 +189,8 @@ const hpifLayers = [
   {
     layer: 'Cognitive Operating System',
     q: 'How do you process information?',
-    dims: 'Cognitive Agility · Executive Function · Attention Control',
-    detail: 'Grounded in cognitive neuroscience research on working memory, cognitive flexibility, and attentional control. Predicts learning speed, problem-solving approach, and adaptability to novel situations.',
+    dims: 'Cognitive Agility · Executive Function · Attention Control · Systems Thinking · Creative Intelligence · Emotional Intelligence · Decision Making',
+    detail: 'Grounded in cognitive neuroscience research on working memory, cognitive flexibility, and attentional control. Seven dimensions covering how you process, create, decide, and relate — the most information-dense cluster in the framework.',
     accent: 'border-l-4 border-indigo',
   },
   {
@@ -203,8 +203,8 @@ const hpifLayers = [
   {
     layer: 'Behavioral Expression',
     q: 'How do you show up with others?',
-    dims: 'Extraversion · Agreeableness · Conflict Navigation · Communication Style',
-    detail: 'Maps your interpersonal behavioral tendencies. Predicts communication effectiveness, collaboration patterns, and leadership style.',
+    dims: 'Extraversion · Agreeableness · Conflict Navigation · Communication Style · Persuasion · Embracing Differences',
+    detail: 'Maps your interpersonal behavioral tendencies. Predicts communication effectiveness, collaboration patterns, and leadership style — including how you navigate influence and diversity of perspective.',
     accent: 'border-l-4 border-violet-500',
   },
   {
@@ -217,14 +217,14 @@ const hpifLayers = [
   {
     layer: 'Career Potential Matrix',
     q: 'Where do you have the most leverage?',
-    dims: 'Leadership Drive · Founder Potential · Strategic Orientation · Specialist–Generalist Orientation',
-    detail: 'Translates your dimensions into career-relevant potential scores. Distinguishes between leadership potential, entrepreneurial potential, and strategic vs. tactical orientation.',
+    dims: 'Leadership Drive · Strategic Orientation · Specialist–Generalist Orientation · Execution · Managing Others',
+    detail: 'Translates your dimensions into career-relevant potential scores. Distinguishes between leadership potential, operational execution, and strategic vs. tactical orientation.',
     accent: 'border-l-4 border-pink-500',
   },
   {
     layer: 'Team Compatibility',
     q: 'Where do you fit in a team?',
-    dims: 'Collaboration Signature · Role preference · Remote orientation',
+    dims: 'Collaboration Signature · Teamwork · Role preference · Remote orientation',
     detail: 'Identifies your natural team role, preferred team size, and collaboration style. Supports team composition and role assignment decisions grounded in behavioral data.',
     accent: 'border-l-4 border-cyan-500',
   },
@@ -236,7 +236,7 @@ export default function SciencePage() {
 
       {/* 1. Hero — dark slate */}
       <section className="relative overflow-hidden bg-slate-900 py-24">
-        <span className="absolute right-8 bottom-0 text-[14rem] font-black text-white/5 leading-none select-none pointer-events-none" aria-hidden="true">29</span>
+        <span className="absolute right-8 bottom-0 text-[14rem] font-black text-white/5 leading-none select-none pointer-events-none" aria-hidden="true">36</span>
         <div className="relative max-w-4xl mx-auto px-4 text-center space-y-6">
           <p className="text-teal text-sm font-semibold uppercase tracking-widest">Evidence-Based Assessment</p>
           <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
@@ -270,7 +270,7 @@ export default function SciencePage() {
             { num: '117', label: 'Studies in Big Five job-performance meta-analysis' },
             { num: '23,994', label: 'Participants in Barrick & Mount landmark validation' },
             { num: '60+', label: 'Years of cross-cultural replication' },
-            { num: '29', label: 'Dimensions measured by Kairos' },
+            { num: '36', label: 'Dimensions measured across 6 behavioral clusters' },
           ].map(({ num, label }) => (
             <div key={num} className="text-center">
               <p className="text-2xl sm:text-4xl md:text-5xl font-black text-white">{num}</p>
@@ -388,7 +388,7 @@ export default function SciencePage() {
               Computerized Adaptive Testing (CAT) operationalizes IRT by selecting the next question based on the respondent&apos;s estimated trait level from all previous responses. Weiss and Kingsbury (1984) demonstrated that adaptive tests can achieve the same measurement precision as fixed-form tests twice their length — or achieve significantly higher precision in the same number of items.<Cite ids={[16]} />
             </p>
             <p className="text-slate-600 leading-relaxed">
-              Kairos implements an adaptive questioning engine. After an initial calibration phase, our system continuously updates confidence estimates for each dimension. When a dimension&apos;s score falls in an ambiguous range (35–65 on our 0–100 scale), additional targeted questions are served. When confidence is sufficiently high, no further questions are needed for that dimension. This means we collect more useful data in fewer questions — respecting your time without sacrificing measurement quality.
+              Kairos implements a two-phase adaptive questioning engine. The first phase delivers 80 calibration questions that establish a baseline score across all 36 dimensions — enough signal to place every dimension on the distribution. The second phase targets remaining ambiguity: when a Major dimension&apos;s score falls in an uncertain range (35–65), additional questions are served to narrow the confidence interval. Adaptive targeting continues until the top archetype match reaches a composite confidence threshold, with a maximum of 132 questions total. This means we collect more useful data in fewer questions — respecting your time without sacrificing measurement quality.
             </p>
             <ClaimBox>
               Adaptive testing based on IRT can achieve equivalent measurement precision with approximately 50% fewer items compared to fixed-format tests — a finding with direct implications for respondent burden and data quality.<Cite ids={[16]} />
@@ -504,7 +504,7 @@ export default function SciencePage() {
           </div>
 
           <p className="text-slate-600 leading-relaxed mb-6">
-            Measuring 29 dimensions produces a rich dataset — but raw dimensions are difficult to interpret and act on. The Human Potential Intelligence Framework (HPIF) integrates all 29 dimensions into 6 structural layers, each answering a different question about how you function as a person, a professional, and a collaborator.
+            Measuring 36 dimensions produces a rich dataset — but raw dimensions are difficult to interpret and act on. The Human Potential Intelligence Framework (HPIF) integrates all 36 dimensions into 6 structural layers, each answering a different question about how you function as a person, a professional, and a collaborator. Dimensions are further classified as Major (20 primary predictors) or Supporting (15 contextual dimensions), so your report surfaces the highest-signal traits first without burying the nuance.
           </p>
 
           <div className="space-y-4 mb-8">

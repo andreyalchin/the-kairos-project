@@ -9,7 +9,7 @@ const pillars = [
   },
   {
     title: 'Adaptive IRT',
-    desc: 'Item Response Theory: questions shift based on your answers. 40 adaptive questions beat 200 static ones.',
+    desc: 'Item Response Theory: questions shift based on your answers. 80-question calibration phase + adaptive targeting — each question is maximally informative for your profile.',
     accent: 'teal' as const,
     symbol: '◎',
   },

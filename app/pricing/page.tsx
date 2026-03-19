@@ -32,7 +32,7 @@ const TIERS: Tier[] = [
     ctaStyle: 'outline',
     features: [
       { text: 'Full 11-section report (beta only)', live: true },
-      { text: 'All 29 dimensions measured', live: true },
+      { text: 'All 36 dimensions measured', live: true },
       { text: 'Archetype identification + match score', live: true },
       { text: 'Psychological Fingerprint radar', live: true },
       { text: 'No account required', live: true },
@@ -55,7 +55,7 @@ const TIERS: Tier[] = [
     ctaStyle: 'primary',
     features: [
       { text: 'Full 11-section report, forever', live: true },
-      { text: 'All 29 dimensions + HPIF framework', live: true },
+      { text: 'All 36 dimensions + HPIF framework', live: true },
       { text: 'Career Potential Matrix', live: true },
       { text: 'Team Compatibility profile', live: true },
       { text: 'Leadership & Founder potential scores', live: true },
@@ -135,7 +135,7 @@ const TIERS: Tier[] = [
     ctaHref: 'mailto:andrey.alchin@gmail.com?subject=API access interest',
     ctaStyle: 'outline',
     features: [
-      { text: 'Full 29 dimension scores as JSON', live: false },
+      { text: 'Full 36 dimension scores as JSON', live: false },
       { text: 'Archetype assignment + match score', live: false },
       { text: 'Behavioral inference signals', live: false },
       { text: 'HPIF profile layers', live: false },

@@ -8,7 +8,7 @@ const contrasts = [
   {
     title: 'Depth',
     others: '4–5 broad types or letter combinations',
-    kairos: '29 dimensions across cognitive, behavioral, motivational and leadership axes',
+    kairos: '36 dimensions across cognitive, behavioral, motivational and leadership axes — classified as Major or Supporting by predictive weight',
   },
   {
     title: 'Behavioral Layer',

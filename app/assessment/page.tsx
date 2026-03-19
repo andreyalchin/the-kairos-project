@@ -123,7 +123,7 @@ export default function AssessmentPage() {
     <div className="min-h-screen bg-bg flex items-center justify-center p-6">
       <div className="max-w-lg text-center space-y-6">
         <h1 className="text-4xl font-bold text-text">Know Your Moment.</h1>
-        <p className="text-lg text-slate-600">A scientifically grounded assessment of 29 dimensions that shape who you are and where you&apos;re going. ~12 minutes.</p>
+        <p className="text-lg text-slate-600">A scientifically grounded assessment of 36 dimensions that shape who you are and where you&apos;re going. ~12 minutes.</p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <button
             onClick={startAssessment}
@@ -132,7 +132,7 @@ export default function AssessmentPage() {
             Begin Assessment
           </button>
         </div>
-        <p className="text-sm text-slate-400">No account required · Free · ~40–82 questions</p>
+        <p className="text-sm text-slate-400">No account required · Free · ~80–132 questions</p>
       </div>
     </div>
   )
