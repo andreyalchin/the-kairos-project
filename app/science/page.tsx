@@ -239,7 +239,7 @@ export default function SciencePage() {
         <span className="absolute right-8 bottom-0 text-[14rem] font-black text-white/5 leading-none select-none pointer-events-none" aria-hidden="true">29</span>
         <div className="relative max-w-4xl mx-auto px-4 text-center space-y-6">
           <p className="text-teal text-sm font-semibold uppercase tracking-widest">Evidence-Based Assessment</p>
-          <h1 className="text-4xl md:text-6xl font-bold text-white leading-tight">
+          <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
             The Science Behind Kairos
           </h1>
           <p className="text-slate-400 text-lg max-w-2xl mx-auto leading-relaxed">
@@ -273,7 +273,7 @@ export default function SciencePage() {
             { num: '29', label: 'Dimensions measured by Kairos' },
           ].map(({ num, label }) => (
             <div key={num} className="text-center">
-              <p className="text-4xl md:text-5xl font-black text-white">{num}</p>
+              <p className="text-2xl sm:text-4xl md:text-5xl font-black text-white">{num}</p>
               <p className="text-sm text-indigo-200 mt-1 max-w-[10rem] mx-auto leading-snug">{label}</p>
             </div>
           ))}
@@ -455,7 +455,7 @@ export default function SciencePage() {
             Measuring personality correctly requires more than choosing the right framework. It requires satisfying rigorous psychometric standards for how dimensions are defined, assessed, and interpreted. Kairos holds itself to three core standards: validity, reliability, and normative grounding.
           </p>
 
-          <div className="grid md:grid-cols-3 gap-6 mb-10">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
             <div className="bg-indigo-50 border border-indigo/20 rounded-2xl p-5 space-y-3 hover:-translate-y-1 transition-transform duration-200">
               <div className="w-9 h-9 rounded-lg bg-indigo flex items-center justify-center">
                 <span className="text-white font-bold text-sm">V</span>

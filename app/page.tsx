@@ -18,11 +18,11 @@ export default function HomePage() {
         <HeroCanvas />
         <div className="relative z-10 flex flex-col items-center justify-center text-center px-4 py-28 min-h-[560px]">
           <Badge variant="indigo" className="mb-6">Built on Big Five + HEXACO + Adaptive IRT</Badge>
-          <h1 className="text-5xl md:text-6xl font-bold text-text leading-tight max-w-3xl">
+          <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold text-text leading-tight max-w-3xl">
             Most personality tests are <span className="text-slate-400">guessing.</span><br />
             Kairos <span className="text-indigo">measures.</span>
           </h1>
-          <p className="mt-5 text-lg text-slate-600 max-w-xl">
+          <p className="mt-5 text-base sm:text-lg text-slate-600 max-w-xl">
             29 validated dimensions · 32 archetypes · behavioral inference. Your complete profile — free.
           </p>
           <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
@@ -47,17 +47,17 @@ export default function HomePage() {
         <div className="max-w-6xl mx-auto px-4 flex flex-wrap justify-center gap-10 md:gap-20">
           {/* PLACEHOLDER: replace with real verified stats */}
           <div className="text-center">
-            <p className="text-5xl font-black text-white">10,847</p>
+            <p className="text-3xl sm:text-5xl font-black text-white">10,847</p>
             <p className="text-sm text-slate-400 mt-1">Assessments completed</p>
           </div>
           <div className="hidden md:block w-px h-14 bg-slate-700 self-center" aria-hidden="true" />
           <div className="text-center">
-            <p className="text-5xl font-black text-indigo">29</p>
+            <p className="text-3xl sm:text-5xl font-black text-indigo">29</p>
             <p className="text-sm text-slate-400 mt-1">Dimensions measured</p>
           </div>
           <div className="hidden md:block w-px h-14 bg-slate-700 self-center" aria-hidden="true" />
           <div className="text-center">
-            <p className="text-5xl font-black text-teal">32</p>
+            <p className="text-3xl sm:text-5xl font-black text-teal">32</p>
             <p className="text-sm text-slate-400 mt-1">Archetypes identified</p>
           </div>
           <div className="hidden md:block w-px h-14 bg-slate-700 self-center" aria-hidden="true" />
@@ -79,7 +79,7 @@ export default function HomePage() {
           <div className="grid md:grid-cols-3 gap-5">
 
             {/* Step 1 — wide */}
-            <div className="md:col-span-2 relative overflow-hidden rounded-2xl border border-indigo/10 bg-gradient-to-br from-indigo-50 to-white p-8 shadow-sm hover:-translate-y-1 transition-transform duration-200">
+            <div className="md:col-span-2 relative overflow-hidden rounded-2xl border border-indigo/10 bg-gradient-to-br from-indigo-50 to-white p-5 md:p-8 shadow-sm hover:-translate-y-1 transition-transform duration-200">
               <span className="absolute right-4 -top-2 text-[9rem] font-black text-indigo/5 leading-none select-none pointer-events-none" aria-hidden="true">1</span>
               <div className="relative">
                 <div className="w-10 h-10 rounded-full bg-indigo flex items-center justify-center mb-5">
@@ -91,7 +91,7 @@ export default function HomePage() {
             </div>
 
             {/* Step 2 */}
-            <div className="relative overflow-hidden rounded-2xl border border-teal/20 bg-gradient-to-br from-teal-50 to-white p-8 shadow-sm hover:-translate-y-1 transition-transform duration-200">
+            <div className="relative overflow-hidden rounded-2xl border border-teal/20 bg-gradient-to-br from-teal-50 to-white p-5 md:p-8 shadow-sm hover:-translate-y-1 transition-transform duration-200">
               <span className="absolute right-4 -top-2 text-[9rem] font-black text-teal/5 leading-none select-none pointer-events-none" aria-hidden="true">2</span>
               <div className="relative">
                 <div className="w-10 h-10 rounded-full bg-teal flex items-center justify-center mb-5">
@@ -103,7 +103,7 @@ export default function HomePage() {
             </div>
 
             {/* Step 3 — full width */}
-            <div className="md:col-span-3 relative overflow-hidden rounded-2xl border border-violet-200/50 bg-gradient-to-br from-violet-50 to-white p-8 shadow-sm hover:-translate-y-1 transition-transform duration-200">
+            <div className="md:col-span-3 relative overflow-hidden rounded-2xl border border-violet-200/50 bg-gradient-to-br from-violet-50 to-white p-5 md:p-8 shadow-sm hover:-translate-y-1 transition-transform duration-200">
               <span className="absolute right-8 -top-2 text-[9rem] font-black text-violet-500/5 leading-none select-none pointer-events-none" aria-hidden="true">3</span>
               <div className="relative md:flex items-center gap-12">
                 <div className="flex-shrink-0">
@@ -157,7 +157,7 @@ export default function HomePage() {
                 Talk to us about Enterprise →
               </Link>
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-3 md:gap-4">
               {[
                 { icon: <Target size={16} className="text-teal" />, stat: 'r = .48', title: 'Trait-based hiring', desc: 'Match candidates to role requirements scientifically' },
                 { icon: <Network size={16} className="text-teal" />, stat: '+24%', title: 'Team compatibility', desc: 'Validity improvement over unstructured interviews' },
@@ -230,11 +230,11 @@ export default function HomePage() {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_0%,#6366f130,transparent_65%)]" />
         <div className="relative max-w-3xl mx-auto px-4 space-y-6">
           {/* PLACEHOLDER: replace with validated timing */}
-          <h2 className="text-5xl md:text-6xl font-bold text-white leading-tight">
+          <h2 className="text-3xl sm:text-5xl md:text-6xl font-bold text-white leading-tight">
             12 minutes.<br />29 dimensions.<br />One profile that&apos;s actually you.
           </h2>
           {/* PLACEHOLDER: replace 10,000+ with real verified number */}
-          <p className="text-indigo-200 text-xl">
+          <p className="text-indigo-200 text-base sm:text-xl">
             Join 10,000+ professionals who&apos;ve stopped guessing about themselves.
           </p>
           <div className="pt-2">

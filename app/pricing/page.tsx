@@ -342,7 +342,7 @@ export default function PricingPage() {
         <span className="absolute right-8 bottom-4 text-[12rem] font-black text-white/5 leading-none select-none pointer-events-none" aria-hidden="true">$0</span>
         <div className="relative max-w-4xl mx-auto px-4 text-center space-y-5">
           <div className="inline-block bg-teal/20 text-teal text-xs font-semibold px-3 py-1 rounded-full">Beta — Full reports free right now</div>
-          <h1 className="text-4xl md:text-5xl font-bold text-white">Transparent Pricing</h1>
+          <h1 className="text-3xl md:text-5xl font-bold text-white">Transparent Pricing</h1>
           <p className="text-slate-400 text-lg max-w-xl mx-auto">
             Free for individuals during beta. Honest pricing after. No dark patterns, no bait-and-switch.
           </p>
@@ -364,7 +364,7 @@ export default function PricingPage() {
         <div className="max-w-5xl mx-auto px-4">
           <h2 className="text-2xl font-bold text-text text-center mb-2">For individuals</h2>
           <p className="text-slate-500 text-center mb-10">Personal growth, career clarity, self-knowledge.</p>
-          <div className="grid md:grid-cols-2 gap-5 max-w-3xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 max-w-3xl mx-auto">
             {TIERS.slice(0, 2).map(tier => (
               <TierCard key={tier.name} tier={tier} />
             ))}
@@ -381,7 +381,7 @@ export default function PricingPage() {
         <div className="max-w-7xl mx-auto px-4">
           <h2 className="text-2xl font-bold text-white text-center mb-2">For teams and platforms</h2>
           <p className="text-slate-400 text-center mb-10">Hiring intelligence, candidate screening, API access.</p>
-          <div className="grid md:grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {TIERS.slice(2).map(tier => (
               <DarkTierCard key={tier.name} tier={tier} />
             ))}
@@ -397,7 +397,7 @@ export default function PricingPage() {
       <section className="bg-white py-20 border-y border-slate-100">
         <div className="max-w-5xl mx-auto px-4">
           <h2 className="text-2xl font-bold text-text text-center mb-10">Why we built it this way</h2>
-          <div className="grid md:grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             <div className="bg-indigo-50 border border-indigo/20 rounded-2xl p-6 space-y-2 hover:-translate-y-1 transition-transform duration-200">
               <p className="font-semibold text-text">Individuals first</p>
               <p className="text-sm text-slate-600 leading-relaxed">
@@ -435,7 +435,7 @@ export default function PricingPage() {
       <section className="relative overflow-hidden bg-gradient-to-br from-indigo via-indigo-800 to-indigo-950 py-24 text-center">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_0%,#6366f130,transparent_65%)]" />
         <div className="relative max-w-3xl mx-auto px-4 space-y-5">
-          <h2 className="text-3xl md:text-4xl font-bold text-white">Still free right now. Not for much longer.</h2>
+          <h2 className="text-2xl md:text-4xl font-bold text-white">Still free right now. Not for much longer.</h2>
           <p className="text-indigo-200 text-lg">Take the full assessment before paid plans launch.</p>
           <div className="pt-2">
             <Link

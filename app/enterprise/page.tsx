@@ -118,7 +118,7 @@ export default function EnterprisePage() {
       <section className="bg-slate-900 py-20">
         <div className="max-w-5xl mx-auto px-4 text-center space-y-6">
           <p className="text-teal text-sm font-semibold uppercase tracking-widest">For Organizations</p>
-          <h1 className="text-4xl md:text-6xl font-bold text-white leading-tight">
+          <h1 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
             The science of hiring right.<br className="hidden md:block" /> The cost of hiring wrong.
           </h1>
           <p className="text-slate-400 text-lg max-w-2xl mx-auto leading-relaxed">
@@ -147,7 +147,7 @@ export default function EnterprisePage() {
           {STATS.map(({ stat, label, cite }, i) => (
             <div key={stat} className="text-center space-y-2">
               {i > 0 && <div className="hidden md:block absolute left-0 top-0 w-px h-full bg-white/10" />}
-              <p className="text-4xl md:text-5xl font-black text-white">{stat}</p>
+              <p className="text-3xl md:text-5xl font-black text-white">{stat}</p>
               <p className="text-xs text-indigo-200 leading-snug">{label}</p>
               <p className="text-xs text-indigo-300 italic">{cite}</p>
             </div>
@@ -195,7 +195,7 @@ export default function EnterprisePage() {
             <h2 className="text-4xl font-bold text-text">Where Kairos fits your HR process</h2>
             <p className="text-slate-500 text-lg">Six evidence-backed applications across the employee lifecycle.</p>
           </div>
-          <div className="grid md:grid-cols-2 gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             {USE_CASES.map(({ title, tag, tagColor, body, outcome, cite }) => (
               <div key={title} className="bg-bg rounded-2xl border border-slate-100 p-6 space-y-3 flex flex-col hover:-translate-y-1 transition-transform duration-200 shadow-sm">
                 <div className="flex items-start justify-between gap-3">
@@ -259,7 +259,7 @@ export default function EnterprisePage() {
             <h2 className="text-4xl font-bold text-text">How it works in your hiring process</h2>
             <p className="text-slate-500 text-lg">Four steps. No platform fee. No minimums.</p>
           </div>
-          <div className="grid md:grid-cols-4 gap-5">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
             {[
               { step: '01', title: 'Send assessment link', body: 'Candidates complete the Kairos assessment in 15–20 minutes. No registration required on their end.', color: 'bg-indigo-50 border-indigo/10' },
               { step: '02', title: 'Receive structured data', body: 'You get a full 29-dimension profile per candidate, including HPIF layers, archetype, and role fit scores.', color: 'bg-teal-50 border-teal/10' },
@@ -285,7 +285,7 @@ export default function EnterprisePage() {
           <div className="text-center space-y-3">
             <h2 className="text-4xl font-bold text-white">What makes Kairos different for enterprise use</h2>
           </div>
-          <div className="grid md:grid-cols-2 gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             {[
               { title: '29 dimensions, not 4 types', body: "Most popular assessments assign candidates to one of 16 types or 4 letters. Kairos measures 29 continuous dimensions — providing actual data for every role requirement rather than a label that obscures more than it reveals.", accent: 'border-teal/30' },
               { title: 'Behavioral inference layer', body: "Response latency and revision patterns are scored on every assessment. Candidates cannot game a system that measures how they respond, not just what they say. This is particularly valuable for senior-level and leadership hires where impression management is highest.", accent: 'border-indigo/30' },
@@ -333,7 +333,7 @@ export default function EnterprisePage() {
       <section className="relative overflow-hidden bg-gradient-to-br from-indigo via-indigo-800 to-indigo-950 py-24 text-center">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_0%,#6366f130,transparent_65%)]" />
         <div className="relative max-w-3xl mx-auto px-4 space-y-6">
-          <h2 className="text-4xl md:text-5xl font-bold text-white leading-tight">
+          <h2 className="text-3xl md:text-5xl font-bold text-white leading-tight">
             Ready to make better hiring decisions?
           </h2>
           <p className="text-indigo-200 text-lg max-w-xl mx-auto">
