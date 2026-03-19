@@ -176,7 +176,7 @@ const FAQ = [
   },
   {
     q: 'Is there an enterprise or custom pricing option?',
-    a: "Yes. For organizations with high volume, custom integrations, or white-label requirements, we offer bespoke arrangements. Reach out at hello@kairos.so and we'll respond within one business day.",
+    a: "Yes. For organizations with high volume, custom integrations, or white-label requirements, we offer bespoke arrangements. Visit our contact page and we'll respond within one business day.",
   },
 ]
 
