@@ -87,7 +87,17 @@ export function ReportSection4({ result }: { result: AssessmentResult }) {
 
         <div className="p-4 sm:p-6 md:p-8 space-y-6">
           <div className="p-6 rounded-2xl bg-gradient-to-r from-indigo-50 to-teal-50 border border-indigo-100 hover:-translate-y-1 transition-transform duration-200">
-            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-3">
+            <div className="flex items-center gap-4 mb-3">
+              <div>
+                <div className="flex items-center gap-1">
+                  <p className="text-3xl sm:text-4xl font-black text-indigo">{cos.composite}</p>
+                  <InfoTip
+                    title="Cognitive Composite"
+                    body="Equally weighted average of your 5 cognitive dimension scores. 50 = population average. 70+ represents high cognitive performance across this cluster. This composite predicts performance in complex, ambiguous, and intellectually demanding roles."
+                  />
+                </div>
+                <p className="text-xs text-slate-500">composite</p>
+              </div>
               <div>
                 <div className="flex items-center gap-1 mb-1">
                   <p className="text-xs text-indigo uppercase tracking-widest font-medium">Cognitive Operating System</p>
@@ -97,16 +107,6 @@ export function ReportSection4({ result }: { result: AssessmentResult }) {
                   />
                 </div>
                 <p className="text-2xl font-bold text-text">{cos.primary_style}</p>
-              </div>
-              <div className="text-right">
-                <div className="flex items-center justify-end gap-1">
-                  <p className="text-3xl sm:text-4xl font-black text-indigo">{cos.composite}</p>
-                  <InfoTip
-                    title="Cognitive Composite"
-                    body="Equally weighted average of your 5 cognitive dimension scores. 50 = population average. 70+ represents high cognitive performance across this cluster. This composite predicts performance in complex, ambiguous, and intellectually demanding roles."
-                  />
-                </div>
-                <p className="text-xs text-slate-500">composite</p>
               </div>
             </div>
             <p className="text-slate-600 text-sm leading-relaxed">{STYLE_DESCRIPTIONS[cos.primary_style] ?? cos.description}</p>
