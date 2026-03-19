@@ -167,6 +167,8 @@ options: { labels: ['Strongly Disagree', 'Disagree', 'Neutral', 'Agree', 'Strong
 
 No existing questions are deleted or modified. The scoring layer handles both formats.
 
+**`forced_choice` scoring convention:** New `forced_choice` questions follow the existing convention — choice `a` = negative pole (scores 1), choice `b` = positive pole (scores 5). The existing `forced_choice` handler in `lib/scoring.ts` is scale-independent and requires no changes for new questions.
+
 ### Question type distribution for new questions
 
 | Type | Calibration questions | Adaptive-only questions |
@@ -338,7 +340,7 @@ Two `<Radar>` components on the same chart and axis grid. Both use all 35 dimens
 'use client'
 import { useState, useEffect } from 'react'
 import { RadarChart as RechartsRadar, Radar, PolarGrid, PolarAngleAxis,
-         ResponsiveContainer, Tooltip, Legend } from 'recharts'
+         ResponsiveContainer, Tooltip } from 'recharts'
 import { DIMENSIONS, MAJOR_DIMS } from '@/lib/dimensions'
 import type { DimensionScores } from '@/lib/types'
 
@@ -494,7 +496,7 @@ Minor dimensions appear on the radar chart and in the expanded dimensions table 
 | `emotional_intelligence` | Section 4 (Cognitive Profile) | Add to `COG_DIMS` array; add `COG_LABELS['emotional_intelligence'] = 'Emotional Intelligence'`; add description and `cogInsight()` case (see copy below) |
 | `decision_making` | Section 4 (Cognitive Profile) | Add to `COG_DIMS` array; add `COG_LABELS['decision_making'] = 'Decision Making'`; add description and `cogInsight()` case (see copy below) |
 | `execution` | Section 5 (Motivational DNA) | Standalone `DimCard`-style card **below** the existing driver/drain pattern — do NOT add to `MOT_DIMS`; `execution` does not participate in driver/drain sorting |
-| `managing_others` | Section 6 (Leadership Profile) | New `DimCard`-style card with MO insight copy |
+| `managing_others` | Section 7 (Leadership Profile) — `ReportSection7.tsx` | New `DimCard`-style card with MO insight copy, placed after the existing leadership strengths/blind spots block |
 
 #### Section 4 copy for new dims
 
@@ -530,9 +532,9 @@ New Minor dimensions (`teamwork`, `persuasion`, `embracing_differences`) appear 
 | 6 | `app/api/assessment/respond/route.ts` | New confidence gate, adaptive priority, ambiguous declaration, hard cap |
 | 7 | `components/charts/RadarChart.tsx` | Dual-layer Major/Minor radar; import from lib/dimensions.ts |
 | 8 | `components/report/ReportSection2.tsx` | Replace local `DIM_DESCRIPTIONS` constant with import from `lib/dimensions.ts`; Major-only superpowers; M/S badges in table |
-| 9 | `components/report/ReportSection4.tsx` | Replace local `COG_DIMS`, `COG_LABELS`, `COG_DESCRIPTIONS` with imports from `lib/dimensions.ts`; add EI and DM to `COG_DIMS` with full copy |
+| 9 | `components/report/ReportSection4.tsx` | Add `emotional_intelligence` and `decision_making` to local `COG_DIMS` array; add entries to local `COG_LABELS` and `COG_DESCRIPTIONS`; add `cogInsight()` cases with provided copy. Import `MAJOR_DIMS` from `lib/dimensions.ts` if M/S badge logic is added to this section. (Do NOT replace these local arrays with imports — `lib/dimensions.ts` does not export COG-specific structures) |
 | 10 | `components/report/ReportSection5.tsx` | Add standalone execution card below existing driver/drain section |
-| 11 | `components/report/ReportSection6.tsx` | Add managing_others card |
+| 11 | `components/report/ReportSection7.tsx` | Add managing_others card (this is the Leadership Profile section — NOT Section 6 which is Career Intelligence) |
 
 ---
 
