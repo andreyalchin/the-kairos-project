@@ -82,7 +82,7 @@ export function ReportSection11({ result, archetype }: { result: AssessmentResul
           <div className="p-5 rounded-2xl bg-slate-50 border border-slate-100 hover:-translate-y-1 transition-transform duration-200">
             <div className="flex justify-between items-center mb-2">
               <p className="font-medium text-sm text-text">Average Response Time</p>
-              <p className="text-3xl font-black text-indigo">{(avgResponseMs / 1000).toFixed(1)}s per question</p>
+              <p className="text-3xl font-black text-indigo">{(avgResponseMs / 1000).toFixed(1)}s</p>
             </div>
             <p className="text-sm text-slate-600 leading-relaxed">{responseTimeInsight(avgResponseMs)}</p>
           </div>
