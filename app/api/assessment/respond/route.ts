@@ -2,9 +2,11 @@ import { createServiceClient } from '@/lib/supabase/server'
 import { QUESTIONS } from '@/lib/questions'
 import { ARCHETYPES } from '@/lib/archetypes'
 import { computeScores } from '@/lib/scoring'
-import type { Response as AssessmentResponse, DimensionScores } from '@/lib/types'
+import { MAJOR_DIMS } from '@/lib/dimensions'
+import type { Response as AssessmentResponse, DimensionScores, DimensionSlug } from '@/lib/types'
 
 const calibrationCount = QUESTIONS.filter(q => q.calibration && q.is_active).length
+const HARD_CAP = 132 // 80 calibration + 52 adaptive max
 
 // Compute top-2 archetype composites from interim scores to assess confidence
 function interimConfidence(scores: Partial<DimensionScores>): { topComposite: number; margin: number } {
@@ -66,27 +68,62 @@ export async function POST(req: Request) {
       }))
       const scores = computeScores(mappedResponses, answeredQuestions)
 
-      const { topComposite, margin } = interimConfidence(scores)
-      // Confident result: strong top archetype with clear separation — no more questions needed
-      const isConfident = topComposite >= 75 && margin >= 8
+      // New confidence gate
+      const majorDimSlugs = Array.from(MAJOR_DIMS) as DimensionSlug[]
 
-      if (!isConfident) {
-        // Ambiguous zone: score 30–70 (wider than before to keep probing unclear dimensions)
+      const answeredPerDim = majorDimSlugs.reduce((acc, dim) => {
+        acc[dim] = responses!.filter(r =>
+          QUESTIONS.find(q => q.code === r.question_code)?.dimension === dim
+        ).length
+        return acc
+      }, {} as Record<string, number>)
+
+      const allMajorDimsCovered = majorDimSlugs.every(d => (answeredPerDim[d] ?? 0) >= 3)
+
+      const ambiguousMajorCount = majorDimSlugs.filter(d => {
+        const s = scores[d]
+        return s !== undefined && s >= 40 && s <= 60
+      }).length
+
+      const { topComposite, margin } = interimConfidence(scores)
+
+      const isConfident =
+        topComposite >= 81 &&
+        margin >= 10 &&
+        ambiguousMajorCount <= 2 &&
+        allMajorDimsCovered
+
+      if (!isConfident && answeredCount < HARD_CAP) {
+        // Ambiguous zone for question selection (40-60 range)
         const ambiguous = Object.entries(scores)
-          .filter(([, s]) => s !== undefined && s >= 30 && s <= 70)
+          .filter(([, s]) => s !== undefined && s >= 40 && s <= 60)
           .map(([dim]) => dim)
 
-        // Priority 1: questions for ambiguous dimensions
-        let nextQ = QUESTIONS
-          .filter(q => !q.calibration && !answeredCodes.has(q.code) && q.is_active && ambiguous.includes(q.dimension))
-          .sort((a, b) => a.order_index - b.order_index)[0]
+        // Priority 1: Unanswered ambiguous Major dims (score 40–60, < 5 answered)
+        let nextQ = QUESTIONS.filter(q =>
+          !q.calibration && !answeredCodes.has(q.code) && q.is_active &&
+          MAJOR_DIMS.has(q.dimension as DimensionSlug) &&
+          ambiguous.includes(q.dimension) &&
+          (answeredPerDim[q.dimension] ?? 0) < 5
+        ).sort((a, b) => a.order_index - b.order_index)[0]
 
-        // Priority 2: any remaining non-calibration question (keep narrowing the profile)
-        if (!nextQ) {
-          nextQ = QUESTIONS
-            .filter(q => !q.calibration && !answeredCodes.has(q.code) && q.is_active)
-            .sort((a, b) => a.order_index - b.order_index)[0]
-        }
+        // Priority 2: Major dims with < 3 answered (coverage floor)
+        if (!nextQ) nextQ = QUESTIONS.filter(q =>
+          !q.calibration && !answeredCodes.has(q.code) && q.is_active &&
+          MAJOR_DIMS.has(q.dimension as DimensionSlug) &&
+          (answeredPerDim[q.dimension] ?? 0) < 3
+        ).sort((a, b) => a.order_index - b.order_index)[0]
+
+        // Priority 3: Ambiguous Minor dims
+        if (!nextQ) nextQ = QUESTIONS.filter(q =>
+          !q.calibration && !answeredCodes.has(q.code) && q.is_active &&
+          ambiguous.includes(q.dimension)
+        ).sort((a, b) => a.order_index - b.order_index)[0]
+
+        // Priority 4: Any remaining unanswered question
+        if (!nextQ) nextQ = QUESTIONS.filter(q =>
+          !q.calibration && !answeredCodes.has(q.code) && q.is_active
+        ).sort((a, b) => a.order_index - b.order_index)[0]
 
         nextQuestion = nextQ ?? null
       }
@@ -98,7 +135,7 @@ export async function POST(req: Request) {
 
     return Response.json({
       nextQuestion,
-      progress: { answered: answeredCount, total: totalQuestions },
+      progress: { answered: answeredCount, total: Math.min(totalQuestions, HARD_CAP) },
     })
   } catch (err) {
     const msg = err instanceof Error ? err.message : 'Unknown error'
