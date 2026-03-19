@@ -41,13 +41,13 @@ export function ReportSection3({ archetype, matchScore = 99 }: { archetype: Arch
   return (
     <section className="py-8">
       <div className="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden">
-        <div className="bg-slate-900 px-6 py-5">
+        <div className="bg-slate-900 px-4 sm:px-6 py-5">
           <p className="text-xs font-semibold text-slate-500 uppercase tracking-widest">Section 3</p>
           <h2 className="text-2xl font-bold text-white mt-1">Deep Archetype Profile</h2>
           <p className="text-slate-400 text-sm mt-1">A detailed psychological portrait of your archetype</p>
         </div>
 
-        <div className="p-6 md:p-8 space-y-6">
+        <div className="p-4 sm:p-6 md:p-8 space-y-6">
           {!hasContent ? (
             <div className="p-6 rounded-2xl bg-indigo-50 text-indigo text-center">
               <p className="font-semibold">Full profile coming soon</p>

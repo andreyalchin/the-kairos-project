@@ -25,16 +25,16 @@ export function ReportSection1({ result, archetype }: Props) {
           {result.match_score}
         </span>
         <div className="relative space-y-6">
-          <div className="flex items-start justify-between gap-4">
+          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4 sm:gap-6">
             <div>
               <p className="text-indigo-200 text-sm uppercase tracking-widest mb-2">Your Archetype</p>
-              <h1 className="text-4xl md:text-5xl font-bold leading-tight">{archetype.name}</h1>
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight">{archetype.name}</h1>
               <p className="text-indigo-200 text-lg mt-1">{archetype.subtitle}</p>
             </div>
-            <div className="text-right shrink-0">
+            <div className="text-left sm:text-right shrink-0">
               <div className="relative inline-block">
                 <div className="absolute -inset-3 rounded-full bg-white/10 animate-ping" style={{animationDuration:'3s'}} aria-hidden="true" />
-                <p className="relative text-5xl md:text-6xl font-black text-white">{result.match_score}%</p>
+                <p className="relative text-4xl sm:text-5xl md:text-6xl font-black text-white">{result.match_score}%</p>
               </div>
               <p className="text-indigo-200 text-sm">match confidence</p>
               <span className={`inline-block mt-1 text-xs font-medium px-2 py-0.5 rounded-full ${color}`}>

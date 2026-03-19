@@ -135,6 +135,7 @@ function DimensionsTable({ items }: { items: DimItem[] }) {
             onAnimationComplete={() => setMotionOverflow('visible')}
           >
             <div className="rounded-2xl border border-slate-100 overflow-visible">
+              <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
                   <tr className="text-xs uppercase tracking-wider text-slate-400 border-b border-slate-100">
@@ -170,6 +171,7 @@ function DimensionsTable({ items }: { items: DimItem[] }) {
                   })}
                 </tbody>
               </table>
+              </div>
             </div>
 
             <div className="flex justify-center pt-3">
@@ -206,12 +208,12 @@ export function ReportSection2({ result, onSentinelRef }: Props) {
 
   return (
     <div className="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden">
-      <div className="bg-slate-900 px-6 py-5">
+      <div className="bg-slate-900 px-4 sm:px-6 py-5">
         <p className="text-xs font-semibold text-slate-500 uppercase tracking-widest">Section 2</p>
         <h2 className="text-2xl font-bold text-white mt-1">Your Psychological Fingerprint</h2>
         <p className="text-slate-400 text-sm mt-1">29 dimensions measured across all personality domains</p>
       </div>
-      <div className="p-6 md:p-8 space-y-6">
+      <div className="p-4 sm:p-6 md:p-8 space-y-6">
         <DimensionRadarChart scores={scores} />
 
         <div className="grid md:grid-cols-2 gap-6">

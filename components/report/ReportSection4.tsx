@@ -80,15 +80,15 @@ export function ReportSection4({ result }: { result: AssessmentResult }) {
   return (
     <section className="py-8">
       <div className="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden">
-        <div className="bg-slate-900 px-6 py-5">
+        <div className="bg-slate-900 px-4 sm:px-6 py-5">
           <p className="text-xs font-semibold text-slate-500 uppercase tracking-widest">Section 4</p>
           <h2 className="text-2xl font-bold text-white mt-1">Cognitive Profile</h2>
           <p className="text-slate-400 text-sm mt-1">How your mind processes information and solves problems</p>
         </div>
 
-        <div className="p-6 md:p-8 space-y-6">
+        <div className="p-4 sm:p-6 md:p-8 space-y-6">
           <div className="p-6 rounded-2xl bg-gradient-to-r from-indigo-50 to-teal-50 border border-indigo-100 hover:-translate-y-1 transition-transform duration-200">
-            <div className="flex items-start justify-between mb-3">
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-3">
               <div>
                 <div className="flex items-center gap-1 mb-1">
                   <p className="text-xs text-indigo uppercase tracking-widest font-medium">Cognitive Operating System</p>
@@ -101,7 +101,7 @@ export function ReportSection4({ result }: { result: AssessmentResult }) {
               </div>
               <div className="text-right">
                 <div className="flex items-center justify-end gap-1">
-                  <p className="text-4xl font-black text-indigo">{cos.composite}</p>
+                  <p className="text-3xl sm:text-4xl font-black text-indigo">{cos.composite}</p>
                   <InfoTip
                     title="Cognitive Composite"
                     body="Equally weighted average of your 5 cognitive dimension scores. 50 = population average. 70+ represents high cognitive performance across this cluster. This composite predicts performance in complex, ambiguous, and intellectually demanding roles."

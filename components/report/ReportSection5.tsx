@@ -43,14 +43,14 @@ export function ReportSection5({ result, archetype }: { result: AssessmentResult
   return (
     <section className="py-8">
       <div className="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden">
-        <div className="bg-slate-900 px-6 py-5">
+        <div className="bg-slate-900 px-4 sm:px-6 py-5">
           <p className="text-xs font-semibold text-slate-500 uppercase tracking-widest">Section 5</p>
           <h2 className="text-2xl font-bold text-white mt-1">Motivational Architecture</h2>
           <p className="text-slate-400 text-sm mt-1">The drives and conditions that fuel your best performance</p>
         </div>
 
-        <div className="p-6 md:p-8 space-y-6">
-          <div className="grid grid-cols-2 gap-4">
+        <div className="p-4 sm:p-6 md:p-8 space-y-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="p-5 rounded-2xl bg-teal-50 border border-teal-100 hover:-translate-y-1 transition-transform duration-200">
               <p className="text-xs text-teal-600 uppercase tracking-widest font-medium mb-1">Primary Driver</p>
               <p className="text-xl font-bold text-teal">{mot.primary_driver}</p>
