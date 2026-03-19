@@ -82,7 +82,7 @@ export const MINOR_DIMS = new Set(
 )
 ```
 
-Total: **20 Major + 15 Minor = 35 active radar dimensions** (`founder_potential` remains a derived composite, excluded from radar — unchanged).
+Total: **20 Major + 15 Minor = 35 active radar dimensions** (`founder_potential` remains a derived composite, excluded from radar — unchanged). The `DimensionSlug` union has **36 entries total** (35 active + `founder_potential`). The radar and report sections iterate 35 active dims; the type system tracks all 36 slugs.
 
 ---
 
@@ -140,13 +140,13 @@ This flows through automatically: `DimensionScores`, `Question.dimension`, `Resp
 - Subtotal Major: **40 calibration questions** (2 per Major dim × 20 dims)
 - 15 Minor dims × 2 calibration flags each = 30
 - Subtotal Minor: **30 calibration questions** (2 per Minor dim × 15 dims)
-- 4 cross-dimensional tiebreaker questions: **10 calibration questions** (a few dims get a 3rd)
-- **Total Phase 1 calibration: 80** ✓
+- 10 cross-dimensional tiebreaker questions: **10 calibration questions** (10 dims get a 3rd flag)
+- **Total Phase 1 calibration: 80** ✓  (40 + 30 + 10 = 80)
 
-Each existing dimension's calibration count:
-- Major dims: bump from 1 existing calibration flag → 2 (add 1 new calibration-flagged question per Major dim)
-- Minor dims: bump from 1 existing calibration flag → 2 (add 1 new calibration-flagged question per Minor dim)
-- 10 dims (mix of Major and Minor) get a 3rd calibration question as tiebreakers
+Each dimension's calibration target:
+- Every Major dim must have exactly **2** calibration-flagged questions (existing dims that already have 2 need no new calibration question; those with only 1 need exactly 1 new calibration-flagged question added)
+- Every Minor dim must have exactly **2** calibration-flagged questions (same logic)
+- 10 selected dims (mix of Major and Minor, chosen for highest archetype-discriminating power) get a **3rd** calibration question as a tiebreaker
 
 Existing questions already flagged `calibration: true` count toward these targets. Approximately **39 existing calibration flags** remain; ~41 new calibration flags are added.
 
@@ -178,7 +178,7 @@ No existing questions are deleted or modified. The scoring layer handles both fo
 
 ### New dimension question samples
 
-*(See attached question samples in original design — all codes, types, calibration flags, weights, and tier assignments are specified per question.)*
+**Note: The actual question content (183 new questions with codes, types, calibration flags, weights, tier assignments, and answer options) is a separate deliverable that must be completed before Step 4 (lib/questions.ts update) can begin.** The question bank must be drafted and reviewed before implementation. The specs above define the structural requirements; the content itself must be authored separately.
 
 All new question codes follow existing naming convention: `DM_01`, `EI_01`, `EX_01`, `MO_01`, `TW_01`, `PE_01`, `ED_01`, etc.
 
@@ -255,6 +255,11 @@ const isConfident =
 
 **5c. Adaptive question selection priority:**
 ```ts
+// Ambiguous dims: any dim with score in 40–60 range (same threshold as confidence gate)
+const ambiguous = Object.entries(scores)
+  .filter(([, s]) => s !== undefined && s >= 40 && s <= 60)
+  .map(([dim]) => dim)
+
 // Priority 1: Unanswered ambiguous Major dims (score 40–60, < 5 answered)
 let nextQ = QUESTIONS.filter(q =>
   !q.calibration && !answeredCodes.has(q.code) && q.is_active &&
@@ -306,7 +311,7 @@ New dimensions not yet answered default to 50 (population mean), which is neutra
 
 ## 7. Norm Data (`lib/norms.ts`)
 
-Add entries for all 7 new dimensions. New dimensions use a **flat distribution centered at 50** until real data is collected. The `getPercentile` function already handles missing slugs gracefully (returns 50 by default), but explicit entries are added for clarity:
+Add entries for all 7 new dimensions. New dimensions use a **flat distribution centered at 50** until real data is collected. **Critical:** `getPercentile` in `lib/norms.ts` throws `Error('Unknown dimension: ...')` for any slug not present in the norm table — it does NOT fall back to 50. These norm entries are **mandatory** before any new dimension scores can be rendered in report sections. This step is a hard prerequisite for steps 8–11 in the implementation order.
 
 ```ts
 // In NORM_PARAMS (or equivalent structure in lib/norms.ts):
@@ -396,11 +401,11 @@ export function DimensionRadarChart({ scores }: Props) {
       </ResponsiveContainer>
       <div className="flex justify-center gap-6 mt-2 text-xs text-slate-500">
         <span className="flex items-center gap-1.5">
-          <span className="w-3 h-3 rounded-sm bg-indigo inline-block opacity-70" />
+          <span className="w-3 h-3 rounded-sm inline-block opacity-70" style={{ backgroundColor: '#3730A3' }} />
           Major dimensions
         </span>
         <span className="flex items-center gap-1.5">
-          <span className="w-3 h-3 rounded-sm bg-teal inline-block opacity-60" />
+          <span className="w-3 h-3 rounded-sm inline-block opacity-60" style={{ backgroundColor: '#0F766E' }} />
           Supporting dimensions
         </span>
       </div>
@@ -412,6 +417,13 @@ export function DimensionRadarChart({ scores }: Props) {
 ### Custom tick with Major/Minor coloring
 
 ```tsx
+interface CustomTickProps {
+  x?: number
+  y?: number
+  payload?: { value: string }
+  textAnchor?: string
+}
+
 function CustomTick({ x = 0, y = 0, payload, textAnchor, isMobile = false }: CustomTickProps & { isMobile?: boolean }) {
   const label = payload?.value ?? ''
   const slug = RADAR_ORDER.find(d => d.shortLabel === label)?.slug
@@ -479,10 +491,28 @@ Minor dimensions appear on the radar chart and in the expanded dimensions table 
 
 | New dimension | Section | Placement |
 |--------------|---------|-----------|
-| `emotional_intelligence` | Section 4 (Cognitive Profile) | New `DimCard`-style card with EI-specific insight copy |
-| `decision_making` | Section 4 (Cognitive Profile) | New `DimCard`-style card with DM-specific insight copy |
-| `execution` | Section 5 (Motivational DNA) | New `DimCard`-style card with execution insight copy |
+| `emotional_intelligence` | Section 4 (Cognitive Profile) | Add to `COG_DIMS` array; add `COG_LABELS['emotional_intelligence'] = 'Emotional Intelligence'`; add description and `cogInsight()` case (see copy below) |
+| `decision_making` | Section 4 (Cognitive Profile) | Add to `COG_DIMS` array; add `COG_LABELS['decision_making'] = 'Decision Making'`; add description and `cogInsight()` case (see copy below) |
+| `execution` | Section 5 (Motivational DNA) | Standalone `DimCard`-style card **below** the existing driver/drain pattern — do NOT add to `MOT_DIMS`; `execution` does not participate in driver/drain sorting |
 | `managing_others` | Section 6 (Leadership Profile) | New `DimCard`-style card with MO insight copy |
+
+#### Section 4 copy for new dims
+
+**`emotional_intelligence` — `COG_DESCRIPTIONS` entry:**
+> "Your ability to accurately read emotions in yourself and others and use that awareness to guide behavior. High scorers navigate interpersonal situations with precision — they detect tension early, adapt their approach in real time, and build trust consistently."
+
+**`emotional_intelligence` — `cogInsight()` cases:**
+- **high (≥75):** "At {score} ({pStr}), your emotional intelligence is a genuine edge. You read rooms and people with accuracy, adapt your approach in real time, and build trust where others create friction. In leadership and collaboration contexts, this is compounding."
+- **mid (50–74):** "Your emotional intelligence score of {score} ({pStr}) is solid. You pick up on emotional cues when you're paying attention and can regulate your responses under moderate pressure. Developing more consistent awareness in high-stakes interactions will move this higher."
+- **low (<50):** "At {score} ({pStr}), emotional intelligence is a development area. You may miss interpersonal signals that affect outcomes — not because you lack empathy, but because explicit attention to emotional dynamics isn't yet habitual. This is highly learnable with deliberate practice."
+
+**`decision_making` — `COG_DESCRIPTIONS` entry:**
+> "Quality of judgment under uncertainty — how well you balance speed with accuracy, gather the right information without overloading, and commit to choices with appropriate confidence. High scorers make better calls faster with less second-guessing."
+
+**`decision_making` — `cogInsight()` cases:**
+- **high (≥75):** "Your decision making score of {score} ({pStr}) reflects strong judgment under uncertainty. You gather sufficient information, commit with appropriate confidence, and avoid the twin traps of analysis paralysis and premature closure. This is a rare and high-leverage capability."
+- **mid (50–74):** "At {score} ({pStr}), your decision making is functional but variable. You perform well in familiar domains where your models are calibrated. In novel or high-stakes situations, building explicit decision frameworks — even simple ones — will improve consistency."
+- **low (<50):** "Your decision making score of {score} ({pStr}) suggests that judgment under uncertainty is a development priority. You may over-rely on incomplete information, avoid committing until certainty arrives, or reverse decisions under pressure. Deliberate exposure to low-stakes decision practice builds this capacity over time."
 
 New Minor dimensions (`teamwork`, `persuasion`, `embracing_differences`) appear in the expanded dimensions table (Section 2) and radar only. No dedicated report cards — consistent with all other Minor dimensions.
 
@@ -494,14 +524,14 @@ New Minor dimensions (`teamwork`, `persuasion`, `embracing_differences`) appear 
 |-------|------|--------|
 | 1 | `lib/types.ts` | Add 7 new DimensionSlug values |
 | 2 | `lib/dimensions.ts` | **NEW** — full dimension registry |
-| 3 | `lib/norms.ts` | Add 7 new dimension norm entries |
+| 3 | `lib/norms.ts` | Add 7 new dimension norm entries (**mandatory** — getPercentile throws on missing slugs) |
 | 4 | `lib/questions.ts` | Add ~183 new questions, maintain calibration count = 80 |
 | 5 | `lib/scoring.ts` | 4-point scale detection and normalization |
-| 6 | `app/api/assessment/respond/route.ts` | New confidence gate, adaptive priority, hard cap |
-| 7 | `components/charts/RadarChart.tsx` | Dual-layer Major/Minor radar |
-| 8 | `components/report/ReportSection2.tsx` | Major-only superpowers, M/S badges in table |
-| 9 | `components/report/ReportSection4.tsx` | Add EI and DM cards |
-| 10 | `components/report/ReportSection5.tsx` | Add execution card |
+| 6 | `app/api/assessment/respond/route.ts` | New confidence gate, adaptive priority, ambiguous declaration, hard cap |
+| 7 | `components/charts/RadarChart.tsx` | Dual-layer Major/Minor radar; import from lib/dimensions.ts |
+| 8 | `components/report/ReportSection2.tsx` | Replace local `DIM_DESCRIPTIONS` constant with import from `lib/dimensions.ts`; Major-only superpowers; M/S badges in table |
+| 9 | `components/report/ReportSection4.tsx` | Replace local `COG_DIMS`, `COG_LABELS`, `COG_DESCRIPTIONS` with imports from `lib/dimensions.ts`; add EI and DM to `COG_DIMS` with full copy |
+| 10 | `components/report/ReportSection5.tsx` | Add standalone execution card below existing driver/drain section |
 | 11 | `components/report/ReportSection6.tsx` | Add managing_others card |
 
 ---
@@ -521,7 +551,7 @@ New Minor dimensions (`teamwork`, `persuasion`, `embracing_differences`) appear 
 - [ ] `lib/types.ts` DimensionSlug union has exactly 36 entries (29 existing + 7 new)
 - [ ] `QUESTIONS.filter(q => q.calibration && q.is_active).length === 80`
 - [ ] Total question bank has ≥ 265 questions
-- [ ] All 7 new dimensions have ≥ 5 questions each
+- [ ] All 4 new Major dimensions have ≥ 8 questions each; all 3 new Minor dimensions have ≥ 5 questions each
 - [ ] Assessment completes in 80–132 questions depending on confidence
 - [ ] Confidence gate uses: topComposite ≥ 81, margin ≥ 10, ambiguousMajorCount ≤ 2, allMajorDimsCovered
 - [ ] Radar renders dual-layer: indigo fill for majorScore, teal fill for minorScore
