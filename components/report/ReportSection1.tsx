@@ -21,6 +21,9 @@ export function ReportSection1({ result, archetype }: Props) {
         <div className="absolute -right-4 -top-4 opacity-60 pointer-events-none select-none hidden sm:block">
           <ArchetypeIllustration archetype={archetype} />
         </div>
+        <span className="absolute right-6 bottom-4 text-[10rem] font-black text-white/5 leading-none select-none pointer-events-none" aria-hidden="true">
+          {result.match_score}
+        </span>
         <div className="relative space-y-6">
           <div className="flex items-start justify-between gap-4">
             <div>
@@ -29,7 +32,10 @@ export function ReportSection1({ result, archetype }: Props) {
               <p className="text-indigo-200 text-lg mt-1">{archetype.subtitle}</p>
             </div>
             <div className="text-right shrink-0">
-              <span className="text-5xl font-bold">{result.match_score}%</span>
+              <div className="relative inline-block">
+                <div className="absolute -inset-3 rounded-full bg-white/10 animate-ping" style={{animationDuration:'3s'}} aria-hidden="true" />
+                <p className="relative text-5xl md:text-6xl font-black text-white">{result.match_score}%</p>
+              </div>
               <p className="text-indigo-200 text-sm">match confidence</p>
               <span className={`inline-block mt-1 text-xs font-medium px-2 py-0.5 rounded-full ${color}`}>
                 {label}
@@ -38,7 +44,7 @@ export function ReportSection1({ result, archetype }: Props) {
           </div>
           <div className="flex flex-wrap gap-2">
             {archetype.signature3Words.map(w => (
-              <Badge key={w} className="bg-white/20 text-white border-white/20">{w}</Badge>
+              <Badge key={w} className="bg-white/15 border border-white/20 backdrop-blur-sm text-white">{w}</Badge>
             ))}
           </div>
           <blockquote className="border-l-4 border-indigo-300 pl-4 italic text-indigo-100">

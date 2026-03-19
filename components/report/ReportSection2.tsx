@@ -77,7 +77,7 @@ function DimCard({ slug, score, variant }: { slug: string; score: number; varian
   const isSuper = variant === 'super'
 
   return (
-    <div className={`p-4 rounded-2xl border ${isSuper ? 'bg-teal-50 border-teal-100' : 'bg-slate-50 border-slate-100'}`}>
+    <div className={`p-4 rounded-2xl border hover:-translate-y-1 transition-transform duration-200 ${isSuper ? 'bg-teal-50 border-teal-100' : 'bg-slate-50 border-slate-100'}`}>
       <div className="flex items-center justify-between mb-2">
         <span className={`text-sm font-semibold ${isSuper ? 'text-teal-800' : 'text-slate-600'}`}>{label}</span>
         <div className="flex items-center gap-2">
@@ -87,7 +87,7 @@ function DimCard({ slug, score, variant }: { slug: string; score: number; varian
           <span className={`font-bold text-sm ${isSuper ? 'text-teal' : 'text-slate-500'}`}>{score}</span>
         </div>
       </div>
-      <div className="h-1.5 bg-white rounded-full mb-2 overflow-hidden">
+      <div className="h-2 bg-white rounded-full mb-2 overflow-hidden">
         <div
           className={`h-full rounded-full ${isSuper ? 'bg-gradient-to-r from-teal to-teal-400' : 'bg-slate-300'}`}
           style={{ width: `${score}%` }}
@@ -156,7 +156,7 @@ function DimensionsTable({ items }: { items: DimItem[] }) {
                           </span>
                         </td>
                         <td className="px-4 py-3">
-                          <div className="h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                          <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
                             <div
                               className="h-full bg-indigo rounded-full"
                               style={{ width: `${item.score}%` }}
@@ -205,35 +205,41 @@ export function ReportSection2({ result, onSentinelRef }: Props) {
   }))
 
   return (
-    <section className="space-y-8 py-8">
-      <h2 className="text-2xl font-bold text-text">Your Psychological Fingerprint</h2>
-      <DimensionRadarChart scores={scores} />
-
-      <div className="grid md:grid-cols-2 gap-6">
-        <div className="space-y-3">
-          <div className="flex items-center gap-2 mb-1">
-            <span className="w-2 h-2 rounded-full bg-teal inline-block" />
-            <h3 className="font-semibold text-teal">Superpowers</h3>
-          </div>
-          <p className="text-xs text-slate-400 -mt-2">Your three highest-scoring dimensions relative to population norms.</p>
-          {superpowers.map(([k, v]) => (
-            <DimCard key={k} slug={k} score={v} variant="super" />
-          ))}
-        </div>
-        <div className="space-y-3">
-          <div className="flex items-center gap-2 mb-1">
-            <span className="w-2 h-2 rounded-full bg-slate-300 inline-block" />
-            <h3 className="font-semibold text-slate-500">Growth Areas</h3>
-          </div>
-          <p className="text-xs text-slate-400 -mt-2">Your two lowest-scoring dimensions — highest-leverage development targets.</p>
-          {growthAreas.map(([k, v]) => (
-            <DimCard key={k} slug={k} score={v} variant="growth" />
-          ))}
-        </div>
+    <div className="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden">
+      <div className="bg-slate-900 px-6 py-5">
+        <p className="text-xs font-semibold text-slate-500 uppercase tracking-widest">Section 2</p>
+        <h2 className="text-2xl font-bold text-white mt-1">Your Psychological Fingerprint</h2>
+        <p className="text-slate-400 text-sm mt-1">29 dimensions measured across all personality domains</p>
       </div>
+      <div className="p-6 md:p-8 space-y-6">
+        <DimensionRadarChart scores={scores} />
 
-      <DimensionsTable items={barItems} />
-      <div ref={onSentinelRef} id="section-2-sentinel" className="h-px" />
-    </section>
+        <div className="grid md:grid-cols-2 gap-6">
+          <div className="space-y-3">
+            <div className="flex items-center gap-2 mb-1">
+              <span className="w-2 h-2 rounded-full bg-teal inline-block" />
+              <h3 className="font-semibold text-teal">Superpowers</h3>
+            </div>
+            <p className="text-xs text-slate-400 -mt-2">Your three highest-scoring dimensions relative to population norms.</p>
+            {superpowers.map(([k, v]) => (
+              <DimCard key={k} slug={k} score={v} variant="super" />
+            ))}
+          </div>
+          <div className="space-y-3">
+            <div className="flex items-center gap-2 mb-1">
+              <span className="w-2 h-2 rounded-full bg-slate-300 inline-block" />
+              <h3 className="font-semibold text-slate-500">Growth Areas</h3>
+            </div>
+            <p className="text-xs text-slate-400 -mt-2">Your two lowest-scoring dimensions — highest-leverage development targets.</p>
+            {growthAreas.map(([k, v]) => (
+              <DimCard key={k} slug={k} score={v} variant="growth" />
+            ))}
+          </div>
+        </div>
+
+        <DimensionsTable items={barItems} />
+        <div ref={onSentinelRef} id="section-2-sentinel" className="h-px" />
+      </div>
+    </div>
   )
 }

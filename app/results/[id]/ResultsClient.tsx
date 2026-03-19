@@ -74,7 +74,7 @@ export function ResultsClient({ result, archetypeContent, resultId, isAuthentica
 
   return (
     <div className="min-h-screen bg-bg">
-      <div className="max-w-3xl mx-auto px-4 py-8 space-y-2">
+      <div className="max-w-3xl mx-auto px-4 py-10 space-y-6">
         <ReportSection1 result={result} archetype={archetypeContent} />
         <ReportSection2 result={result} onSentinelRef={sentinelRef} />
         <div className={!authenticated && showGate ? 'blur-sm pointer-events-none select-none' : ''} style={{ transition: 'filter 0.3s' }}>
