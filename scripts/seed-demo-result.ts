@@ -8,7 +8,7 @@ import { assignArchetype, ARCHETYPES } from '../lib/archetypes'
 import type { Response as AssessmentResponse, DimensionScores } from '../lib/types'
 dotenv.config({ path: '.env.local' })
 
-const DEMO_RESULT_ID = '00000000-0000-0000-0000-000000000001'
+const DEMO_RESULT_ID = '00000000-0000-0000-0000-000000000002'
 const DEMO_SESSION = 'demo-session-strategic-visionary'
 
 const supabase = createClient(
