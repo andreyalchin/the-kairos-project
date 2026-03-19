@@ -208,110 +208,37 @@ function FeatureList({ features, roadmap }: { features: Feature[]; roadmap: Feat
   )
 }
 
-export default function PricingPage() {
+function DarkFeatureList({ features, roadmap }: { features: Feature[]; roadmap: Feature[] }) {
   return (
-    <div className="min-h-screen bg-bg">
-
-      {/* Beta banner */}
-      <div className="bg-teal text-white text-center py-2.5 px-4">
-        <p className="text-sm font-medium">
-          Beta is live — full individual reports are free for everyone right now.{' '}
-          <Link href="/assessment" className="underline font-semibold hover:opacity-80">
-            Take yours before pricing launches →
-          </Link>
-        </p>
-      </div>
-
-      {/* Header */}
-      <div className="max-w-5xl mx-auto px-4 pt-14 pb-10 text-center space-y-4">
-        <h1 className="text-4xl md:text-5xl font-bold text-text">Transparent Pricing</h1>
-        <p className="text-slate-500 text-lg max-w-xl mx-auto">
-          Free for individuals during beta. Honest pricing after. No dark patterns, no bait-and-switch.
-        </p>
-      </div>
-
-      {/* Tier cards */}
-      <div className="max-w-7xl mx-auto px-4 pb-16">
-
-        {/* Individual tiers row */}
-        <div className="grid md:grid-cols-2 gap-5 mb-5 max-w-3xl mx-auto">
-          {TIERS.slice(0, 2).map(tier => (
-            <TierCard key={tier.name} tier={tier} />
-          ))}
+    <div className="space-y-2">
+      {features.map(f => (
+        <div key={f.text} className="flex gap-2.5 text-sm">
+          <span className={`shrink-0 font-bold mt-0.5 ${f.live ? 'text-teal' : 'text-slate-600'}`}>
+            {f.live ? '✓' : '◎'}
+          </span>
+          <span className={f.live ? 'text-slate-300' : 'text-slate-600'}>{f.text}</span>
         </div>
-
-        {/* Business tiers row */}
-        <div className="grid md:grid-cols-3 gap-5">
-          {TIERS.slice(2).map(tier => (
-            <TierCard key={tier.name} tier={tier} />
-          ))}
-        </div>
-
-        {/* Legend */}
-        <div className="flex gap-6 justify-center mt-6 text-xs text-slate-400">
-          <span className="flex gap-1.5 items-center"><span className="text-teal font-bold">✓</span> Available now</span>
-          <span className="flex gap-1.5 items-center"><span className="text-slate-300 font-bold">◎</span> In development</span>
-        </div>
-      </div>
-
-      {/* Why pricing is designed this way */}
-      <div className="bg-white border-y border-slate-100 py-16">
-        <div className="max-w-4xl mx-auto px-4 space-y-8">
-          <h2 className="text-2xl font-bold text-text text-center">Why we built it this way</h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="space-y-2">
-              <p className="font-semibold text-text">Individuals first</p>
-              <p className="text-sm text-slate-600">
-                Most psychometric tools cost hundreds of dollars per report when sold through consultants. At $4.99, we are making professional-grade self-knowledge accessible to anyone who wants it — not just people at companies with HR budgets.
-              </p>
-            </div>
-            <div className="space-y-2">
-              <p className="font-semibold text-text">No subscription traps</p>
-              <p className="text-sm text-slate-600">
-                Individual reports are pay-per-use. You own your report permanently after one payment. We do not charge you monthly to access something you already paid for. That model exists to extract value from customers — not to create it.
-              </p>
-            </div>
-            <div className="space-y-2">
-              <p className="font-semibold text-text">Beta access is a real gift</p>
-              <p className="text-sm text-slate-600">
-                Full reports are free during beta because we need real data to keep improving our models. You are helping us build a better product. In exchange, you get a report that would cost $50–$300 elsewhere, at no cost. That is a fair trade.
-              </p>
-            </div>
+      ))}
+      {roadmap.length > 0 && (
+        <>
+          <div className="border-t border-slate-700 pt-2 mt-3">
+            <p className="text-xs font-semibold text-slate-600 uppercase tracking-wide mb-2">On the roadmap</p>
           </div>
-        </div>
-      </div>
-
-      {/* FAQ */}
-      <div className="max-w-3xl mx-auto px-4 py-16 space-y-6">
-        <h2 className="text-2xl font-bold text-text text-center mb-8">Common questions</h2>
-        {FAQ.map(({ q, a }) => (
-          <div key={q} className="bg-white rounded-2xl border border-slate-100 p-6 space-y-2">
-            <p className="font-semibold text-text">{q}</p>
-            <p className="text-slate-600 text-sm leading-relaxed">{a}</p>
-          </div>
-        ))}
-      </div>
-
-      {/* CTA */}
-      <div className="max-w-3xl mx-auto px-4 pb-20 text-center space-y-4">
-        <h2 className="text-2xl font-bold text-text">Still free right now. Not for much longer.</h2>
-        <p className="text-slate-500">Take the full assessment before paid plans launch.</p>
-        <Link
-          href="/assessment"
-          className="inline-block bg-indigo text-white px-8 py-3.5 rounded-xl font-semibold hover:bg-indigo-600 transition-colors"
-        >
-          Take the Free Assessment
-        </Link>
-        <p className="text-xs text-slate-400">No account required to start. 15–20 minutes.</p>
-      </div>
-
+          {roadmap.map(f => (
+            <div key={f.text} className="flex gap-2.5 text-sm">
+              <span className="shrink-0 text-slate-600 font-bold mt-0.5">◎</span>
+              <span className="text-slate-600">{f.text}</span>
+            </div>
+          ))}
+        </>
+      )}
     </div>
   )
 }
 
 function TierCard({ tier }: { tier: Tier }) {
   return (
-    <div className={`bg-white rounded-2xl border flex flex-col ${tier.highlight ? 'border-2 border-indigo shadow-lg shadow-indigo/10' : 'border-slate-100'}`}>
+    <div className={`bg-white rounded-2xl border flex flex-col hover:-translate-y-1 transition-transform duration-200 ${tier.highlight ? 'border-2 border-indigo shadow-lg shadow-indigo/10' : 'border-slate-100'}`}>
 
       {/* Top */}
       <div className="p-6 border-b border-slate-100 space-y-3">
@@ -360,6 +287,167 @@ function TierCard({ tier }: { tier: Tier }) {
         )}
         <FeatureList features={tier.features} roadmap={tier.roadmap} />
       </div>
+
+    </div>
+  )
+}
+
+function DarkTierCard({ tier }: { tier: Tier }) {
+  return (
+    <div className="bg-slate-800 rounded-2xl border border-slate-700 flex flex-col hover:-translate-y-1 transition-transform duration-200">
+
+      {/* Top */}
+      <div className="p-6 border-b border-slate-700 space-y-3">
+        <div className="flex items-start justify-between gap-2">
+          <div>
+            <p className="font-bold text-white text-lg leading-tight">{tier.name}</p>
+            <p className="text-xs text-slate-400 mt-0.5">{tier.audience}</p>
+          </div>
+          {tier.badge && (
+            <span className="text-xs font-semibold px-2.5 py-1 rounded-full shrink-0 bg-slate-700 text-slate-300">
+              {tier.badge}
+            </span>
+          )}
+        </div>
+        <div>
+          <p className="text-3xl font-bold text-teal">
+            {tier.price}
+            <span className="text-base font-normal text-slate-400">{tier.period}</span>
+          </p>
+          <p className="text-xs text-slate-500 mt-0.5">{tier.priceSub}</p>
+        </div>
+        <a
+          href={tier.ctaHref}
+          className="block text-center px-4 py-2.5 rounded-xl text-sm font-semibold transition-colors border border-teal text-teal hover:bg-teal hover:text-white"
+        >
+          {tier.cta}
+        </a>
+      </div>
+
+      {/* Features */}
+      <div className="p-6 flex-1">
+        <DarkFeatureList features={tier.features} roadmap={tier.roadmap} />
+      </div>
+
+    </div>
+  )
+}
+
+export default function PricingPage() {
+  return (
+    <div className="min-h-screen bg-bg">
+
+      {/* Hero */}
+      <section className="relative overflow-hidden bg-slate-900 py-20">
+        <span className="absolute right-8 bottom-4 text-[12rem] font-black text-white/5 leading-none select-none pointer-events-none" aria-hidden="true">$0</span>
+        <div className="relative max-w-4xl mx-auto px-4 text-center space-y-5">
+          <div className="inline-block bg-teal/20 text-teal text-xs font-semibold px-3 py-1 rounded-full">Beta — Full reports free right now</div>
+          <h1 className="text-4xl md:text-5xl font-bold text-white">Transparent Pricing</h1>
+          <p className="text-slate-400 text-lg max-w-xl mx-auto">
+            Free for individuals during beta. Honest pricing after. No dark patterns, no bait-and-switch.
+          </p>
+        </div>
+      </section>
+
+      {/* Beta banner */}
+      <div className="bg-teal text-white text-center py-2.5 px-4">
+        <p className="text-sm font-medium">
+          Beta is live — full individual reports are free for everyone right now.{' '}
+          <Link href="/assessment" className="underline font-semibold hover:opacity-80">
+            Take yours before pricing launches →
+          </Link>
+        </p>
+      </div>
+
+      {/* Individual tiers */}
+      <section className="bg-bg py-20">
+        <div className="max-w-5xl mx-auto px-4">
+          <h2 className="text-2xl font-bold text-text text-center mb-2">For individuals</h2>
+          <p className="text-slate-500 text-center mb-10">Personal growth, career clarity, self-knowledge.</p>
+          <div className="grid md:grid-cols-2 gap-5 max-w-3xl mx-auto">
+            {TIERS.slice(0, 2).map(tier => (
+              <TierCard key={tier.name} tier={tier} />
+            ))}
+          </div>
+          <div className="flex gap-6 justify-center mt-6 text-xs text-slate-400">
+            <span className="flex gap-1.5 items-center"><span className="text-teal font-bold">✓</span> Available now</span>
+            <span className="flex gap-1.5 items-center"><span className="text-slate-300 font-bold">◎</span> In development</span>
+          </div>
+        </div>
+      </section>
+
+      {/* Business tiers */}
+      <section className="bg-slate-900 py-20">
+        <div className="max-w-7xl mx-auto px-4">
+          <h2 className="text-2xl font-bold text-white text-center mb-2">For teams and platforms</h2>
+          <p className="text-slate-400 text-center mb-10">Hiring intelligence, candidate screening, API access.</p>
+          <div className="grid md:grid-cols-3 gap-5">
+            {TIERS.slice(2).map(tier => (
+              <DarkTierCard key={tier.name} tier={tier} />
+            ))}
+          </div>
+          <div className="flex gap-6 justify-center mt-6 text-xs text-slate-500">
+            <span className="flex gap-1.5 items-center"><span className="text-teal font-bold">✓</span> Available now</span>
+            <span className="flex gap-1.5 items-center"><span className="text-slate-600 font-bold">◎</span> In development</span>
+          </div>
+        </div>
+      </section>
+
+      {/* Why we built it this way */}
+      <section className="bg-white py-20 border-y border-slate-100">
+        <div className="max-w-5xl mx-auto px-4">
+          <h2 className="text-2xl font-bold text-text text-center mb-10">Why we built it this way</h2>
+          <div className="grid md:grid-cols-3 gap-5">
+            <div className="bg-indigo-50 border border-indigo/20 rounded-2xl p-6 space-y-2 hover:-translate-y-1 transition-transform duration-200">
+              <p className="font-semibold text-text">Individuals first</p>
+              <p className="text-sm text-slate-600 leading-relaxed">
+                Most psychometric tools cost hundreds of dollars per report when sold through consultants. At $4.99, we are making professional-grade self-knowledge accessible to anyone who wants it — not just people at companies with HR budgets.
+              </p>
+            </div>
+            <div className="bg-teal-50 border border-teal/20 rounded-2xl p-6 space-y-2 hover:-translate-y-1 transition-transform duration-200">
+              <p className="font-semibold text-text">No subscription traps</p>
+              <p className="text-sm text-slate-600 leading-relaxed">
+                Individual reports are pay-per-use. You own your report permanently after one payment. We do not charge you monthly to access something you already paid for. That model exists to extract value from customers — not to create it.
+              </p>
+            </div>
+            <div className="bg-violet-50 border border-violet-200/50 rounded-2xl p-6 space-y-2 hover:-translate-y-1 transition-transform duration-200">
+              <p className="font-semibold text-text">Beta access is a real gift</p>
+              <p className="text-sm text-slate-600 leading-relaxed">
+                Full reports are free during beta because we need real data to keep improving our models. You are helping us build a better product. In exchange, you get a report that would cost $50–$300 elsewhere, at no cost. That is a fair trade.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <div className="max-w-3xl mx-auto px-4 py-16 space-y-6">
+        <h2 className="text-2xl font-bold text-text text-center mb-8">Common questions</h2>
+        {FAQ.map(({ q, a }) => (
+          <div key={q} className="bg-white rounded-2xl border border-slate-100 p-6 space-y-2">
+            <p className="font-semibold text-text">{q}</p>
+            <p className="text-slate-600 text-sm leading-relaxed">{a}</p>
+          </div>
+        ))}
+      </div>
+
+      {/* CTA */}
+      <section className="relative overflow-hidden bg-gradient-to-br from-indigo via-indigo-800 to-indigo-950 py-24 text-center">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_0%,#6366f130,transparent_65%)]" />
+        <div className="relative max-w-3xl mx-auto px-4 space-y-5">
+          <h2 className="text-3xl md:text-4xl font-bold text-white">Still free right now. Not for much longer.</h2>
+          <p className="text-indigo-200 text-lg">Take the full assessment before paid plans launch.</p>
+          <div className="pt-2">
+            <Link
+              href="/assessment"
+              className="inline-block bg-white text-indigo px-10 py-4 rounded-xl text-lg font-bold hover:bg-indigo-50 hover:scale-105 transition-all"
+            >
+              Take the Free Assessment
+            </Link>
+          </div>
+          <p className="text-indigo-300 text-xs">No account required to start. 15–20 minutes.</p>
+        </div>
+      </section>
 
     </div>
   )
