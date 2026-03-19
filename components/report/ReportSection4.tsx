@@ -78,74 +78,82 @@ export function ReportSection4({ result }: { result: AssessmentResult }) {
   const rs = responseStyle(avgResponseMs)
 
   return (
-    <section className="space-y-8 py-8">
-      <h2 className="text-2xl font-bold text-text">Cognitive Profile</h2>
-
-      <div className="p-6 rounded-2xl bg-gradient-to-r from-indigo-50 to-teal-50 border border-indigo-100">
-        <div className="flex items-start justify-between mb-3">
-          <div>
-            <div className="flex items-center gap-1 mb-1">
-              <p className="text-xs text-indigo uppercase tracking-widest font-medium">Cognitive Operating System</p>
-              <InfoTip
-                title="Cognitive Operating System"
-                body="A composite of your 5 cognitive dimensions — agility, executive function, attention control, systems thinking, and creative intelligence. It describes your natural information processing style and the cognitive contexts where you create the most value."
-              />
-            </div>
-            <p className="text-2xl font-bold text-text">{cos.primary_style}</p>
-          </div>
-          <div className="text-right">
-            <div className="flex items-center justify-end gap-1">
-              <p className="text-3xl font-bold text-indigo">{cos.composite}</p>
-              <InfoTip
-                title="Cognitive Composite"
-                body="Equally weighted average of your 5 cognitive dimension scores. 50 = population average. 70+ represents high cognitive performance across this cluster. This composite predicts performance in complex, ambiguous, and intellectually demanding roles."
-              />
-            </div>
-            <p className="text-xs text-slate-500">composite</p>
-          </div>
+    <section className="py-8">
+      <div className="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden">
+        <div className="bg-slate-900 px-6 py-5">
+          <p className="text-xs font-semibold text-slate-500 uppercase tracking-widest">Section 4</p>
+          <h2 className="text-2xl font-bold text-white mt-1">Cognitive Profile</h2>
+          <p className="text-slate-400 text-sm mt-1">How your mind processes information and solves problems</p>
         </div>
-        <p className="text-slate-600 text-sm leading-relaxed">{STYLE_DESCRIPTIONS[cos.primary_style] ?? cos.description}</p>
-      </div>
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6">
-        {COG_DIMS.map(dim => (
-          <GaugeChart key={dim} score={result.scores[dim]} label={COG_LABELS[dim]} />
-        ))}
-      </div>
-
-      <div className="space-y-3">
-        {COG_DIMS.map(dim => {
-          const score = result.scores[dim]
-          const p = Math.round(getPercentile(dim, score))
-          return (
-            <div key={dim} className="p-4 rounded-xl bg-white border border-slate-100">
-              <div className="flex justify-between items-center mb-2">
-                <div className="flex items-center gap-1">
-                  <span className="font-medium text-sm text-text">{COG_LABELS[dim]}</span>
+        <div className="p-6 md:p-8 space-y-6">
+          <div className="p-6 rounded-2xl bg-gradient-to-r from-indigo-50 to-teal-50 border border-indigo-100 hover:-translate-y-1 transition-transform duration-200">
+            <div className="flex items-start justify-between mb-3">
+              <div>
+                <div className="flex items-center gap-1 mb-1">
+                  <p className="text-xs text-indigo uppercase tracking-widest font-medium">Cognitive Operating System</p>
                   <InfoTip
-                    title={COG_LABELS[dim]}
-                    body={COG_DESCRIPTIONS[dim] ?? ''}
+                    title="Cognitive Operating System"
+                    body="A composite of your 5 cognitive dimensions — agility, executive function, attention control, systems thinking, and creative intelligence. It describes your natural information processing style and the cognitive contexts where you create the most value."
                   />
                 </div>
-                <span className="text-indigo font-bold text-sm">{score} · p{p}</span>
+                <p className="text-2xl font-bold text-text">{cos.primary_style}</p>
               </div>
-              <p className="text-sm text-slate-600 leading-relaxed">{cogInsight(dim, score, p)}</p>
+              <div className="text-right">
+                <div className="flex items-center justify-end gap-1">
+                  <p className="text-4xl font-black text-indigo">{cos.composite}</p>
+                  <InfoTip
+                    title="Cognitive Composite"
+                    body="Equally weighted average of your 5 cognitive dimension scores. 50 = population average. 70+ represents high cognitive performance across this cluster. This composite predicts performance in complex, ambiguous, and intellectually demanding roles."
+                  />
+                </div>
+                <p className="text-xs text-slate-500">composite</p>
+              </div>
             </div>
-          )
-        })}
-      </div>
+            <p className="text-slate-600 text-sm leading-relaxed">{STYLE_DESCRIPTIONS[cos.primary_style] ?? cos.description}</p>
+          </div>
 
-      <div className="p-5 rounded-2xl bg-slate-50 border border-slate-100">
-        <div className="flex items-center gap-1 mb-1">
-          <p className="text-xs text-slate-400 uppercase tracking-widest font-medium">Behavioral Signal · Processing Speed</p>
-          <InfoTip
-            title="What Processing Speed Measures"
-            body="Your average time between seeing a question and committing to an answer. This captures cognitive processing rhythm and self-certainty — not raw intelligence. Rapid responders show strong self-clarity or high decisiveness. Deliberate responders show thorough self-reflection."
-          />
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6">
+            {COG_DIMS.map(dim => (
+              <GaugeChart key={dim} score={result.scores[dim]} label={COG_LABELS[dim]} />
+            ))}
+          </div>
+
+          <div className="space-y-3">
+            {COG_DIMS.map(dim => {
+              const score = result.scores[dim]
+              const p = Math.round(getPercentile(dim, score))
+              return (
+                <div key={dim} className="p-4 rounded-xl bg-white border border-slate-100 hover:-translate-y-1 transition-transform duration-200">
+                  <div className="flex justify-between items-center mb-2">
+                    <div className="flex items-center gap-1">
+                      <span className="font-medium text-sm text-text">{COG_LABELS[dim]}</span>
+                      <InfoTip
+                        title={COG_LABELS[dim]}
+                        body={COG_DESCRIPTIONS[dim] ?? ''}
+                      />
+                    </div>
+                    <span className="text-indigo font-bold text-sm">{score} · p{p}</span>
+                  </div>
+                  <p className="text-sm text-slate-600 leading-relaxed">{cogInsight(dim, score, p)}</p>
+                </div>
+              )
+            })}
+          </div>
+
+          <div className="p-5 rounded-2xl bg-slate-50 border border-slate-100 hover:-translate-y-1 transition-transform duration-200">
+            <div className="flex items-center gap-1 mb-1">
+              <p className="text-xs text-slate-400 uppercase tracking-widest font-medium">Behavioral Signal · Processing Speed</p>
+              <InfoTip
+                title="What Processing Speed Measures"
+                body="Your average time between seeing a question and committing to an answer. This captures cognitive processing rhythm and self-certainty — not raw intelligence. Rapid responders show strong self-clarity or high decisiveness. Deliberate responders show thorough self-reflection."
+              />
+            </div>
+            <p className="font-semibold text-text mb-1">{rs.label}</p>
+            <p className="text-sm text-slate-600 leading-relaxed">{rs.desc}</p>
+            <p className="text-xs text-slate-400 mt-2">Avg response time: {(avgResponseMs / 1000).toFixed(1)}s per question</p>
+          </div>
         </div>
-        <p className="font-semibold text-text mb-1">{rs.label}</p>
-        <p className="text-sm text-slate-600 leading-relaxed">{rs.desc}</p>
-        <p className="text-xs text-slate-400 mt-2">Avg response time: {(avgResponseMs / 1000).toFixed(1)}s per question</p>
       </div>
     </section>
   )
