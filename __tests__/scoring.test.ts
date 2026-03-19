@@ -35,6 +35,22 @@ describe('extractRawValue', () => {
     const q: Question = { ...likertQ, type: 'situational', options: { scenario: '', choices: [], scores: [1, 2.3, 3.7, 5] } }
     expect(extractRawValue(q, 2)).toBe(3.7)
   })
+  it('normalizes 4-point likert to 1-5 range: 1→1.0, 2→2.33, 3→3.67, 4→5.0', () => {
+    const q4: Question = { ...likertQ, options: { labels: ['SD', 'D', 'A', 'SA'] } }
+    expect(extractRawValue(q4, 1)).toBeCloseTo(1.0, 1)
+    expect(extractRawValue(q4, 2)).toBeCloseTo(2.33, 1)
+    expect(extractRawValue(q4, 3)).toBeCloseTo(3.67, 1)
+    expect(extractRawValue(q4, 4)).toBeCloseTo(5.0, 1)
+  })
+  it('leaves 5-point likert (legacy) unchanged', () => {
+    const q5: Question = { ...likertQ, options: { labels: ['SD', 'D', 'N', 'A', 'SA'] } }
+    expect(extractRawValue(q5, 4)).toBe(4)
+  })
+  it('4-point max equals 5-point max (both produce raw=5)', () => {
+    const q4: Question = { ...likertQ, options: { labels: ['SD', 'D', 'A', 'SA'] } }
+    const q5: Question = { ...likertQ, options: { labels: ['SD', 'D', 'N', 'A', 'SA'] } }
+    expect(extractRawValue(q4, 4)).toBeCloseTo(extractRawValue(q5, 5), 1)
+  })
 })
 
 describe('computeScores', () => {

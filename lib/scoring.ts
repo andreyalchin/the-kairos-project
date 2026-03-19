@@ -7,9 +7,18 @@ export function extractRawValue(question: Question, value: unknown): number {
   let raw: number
   switch (question.type) {
     case 'likert':
-    case 'frequency':
-      raw = Number(value)
+    case 'frequency': {
+      const val = Number(value)
+      const labelCount = question.options.labels?.length ?? 5
+      if (labelCount === 4) {
+        // 4-point: 1→1, 2→2.33, 3→3.67, 4→5 (linear map onto 1-5 range)
+        raw = ((val - 1) / 3) * 4 + 1
+      } else {
+        // 5-point legacy: pass through as-is
+        raw = val
+      }
       break
+    }
     case 'forced_choice':
       raw = value === 'a' ? 1 : 5
       break
