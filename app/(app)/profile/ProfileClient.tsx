@@ -145,7 +145,16 @@ export default function ProfileClient({ user, assessments }: Props) {
 
   return (
     <div className="min-h-screen bg-bg">
-      <div className="max-w-2xl mx-auto px-4 py-12 space-y-6">
+
+      {/* Dark header */}
+      <div className="bg-slate-900 py-10">
+        <div className="max-w-2xl mx-auto px-4">
+          <p className="text-xs font-semibold text-slate-500 uppercase tracking-widest mb-1">Account</p>
+          <h1 className="text-2xl font-bold text-white">Profile</h1>
+        </div>
+      </div>
+
+      <div className="max-w-2xl mx-auto px-4 py-8 space-y-6">
 
         {/* ── Hero Card ── */}
         <div className="relative rounded-2xl overflow-hidden bg-gradient-to-br from-[#3730A3] to-[#6366f1] p-6 text-white shadow-lg">
@@ -248,7 +257,7 @@ export default function ProfileClient({ user, assessments }: Props) {
         {/* ── Account Settings ── */}
         <div className="bg-white rounded-2xl border border-slate-100 divide-y divide-slate-50">
           <div className="px-6 py-4">
-            <h2 className="text-sm font-semibold text-text uppercase tracking-wider">Account Settings</h2>
+            <h2 className="text-xs font-semibold text-slate-400 uppercase tracking-widest">Account Settings</h2>
           </div>
 
           {/* Display name row */}
@@ -374,7 +383,7 @@ export default function ProfileClient({ user, assessments }: Props) {
         {/* ── Assessment History ── */}
         <div className="bg-white rounded-2xl border border-slate-100">
           <div className="px-6 py-4 border-b border-slate-50">
-            <h2 className="text-sm font-semibold text-text uppercase tracking-wider">Assessment History</h2>
+            <h2 className="text-xs font-semibold text-slate-400 uppercase tracking-widest">Assessment History</h2>
           </div>
 
           {assessments.length === 0 ? (

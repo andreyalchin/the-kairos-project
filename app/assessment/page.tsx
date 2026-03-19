@@ -120,20 +120,63 @@ export default function AssessmentPage() {
   )
 
   if (phase === 'intro') return (
-    <div className="min-h-screen bg-bg flex items-center justify-center p-6">
-      <div className="max-w-lg text-center space-y-6">
-        <h1 className="text-4xl font-bold text-text">Know Your Moment.</h1>
-        <p className="text-lg text-slate-600">A scientifically grounded assessment of 36 dimensions that shape who you are and where you&apos;re going. ~12 minutes.</p>
-        <div className="flex flex-col sm:flex-row gap-3 justify-center">
-          <button
-            onClick={startAssessment}
-            className="bg-indigo text-white px-8 py-4 rounded-xl text-lg font-semibold hover:bg-indigo-600 transition-colors"
-          >
-            Begin Assessment
-          </button>
+    <div className="min-h-screen bg-bg">
+
+      {/* Dark hero */}
+      <div className="relative overflow-hidden bg-slate-900 py-24 text-center">
+        <span className="absolute right-8 bottom-0 text-[14rem] font-black text-white/5 leading-none select-none pointer-events-none" aria-hidden="true">36</span>
+        <div className="relative max-w-2xl mx-auto px-4 space-y-5">
+          <p className="text-teal text-xs font-semibold uppercase tracking-widest">Free · No account required</p>
+          <h1 className="text-4xl md:text-5xl font-bold text-white leading-tight">Know Your Moment.</h1>
+          <p className="text-slate-400 text-lg max-w-xl mx-auto leading-relaxed">
+            36 validated dimensions across cognitive, motivational, behavioral, and leadership axes. One complete profile — built on real science.
+          </p>
+          <div className="pt-2">
+            <button
+              onClick={startAssessment}
+              className="bg-indigo text-white px-10 py-4 rounded-xl text-lg font-semibold hover:bg-indigo-600 hover:scale-105 transition-all"
+            >
+              Begin Assessment
+            </button>
+          </div>
+          <p className="text-slate-500 text-sm">~12 minutes · ~80–132 adaptive questions</p>
         </div>
-        <p className="text-sm text-slate-400">No account required · Free · ~80–132 questions</p>
       </div>
+
+      {/* Stats strip */}
+      <div className="bg-indigo py-10">
+        <div className="max-w-3xl mx-auto px-4 flex flex-wrap justify-center gap-10 md:gap-16">
+          {([
+            { num: '36', label: 'Dimensions measured' },
+            { num: '32', label: 'Archetypes identified' },
+            { num: '80+', label: 'Calibration questions' },
+            { num: '6', label: 'Behavioral clusters' },
+          ] as const).map(({ num, label }) => (
+            <div key={num} className="text-center">
+              <p className="text-3xl font-black text-white">{num}</p>
+              <p className="text-xs text-indigo-200 mt-1">{label}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* What you get */}
+      <div className="max-w-3xl mx-auto px-4 py-16">
+        <p className="text-xs font-semibold text-slate-400 uppercase tracking-widest text-center mb-10">What you get</p>
+        <div className="grid sm:grid-cols-3 gap-5">
+          {[
+            { title: 'Your Archetype', desc: '1 of 32 profiles built from cosine-distance matching across all 36 dimensions.', cls: 'border-indigo/20 bg-indigo-50' },
+            { title: 'HPIF Profile', desc: '6-layer behavioral framework: cognitive, motivational, behavioral, growth, career, and team.', cls: 'border-teal/20 bg-teal-50' },
+            { title: 'Growth Roadmap', desc: 'Your 3 development priorities, 90-day challenge, and 1-year vision.', cls: 'border-violet-200/50 bg-violet-50' },
+          ].map(({ title, desc, cls }) => (
+            <div key={title} className={`rounded-2xl border p-5 hover:-translate-y-1 transition-transform duration-200 ${cls}`}>
+              <p className="font-semibold text-text mb-2">{title}</p>
+              <p className="text-sm text-slate-500 leading-relaxed">{desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
     </div>
   )
 
