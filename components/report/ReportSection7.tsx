@@ -23,7 +23,6 @@ export function ReportSection7({ result, archetype }: { result: AssessmentResult
       <div className="bg-slate-900 px-4 sm:px-6 py-5">
         <p className="text-xs font-semibold text-slate-500 uppercase tracking-widest">Section 7</p>
         <h2 className="text-2xl font-bold text-white mt-1">Leadership Profile</h2>
-        <p className="text-slate-400 text-sm mt-1">Your leadership style, orientation, and influence patterns</p>
       </div>
 
       <div className="p-4 sm:p-6 md:p-8 space-y-6">

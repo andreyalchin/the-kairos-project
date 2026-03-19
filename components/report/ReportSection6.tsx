@@ -14,7 +14,6 @@ export function ReportSection6({ result, archetype }: { result: AssessmentResult
       <div className="bg-slate-900 px-6 py-5">
         <p className="text-xs font-semibold text-slate-500 uppercase tracking-widest">Section 6</p>
         <h2 className="text-2xl font-bold text-white mt-1">Career Intelligence</h2>
-        <p className="text-slate-400 text-sm mt-1">Where your profile creates the most career leverage</p>
       </div>
 
       <div className="p-6 md:p-8 space-y-6">

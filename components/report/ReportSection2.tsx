@@ -211,7 +211,6 @@ export function ReportSection2({ result, onSentinelRef }: Props) {
       <div className="bg-slate-900 px-4 sm:px-6 py-5">
         <p className="text-xs font-semibold text-slate-500 uppercase tracking-widest">Section 2</p>
         <h2 className="text-2xl font-bold text-white mt-1">Your Psychological Fingerprint</h2>
-        <p className="text-slate-400 text-sm mt-1">29 dimensions measured across all personality domains</p>
       </div>
       <div className="p-4 sm:p-6 md:p-8 space-y-6">
         <DimensionRadarChart scores={scores} />

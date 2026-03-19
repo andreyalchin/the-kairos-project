@@ -33,7 +33,6 @@ export function ReportSection8({ result, archetype }: { result: AssessmentResult
       <div className="bg-slate-900 px-6 py-5">
         <p className="text-xs font-semibold text-slate-500 uppercase tracking-widest">Section 8</p>
         <h2 className="text-2xl font-bold text-white mt-1">Team Intelligence</h2>
-        <p className="text-slate-400 text-sm mt-1">Your natural team role and collaboration dynamics</p>
       </div>
 
       <div className="p-6 md:p-8 space-y-6">

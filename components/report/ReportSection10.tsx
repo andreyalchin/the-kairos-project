@@ -26,7 +26,6 @@ export function ReportSection10({ result, archetype }: { result: AssessmentResul
       <div className="bg-slate-900 px-6 py-5">
         <p className="text-xs font-semibold text-slate-500 uppercase tracking-widest">Section 10</p>
         <h2 className="text-2xl font-bold text-white mt-1">Work Environment Match</h2>
-        <p className="text-slate-400 text-sm mt-1">The conditions where your performance peaks</p>
       </div>
 
       <div className="p-6 md:p-8 space-y-6">
