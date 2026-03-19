@@ -169,7 +169,8 @@ function SectionAnchor({ id }: { id: string }) {
 
 function ClaimBox({ children }: { children: React.ReactNode }) {
   return (
-    <div className="border-l-4 border-indigo bg-indigo-50 rounded-r-xl px-5 py-4 my-6">
+    <div className="relative bg-indigo/10 border border-indigo/20 rounded-2xl px-6 pt-8 pb-5 my-6">
+      <span className="absolute -top-5 left-6 text-[4rem] font-black text-indigo/20 leading-none select-none pointer-events-none" aria-hidden="true">&ldquo;</span>
       <p className="text-slate-700 text-sm leading-relaxed">{children}</p>
     </div>
   )
@@ -177,141 +178,204 @@ function ClaimBox({ children }: { children: React.ReactNode }) {
 
 function FindingBox({ stat, label }: { stat: string; label: string }) {
   return (
-    <div className="bg-white border border-slate-100 rounded-xl p-4 text-center">
-      <p className="text-2xl font-bold text-indigo">{stat}</p>
-      <p className="text-xs text-slate-500 mt-1">{label}</p>
+    <div className="bg-white border border-slate-100 rounded-2xl p-5 text-center shadow-sm hover:-translate-y-1 transition-transform duration-200">
+      <p className="text-3xl md:text-4xl font-black text-indigo">{stat}</p>
+      <p className="text-xs text-slate-500 mt-2 leading-snug">{label}</p>
     </div>
   )
 }
 
+const hpifLayers = [
+  {
+    layer: 'Cognitive Operating System',
+    q: 'How do you process information?',
+    dims: 'Cognitive Agility · Executive Function · Attention Control',
+    detail: 'Grounded in cognitive neuroscience research on working memory, cognitive flexibility, and attentional control. Predicts learning speed, problem-solving approach, and adaptability to novel situations.',
+    accent: 'border-l-4 border-indigo',
+  },
+  {
+    layer: 'Motivational Architecture',
+    q: 'What drives your behavior?',
+    dims: 'Achievement Drive · Purpose Orientation · Autonomy Need · Competitive Drive',
+    detail: 'Directly derived from Self-Determination Theory. Identifies your primary and secondary motivational drivers — critical for role fit, sustained engagement, and career satisfaction.',
+    accent: 'border-l-4 border-teal',
+  },
+  {
+    layer: 'Behavioral Expression',
+    q: 'How do you show up with others?',
+    dims: 'Extraversion · Agreeableness · Conflict Navigation · Communication Style',
+    detail: 'Maps your interpersonal behavioral tendencies. Predicts communication effectiveness, collaboration patterns, and leadership style.',
+    accent: 'border-l-4 border-violet-500',
+  },
+  {
+    layer: 'Growth Vector',
+    q: 'How fast can you grow?',
+    dims: 'Growth Mindset · Adaptability · Learning Agility · Psychological Resilience',
+    detail: 'Integrates the dimensions most predictive of long-term development trajectory. High Growth Vector scores correlate with career acceleration and response to coaching and feedback.',
+    accent: 'border-l-4 border-amber-500',
+  },
+  {
+    layer: 'Career Potential Matrix',
+    q: 'Where do you have the most leverage?',
+    dims: 'Leadership Drive · Founder Potential · Strategic Orientation · Specialist–Generalist Orientation',
+    detail: 'Translates your dimensions into career-relevant potential scores. Distinguishes between leadership potential, entrepreneurial potential, and strategic vs. tactical orientation.',
+    accent: 'border-l-4 border-pink-500',
+  },
+  {
+    layer: 'Team Compatibility',
+    q: 'Where do you fit in a team?',
+    dims: 'Collaboration Signature · Role preference · Remote orientation',
+    detail: 'Identifies your natural team role, preferred team size, and collaboration style. Supports team composition and role assignment decisions grounded in behavioral data.',
+    accent: 'border-l-4 border-cyan-500',
+  },
+]
+
 export default function SciencePage() {
   return (
-    <div className="min-h-screen bg-bg">
+    <div className="min-h-screen">
 
-      {/* Header */}
-      <div className="bg-white border-b border-slate-100">
-        <div className="max-w-4xl mx-auto px-4 py-16 text-center space-y-4">
+      {/* 1. Hero — dark slate */}
+      <section className="relative overflow-hidden bg-slate-900 py-24">
+        <span className="absolute right-8 bottom-0 text-[14rem] font-black text-white/5 leading-none select-none pointer-events-none" aria-hidden="true">29</span>
+        <div className="relative max-w-4xl mx-auto px-4 text-center space-y-6">
           <p className="text-teal text-sm font-semibold uppercase tracking-widest">Evidence-Based Assessment</p>
-          <h1 className="text-4xl md:text-5xl font-bold text-text">
+          <h1 className="text-4xl md:text-6xl font-bold text-white leading-tight">
             The Science Behind Kairos
           </h1>
-          <p className="text-slate-500 text-lg max-w-2xl mx-auto leading-relaxed">
-            Every dimension we measure, every question we ask, and every inference we draw is grounded in peer-reviewed psychological research. This is not a differentiator — it is the minimum standard we hold ourselves to.
+          <p className="text-slate-400 text-lg max-w-2xl mx-auto leading-relaxed">
+            Every dimension we measure, every question we ask, and every inference we draw is grounded in peer-reviewed psychological research. Not a differentiator — the minimum standard.
           </p>
-          <Link
-            href="/assessment"
-            className="inline-block mt-2 bg-indigo text-white px-6 py-3 rounded-xl font-semibold hover:bg-indigo-600 transition-colors"
-          >
-            Take the Assessment
-          </Link>
-        </div>
-
-        {/* Section nav */}
-        <div className="max-w-4xl mx-auto px-4 pb-6">
-          <div className="flex flex-wrap gap-2 justify-center">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center pt-2">
+            <Link href="/assessment" className="bg-teal text-white px-8 py-3.5 rounded-xl font-semibold hover:opacity-90 transition-opacity">
+              Take the Assessment
+            </Link>
+            <Link href="#foundations" className="border border-slate-600 text-slate-300 px-8 py-3.5 rounded-xl font-semibold hover:border-slate-400 hover:text-white transition-colors">
+              Read the Science
+            </Link>
+          </div>
+          <div className="flex flex-wrap gap-2 justify-center pt-4">
             {sections.map(s => (
-              <a
-                key={s.id}
-                href={`#${s.id}`}
-                className="text-xs font-medium text-slate-500 border border-slate-200 rounded-full px-4 py-1.5 hover:border-indigo hover:text-indigo transition-colors"
-              >
+              <a key={s.id} href={`#${s.id}`} className="text-xs font-medium text-slate-400 border border-slate-700 rounded-full px-4 py-1.5 hover:border-teal hover:text-teal transition-colors">
                 {s.label}
               </a>
             ))}
           </div>
         </div>
-      </div>
+      </section>
 
-      <div className="max-w-4xl mx-auto px-4 py-16 space-y-20">
-
-        {/* Why it matters */}
-        <div className="space-y-6">
-          <h2 className="text-2xl font-bold text-text">Why scientific rigor is non-negotiable</h2>
-          <p className="text-slate-600 leading-relaxed">
-            Most popular personality assessments — including widely-used commercial tools — are not built on peer-reviewed science. They are built on proprietary frameworks, invented by practitioners, and validated primarily through marketing rather than empirical research. The result is assessments that feel insightful but predict very little about actual behavior, career outcomes, or interpersonal dynamics.
-          </p>
-          <p className="text-slate-600 leading-relaxed">
-            Personality psychology has spent over 60 years building, challenging, and refining frameworks that actually predict real-world outcomes. Career success. Leadership effectiveness. Relationship stability. Mental health trajectories. A robust body of meta-analytic evidence now exists — and Kairos is built on it.
-          </p>
-          <p className="text-slate-600 leading-relaxed">
-            We do not invent new personality models. We apply the most rigorously validated ones, use the most precise measurement methodology available, and integrate them into a unified framework designed for actionable self-understanding.
-          </p>
-          <ClaimBox>
-            Personality traits account for significant variance in life outcomes above and beyond socioeconomic status and cognitive ability, across cultures and over lifespans — a finding replicated across hundreds of independent studies.<Cite ids={[12, 13]} />
-          </ClaimBox>
+      {/* 2. Stats bar — indigo */}
+      <section className="bg-indigo py-12">
+        <div className="max-w-5xl mx-auto px-4 flex flex-wrap justify-center gap-10 md:gap-20">
+          {[
+            { num: '117', label: 'Studies in Big Five job-performance meta-analysis' },
+            { num: '23,994', label: 'Participants in Barrick & Mount landmark validation' },
+            { num: '60+', label: 'Years of cross-cultural replication' },
+            { num: '29', label: 'Dimensions measured by Kairos' },
+          ].map(({ num, label }) => (
+            <div key={num} className="text-center">
+              <p className="text-4xl md:text-5xl font-black text-white">{num}</p>
+              <p className="text-sm text-indigo-200 mt-1 max-w-[10rem] mx-auto leading-snug">{label}</p>
+            </div>
+          ))}
         </div>
+      </section>
 
-        {/* Section I: Theoretical Foundations */}
-        <div>
-          <SectionAnchor id="foundations" />
-          <div className="flex items-center gap-3 mb-8">
-            <span className="bg-indigo text-white text-xs font-bold px-3 py-1 rounded-full">I</span>
-            <h2 className="text-2xl font-bold text-text">Theoretical Foundations</h2>
+      {/* 3. Why scientific rigor + Theoretical Foundations — bg-bg */}
+      <section className="bg-bg py-20">
+        <div className="max-w-4xl mx-auto px-4 space-y-20">
+
+          {/* Why it matters */}
+          <div className="space-y-6">
+            <h2 className="text-3xl font-bold text-text">Why scientific rigor is non-negotiable</h2>
+            <p className="text-slate-600 leading-relaxed">
+              Most popular personality assessments — including widely-used commercial tools — are not built on peer-reviewed science. They are built on proprietary frameworks, invented by practitioners, and validated primarily through marketing rather than empirical research. The result is assessments that feel insightful but predict very little about actual behavior, career outcomes, or interpersonal dynamics.
+            </p>
+            <p className="text-slate-600 leading-relaxed">
+              Personality psychology has spent over 60 years building, challenging, and refining frameworks that actually predict real-world outcomes. Career success. Leadership effectiveness. Relationship stability. Mental health trajectories. A robust body of meta-analytic evidence now exists — and Kairos is built on it.
+            </p>
+            <p className="text-slate-600 leading-relaxed">
+              We do not invent new personality models. We apply the most rigorously validated ones, use the most precise measurement methodology available, and integrate them into a unified framework designed for actionable self-understanding.
+            </p>
+            <ClaimBox>
+              Personality traits account for significant variance in life outcomes above and beyond socioeconomic status and cognitive ability, across cultures and over lifespans — a finding replicated across hundreds of independent studies.<Cite ids={[12, 13]} />
+            </ClaimBox>
           </div>
 
-          {/* Big Five */}
-          <div className="space-y-4 mb-12">
-            <h3 className="text-xl font-semibold text-indigo">The Big Five Personality Model (OCEAN)</h3>
-            <p className="text-slate-600 leading-relaxed">
-              The Big Five — Openness, Conscientiousness, Extraversion, Agreeableness, and Emotional Stability — is the most extensively researched and replicated personality framework in the history of psychology.<Cite ids={[7, 11]} /> Developed independently by multiple research groups and validated across dozens of languages and cultures, it emerged not from theory but from statistical analysis of how personality descriptors cluster in human language and behavior.
-            </p>
-            <p className="text-slate-600 leading-relaxed">
-              A landmark 1991 meta-analysis by Barrick and Mount across 117 studies (N = 23,994) established that Conscientiousness is a valid predictor of job performance across all occupational groups, with Emotional Stability, Extraversion, and Openness predicting performance in specific roles.<Cite ids={[2]} /> Their finding — that personality predicts performance as reliably as many commonly-used selection methods — fundamentally changed how evidence-based organizations approach talent assessment.
-            </p>
-            <p className="text-slate-600 leading-relaxed">
-              Kairos measures all five Big Five dimensions using multi-item adaptive scales, calibrated against normative benchmarks from general adult population studies. We do not collapse these into letter types or simplified categories — we preserve the continuous, quantitative nature of each dimension, because that is where the predictive information lives.
-            </p>
-
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 my-6">
-              <FindingBox stat="117" label="Studies in the original Big Five job performance meta-analysis" />
-              <FindingBox stat="23,994" label="Participants in Barrick & Mount's landmark validation" />
-              <FindingBox stat="50+ yrs" label="Of cross-cultural replication across 56+ languages" />
-              <FindingBox stat="6 of 6" label="Personality factors emerge consistently across cultures" />
+          {/* Section I: Theoretical Foundations */}
+          <div>
+            <SectionAnchor id="foundations" />
+            <div className="flex items-center gap-3 mb-8">
+              <span className="bg-indigo text-white text-xs font-bold px-3 py-1 rounded-full">I</span>
+              <h2 className="text-3xl font-bold text-text">Theoretical Foundations</h2>
             </div>
 
-            <ClaimBox>
-              &quot;The remarkable consistency of the Big Five across cultures, methods, and time periods is one of the most robust findings in personality psychology.&quot; — McCrae &amp; Costa, 1987<Cite ids={[11]} />
-            </ClaimBox>
+            {/* Big Five */}
+            <div className="space-y-4 mb-12">
+              <h3 className="text-xl font-semibold text-indigo">The Big Five Personality Model (OCEAN)</h3>
+              <p className="text-slate-600 leading-relaxed">
+                The Big Five — Openness, Conscientiousness, Extraversion, Agreeableness, and Emotional Stability — is the most extensively researched and replicated personality framework in the history of psychology.<Cite ids={[7, 11]} /> Developed independently by multiple research groups and validated across dozens of languages and cultures, it emerged not from theory but from statistical analysis of how personality descriptors cluster in human language and behavior.
+              </p>
+              <p className="text-slate-600 leading-relaxed">
+                A landmark 1991 meta-analysis by Barrick and Mount across 117 studies (N = 23,994) established that Conscientiousness is a valid predictor of job performance across all occupational groups, with Emotional Stability, Extraversion, and Openness predicting performance in specific roles.<Cite ids={[2]} /> Their finding — that personality predicts performance as reliably as many commonly-used selection methods — fundamentally changed how evidence-based organizations approach talent assessment.
+              </p>
+              <p className="text-slate-600 leading-relaxed">
+                Kairos measures all five Big Five dimensions using multi-item adaptive scales, calibrated against normative benchmarks from general adult population studies. We do not collapse these into letter types or simplified categories — we preserve the continuous, quantitative nature of each dimension, because that is where the predictive information lives.
+              </p>
+
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 my-6">
+                <FindingBox stat="117" label="Studies in the original Big Five job performance meta-analysis" />
+                <FindingBox stat="23,994" label="Participants in Barrick & Mount's landmark validation" />
+                <FindingBox stat="50+ yrs" label="Of cross-cultural replication across 56+ languages" />
+                <FindingBox stat="6 of 6" label="Personality factors emerge consistently across cultures" />
+              </div>
+
+              <ClaimBox>
+                &quot;The remarkable consistency of the Big Five across cultures, methods, and time periods is one of the most robust findings in personality psychology.&quot; — McCrae &amp; Costa, 1987<Cite ids={[11]} />
+              </ClaimBox>
+            </div>
+
+            {/* HEXACO */}
+            <div className="space-y-4 mb-12">
+              <h3 className="text-xl font-semibold text-indigo">HEXACO: Adding the Integrity Dimension</h3>
+              <p className="text-slate-600 leading-relaxed">
+                While the Big Five captures most of the variance in personality, a critical dimension was systematically underrepresented: Honesty-Humility. Ashton and Lee&apos;s HEXACO model (2007) added this sixth factor — encompassing sincerity, fairness, modesty, and the avoidance of greed and manipulation — through analysis of personality lexicons across 12 languages.<Cite ids={[1, 9]} />
+              </p>
+              <p className="text-slate-600 leading-relaxed">
+                The practical importance of this factor cannot be overstated. Low Honesty-Humility is the strongest personality predictor of counterproductive work behavior, including theft, deception, and manipulation. It also predicts leadership derailment and interpersonal exploitation at levels that no Big Five dimension achieves alone.<Cite ids={[1]} /> High Honesty-Humility, conversely, is associated with effective ethical leadership, trust-building, and long-term relationship stability.
+              </p>
+              <p className="text-slate-600 leading-relaxed">
+                Kairos includes a full Honesty-Humility dimension in our assessment. For any platform claiming to measure human potential, omitting ethical orientation is not just an oversight — it is a systematic blind spot. We chose to include it because our users deserve a complete picture.
+              </p>
+              <ClaimBox>
+                Honesty-Humility explains variance in counterproductive work behavior, narcissism, and exploitation that the original Big Five fails to capture — making it essential for any complete model of human behavior.<Cite ids={[1, 9]} />
+              </ClaimBox>
+            </div>
+
+            {/* SDT */}
+            <div className="space-y-4">
+              <h3 className="text-xl font-semibold text-indigo">Self-Determination Theory: The Science of Motivation</h3>
+              <p className="text-slate-600 leading-relaxed">
+                Deci and Ryan&apos;s Self-Determination Theory (SDT), developed from 1975 onwards and formalized in their landmark 1985 text, is the most empirically supported framework for understanding human motivation.<Cite ids={[4, 14]} /> It distinguishes between intrinsic motivation (driven by genuine interest and values), identified regulation (driven by personally meaningful goals), introjected regulation (driven by internal pressure and ego), and external regulation (driven by rewards and punishments).
+              </p>
+              <p className="text-slate-600 leading-relaxed">
+                For career and life outcomes, the key insight from SDT is that autonomous motivation — where behavior is driven by genuine interest or personal values rather than external pressure — produces dramatically better outcomes in terms of performance, persistence, well-being, and creativity.<Cite ids={[14]} /> Gagné and Deci&apos;s 2005 review of SDT in work contexts found robust support for autonomous motivation as a predictor of work engagement, organizational commitment, and psychological health.<Cite ids={[6]} />
+              </p>
+              <p className="text-slate-600 leading-relaxed">
+                Our Motivational Architecture layer — which measures Achievement Drive, Purpose Orientation, Autonomy Need, and Competitive Drive — is directly grounded in SDT. Understanding your dominant motivational pattern is not about labeling you; it is about identifying the conditions under which you will consistently perform at your best.
+              </p>
+            </div>
           </div>
 
-          {/* HEXACO */}
-          <div className="space-y-4 mb-12">
-            <h3 className="text-xl font-semibold text-indigo">HEXACO: Adding the Integrity Dimension</h3>
-            <p className="text-slate-600 leading-relaxed">
-              While the Big Five captures most of the variance in personality, a critical dimension was systematically underrepresented: Honesty-Humility. Ashton and Lee&apos;s HEXACO model (2007) added this sixth factor — encompassing sincerity, fairness, modesty, and the avoidance of greed and manipulation — through analysis of personality lexicons across 12 languages.<Cite ids={[1, 9]} />
-            </p>
-            <p className="text-slate-600 leading-relaxed">
-              The practical importance of this factor cannot be overstated. Low Honesty-Humility is the strongest personality predictor of counterproductive work behavior, including theft, deception, and manipulation. It also predicts leadership derailment and interpersonal exploitation at levels that no Big Five dimension achieves alone.<Cite ids={[1]} /> High Honesty-Humility, conversely, is associated with effective ethical leadership, trust-building, and long-term relationship stability.
-            </p>
-            <p className="text-slate-600 leading-relaxed">
-              Kairos includes a full Honesty-Humility dimension in our assessment. For any platform claiming to measure human potential, omitting ethical orientation is not just an oversight — it is a systematic blind spot. We chose to include it because our users deserve a complete picture.
-            </p>
-            <ClaimBox>
-              Honesty-Humility explains variance in counterproductive work behavior, narcissism, and exploitation that the original Big Five fails to capture — making it essential for any complete model of human behavior.<Cite ids={[1, 9]} />
-            </ClaimBox>
-          </div>
-
-          {/* SDT */}
-          <div className="space-y-4">
-            <h3 className="text-xl font-semibold text-indigo">Self-Determination Theory: The Science of Motivation</h3>
-            <p className="text-slate-600 leading-relaxed">
-              Deci and Ryan&apos;s Self-Determination Theory (SDT), developed from 1975 onwards and formalized in their landmark 1985 text, is the most empirically supported framework for understanding human motivation.<Cite ids={[4, 14]} /> It distinguishes between intrinsic motivation (driven by genuine interest and values), identified regulation (driven by personally meaningful goals), introjected regulation (driven by internal pressure and ego), and external regulation (driven by rewards and punishments).
-            </p>
-            <p className="text-slate-600 leading-relaxed">
-              For career and life outcomes, the key insight from SDT is that autonomous motivation — where behavior is driven by genuine interest or personal values rather than external pressure — produces dramatically better outcomes in terms of performance, persistence, well-being, and creativity.<Cite ids={[14]} /> Gagné and Deci&apos;s 2005 review of SDT in work contexts found robust support for autonomous motivation as a predictor of work engagement, organizational commitment, and psychological health.<Cite ids={[6]} />
-            </p>
-            <p className="text-slate-600 leading-relaxed">
-              Our Motivational Architecture layer — which measures Achievement Drive, Purpose Orientation, Autonomy Need, and Competitive Drive — is directly grounded in SDT. Understanding your dominant motivational pattern is not about labeling you; it is about identifying the conditions under which you will consistently perform at your best.
-            </p>
-          </div>
         </div>
+      </section>
 
-        {/* Section II: Measurement Methodology */}
-        <div>
+      {/* 4. Measurement Methodology — bg-white */}
+      <section className="bg-white py-20">
+        <div className="max-w-4xl mx-auto px-4">
           <SectionAnchor id="methodology" />
           <div className="flex items-center gap-3 mb-8">
             <span className="bg-indigo text-white text-xs font-bold px-3 py-1 rounded-full">II</span>
-            <h2 className="text-2xl font-bold text-text">Measurement Methodology</h2>
+            <h2 className="text-3xl font-bold text-text">Measurement Methodology</h2>
           </div>
 
           {/* IRT */}
@@ -354,7 +418,7 @@ export default function SciencePage() {
             <p className="text-slate-600 leading-relaxed">
               Our behavioral inference engine computes four signals per assessment: average response latency, revision rate, cross-dimension consistency, and response speed variance. These signals are used to modulate confidence in self-reported scores — not to override them, but to add a layer of triangulation that purely self-report measures cannot provide.
             </p>
-            <div className="bg-slate-50 rounded-2xl p-6 mt-4 grid md:grid-cols-2 gap-4">
+            <div className="bg-white border border-slate-100 rounded-2xl p-6 mt-4 grid md:grid-cols-2 gap-6">
               <div>
                 <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-2">What we measure implicitly</p>
                 <ul className="space-y-1.5 text-sm text-slate-600">
@@ -376,13 +440,15 @@ export default function SciencePage() {
             </div>
           </div>
         </div>
+      </section>
 
-        {/* Section III: Measurement Quality */}
-        <div>
+      {/* 5. Measurement Quality — bg-bg */}
+      <section className="bg-bg py-20">
+        <div className="max-w-4xl mx-auto px-4">
           <SectionAnchor id="quality" />
           <div className="flex items-center gap-3 mb-8">
             <span className="bg-indigo text-white text-xs font-bold px-3 py-1 rounded-full">III</span>
-            <h2 className="text-2xl font-bold text-text">Measurement Quality Standards</h2>
+            <h2 className="text-3xl font-bold text-text">Measurement Quality Standards</h2>
           </div>
 
           <p className="text-slate-600 leading-relaxed mb-8">
@@ -390,25 +456,25 @@ export default function SciencePage() {
           </p>
 
           <div className="grid md:grid-cols-3 gap-6 mb-10">
-            <div className="bg-white border border-slate-100 rounded-2xl p-5 space-y-3">
-              <div className="w-8 h-8 rounded-lg bg-indigo-50 flex items-center justify-center">
-                <span className="text-indigo font-bold text-sm">V</span>
+            <div className="bg-indigo-50 border border-indigo/20 rounded-2xl p-5 space-y-3 hover:-translate-y-1 transition-transform duration-200">
+              <div className="w-9 h-9 rounded-lg bg-indigo flex items-center justify-center">
+                <span className="text-white font-bold text-sm">V</span>
               </div>
-              <h3 className="font-semibold text-text">Construct Validity</h3>
+              <h3 className="text-xl font-bold text-text">Construct Validity</h3>
               <p className="text-sm text-slate-600">Each dimension measures what it claims to measure — confirmed through factor-analytic studies showing that our items load onto the intended constructs and not onto unintended ones.</p>
             </div>
-            <div className="bg-white border border-slate-100 rounded-2xl p-5 space-y-3">
-              <div className="w-8 h-8 rounded-lg bg-indigo-50 flex items-center justify-center">
-                <span className="text-indigo font-bold text-sm">R</span>
+            <div className="bg-teal-50 border border-teal/20 rounded-2xl p-5 space-y-3 hover:-translate-y-1 transition-transform duration-200">
+              <div className="w-9 h-9 rounded-lg bg-teal flex items-center justify-center">
+                <span className="text-white font-bold text-sm">R</span>
               </div>
-              <h3 className="font-semibold text-text">Internal Consistency</h3>
+              <h3 className="text-xl font-bold text-text">Internal Consistency</h3>
               <p className="text-sm text-slate-600">Items within each dimension scale consistently with one another, indicating that they are measuring a coherent underlying trait rather than a collection of unrelated behaviors.</p>
             </div>
-            <div className="bg-white border border-slate-100 rounded-2xl p-5 space-y-3">
-              <div className="w-8 h-8 rounded-lg bg-indigo-50 flex items-center justify-center">
-                <span className="text-indigo font-bold text-sm">N</span>
+            <div className="bg-violet-50 border border-violet-200/50 rounded-2xl p-5 space-y-3 hover:-translate-y-1 transition-transform duration-200">
+              <div className="w-9 h-9 rounded-lg bg-violet-600 flex items-center justify-center">
+                <span className="text-white font-bold text-sm">N</span>
               </div>
-              <h3 className="font-semibold text-text">Normative Benchmarking</h3>
+              <h3 className="text-xl font-bold text-text">Normative Benchmarking</h3>
               <p className="text-sm text-slate-600">Your scores are interpreted against distributions from general adult populations — giving your results meaning as percentile positions rather than raw counts or arbitrary categories.</p>
             </div>
           </div>
@@ -426,13 +492,15 @@ export default function SciencePage() {
             </p>
           </div>
         </div>
+      </section>
 
-        {/* Section IV: HPIF */}
-        <div>
+      {/* 6. HPIF — bg-white */}
+      <section className="bg-white py-20">
+        <div className="max-w-4xl mx-auto px-4">
           <SectionAnchor id="hpif" />
           <div className="flex items-center gap-3 mb-8">
             <span className="bg-indigo text-white text-xs font-bold px-3 py-1 rounded-full">IV</span>
-            <h2 className="text-2xl font-bold text-text">The HPIF Integration Framework</h2>
+            <h2 className="text-3xl font-bold text-text">The HPIF Integration Framework</h2>
           </div>
 
           <p className="text-slate-600 leading-relaxed mb-6">
@@ -440,15 +508,8 @@ export default function SciencePage() {
           </p>
 
           <div className="space-y-4 mb-8">
-            {[
-              { layer: 'Cognitive Operating System', q: 'How do you process information?', dims: 'Cognitive Agility · Executive Function · Attention Control', detail: 'Grounded in cognitive neuroscience research on working memory, cognitive flexibility, and attentional control. Predicts learning speed, problem-solving approach, and adaptability to novel situations.' },
-              { layer: 'Motivational Architecture', q: 'What drives your behavior?', dims: 'Achievement Drive · Purpose Orientation · Autonomy Need · Competitive Drive', detail: 'Directly derived from Self-Determination Theory. Identifies your primary and secondary motivational drivers — critical for role fit, sustained engagement, and career satisfaction.' },
-              { layer: 'Behavioral Expression', q: 'How do you show up with others?', dims: 'Extraversion · Agreeableness · Conflict Navigation · Communication Style', detail: 'Maps your interpersonal behavioral tendencies. Predicts communication effectiveness, collaboration patterns, and leadership style.' },
-              { layer: 'Growth Vector', q: 'How fast can you grow?', dims: 'Growth Mindset · Adaptability · Learning Agility · Psychological Resilience', detail: 'Integrates the dimensions most predictive of long-term development trajectory. High Growth Vector scores correlate with career acceleration and response to coaching and feedback.' },
-              { layer: 'Career Potential Matrix', q: 'Where do you have the most leverage?', dims: 'Leadership Drive · Founder Potential · Strategic Orientation · Specialist–Generalist Orientation', detail: 'Translates your dimensions into career-relevant potential scores. Distinguishes between leadership potential, entrepreneurial potential, and strategic vs. tactical orientation.' },
-              { layer: 'Team Compatibility', q: 'Where do you fit in a team?', dims: 'Collaboration Signature · Role preference · Remote orientation', detail: 'Identifies your natural team role, preferred team size, and collaboration style. Supports team composition and role assignment decisions grounded in behavioral data.' },
-            ].map(({ layer, q, dims, detail }) => (
-              <div key={layer} className="bg-white border border-slate-100 rounded-2xl p-5 space-y-2">
+            {hpifLayers.map(({ layer, q, dims, detail, accent }) => (
+              <div key={layer} className={`bg-white border border-slate-100 rounded-2xl p-5 space-y-2 hover:-translate-y-1 transition-transform duration-200 ${accent}`}>
                 <div className="flex flex-col md:flex-row md:items-baseline md:justify-between gap-1">
                   <h3 className="font-semibold text-text">{layer}</h3>
                   <p className="text-xs text-slate-400 italic">{q}</p>
@@ -463,13 +524,15 @@ export default function SciencePage() {
             Integrative personality frameworks that combine multiple validated dimensions into structured behavioral profiles produce substantially higher predictive validity for career outcomes than single-trait or categorical measures — a finding consistent across meta-analytic reviews in occupational psychology.<Cite ids={[2, 12, 15]} />
           </ClaimBox>
         </div>
+      </section>
 
-        {/* Section V: References */}
-        <div>
+      {/* 7. References — bg-bg */}
+      <section className="bg-bg py-20">
+        <div className="max-w-4xl mx-auto px-4">
           <SectionAnchor id="references" />
           <div className="flex items-center gap-3 mb-8">
             <span className="bg-indigo text-white text-xs font-bold px-3 py-1 rounded-full">V</span>
-            <h2 className="text-2xl font-bold text-text">Research References</h2>
+            <h2 className="text-3xl font-bold text-text">Research References</h2>
           </div>
           <p className="text-slate-500 text-sm mb-6">
             All citations link to the original published source via DOI. References marked with ↗ open in a new tab.
@@ -495,22 +558,27 @@ export default function SciencePage() {
             ))}
           </div>
         </div>
+      </section>
 
-        {/* Final CTA */}
-        <div className="bg-indigo rounded-2xl p-8 text-center text-white space-y-4">
-          <h2 className="text-2xl font-bold">Science you can act on</h2>
-          <p className="text-indigo-200 max-w-xl mx-auto">
+      {/* 8. Final CTA — dark gradient */}
+      <section className="relative overflow-hidden bg-gradient-to-br from-indigo via-indigo-800 to-indigo-950 py-24 text-center">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_0%,#6366f130,transparent_65%)]" />
+        <div className="relative max-w-3xl mx-auto px-4 space-y-6">
+          <h2 className="text-3xl md:text-4xl font-bold text-white">Science you can act on</h2>
+          <p className="text-indigo-200 text-lg max-w-xl mx-auto">
             Every claim in your report connects back to the research above. This is not a horoscope. It is a measurement.
           </p>
-          <Link
-            href="/assessment"
-            className="inline-block bg-white text-indigo font-semibold px-6 py-3 rounded-xl hover:bg-slate-50 transition-colors"
-          >
-            Take the Free Assessment
-          </Link>
+          <div className="pt-2">
+            <Link
+              href="/assessment"
+              className="inline-block bg-white text-indigo px-10 py-4 rounded-xl text-lg font-bold hover:bg-indigo-50 hover:scale-105 transition-all"
+            >
+              Take the Free Assessment
+            </Link>
+          </div>
         </div>
+      </section>
 
-      </div>
     </div>
   )
 }
