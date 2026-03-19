@@ -29,54 +29,60 @@ export function ReportSection8({ result, archetype }: { result: AssessmentResult
   const role = tc.team_role
 
   return (
-    <section className="space-y-8 py-8">
-      <h2 className="text-2xl font-bold text-text">Team Intelligence</h2>
-
-      <div className="p-6 rounded-2xl bg-gradient-to-br from-indigo-50 to-teal-50 border border-indigo-100">
-        <p className="text-xs text-indigo uppercase tracking-widest font-medium mb-1">Your Team Role</p>
-        <p className="text-3xl font-bold text-text mb-2">{role}</p>
-        <p className="text-slate-600 text-sm leading-relaxed">{ROLE_DESCRIPTIONS[role] ?? ''}</p>
+    <div className="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden">
+      <div className="bg-slate-900 px-6 py-5">
+        <p className="text-xs font-semibold text-slate-500 uppercase tracking-widest">Section 8</p>
+        <h2 className="text-2xl font-bold text-white mt-1">Team Intelligence</h2>
+        <p className="text-slate-400 text-sm mt-1">Your natural team role and collaboration dynamics</p>
       </div>
 
-      <div className="p-5 rounded-2xl bg-white border border-slate-100">
-        <p className="text-xs text-slate-400 uppercase tracking-widest font-medium mb-1">How You Contribute</p>
-        <p className="text-sm text-slate-600 leading-relaxed">{COLLAB_STYLE_FULL[role] ?? tc.collaboration_style}</p>
-      </div>
+      <div className="p-6 md:p-8 space-y-6">
+        <div className="p-6 rounded-2xl bg-gradient-to-br from-indigo-50 to-teal-50 border border-indigo-100 hover:-translate-y-1 transition-transform duration-200">
+          <p className="text-xs text-indigo uppercase tracking-widest font-medium mb-1">Your Team Role</p>
+          <p className="text-3xl font-bold text-text mb-2">{role}</p>
+          <p className="text-slate-600 text-sm leading-relaxed">{ROLE_DESCRIPTIONS[role] ?? ''}</p>
+        </div>
 
-      <div className="grid grid-cols-2 gap-4">
-        <div className="p-4 rounded-xl bg-white border border-slate-100 text-center">
-          <p className="text-lg font-bold text-indigo">{tc.remote_orientation}</p>
-          <p className="text-xs text-slate-500 mt-1">Work Location Preference</p>
+        <div className="p-5 rounded-2xl bg-white border border-slate-100 hover:-translate-y-1 transition-transform duration-200">
+          <p className="text-xs text-slate-400 uppercase tracking-widest font-medium mb-1">How You Contribute</p>
+          <p className="text-sm text-slate-600 leading-relaxed">{COLLAB_STYLE_FULL[role] ?? tc.collaboration_style}</p>
         </div>
-        <div className="p-4 rounded-xl bg-white border border-slate-100 text-center">
-          <p className="text-lg font-bold text-indigo">{tc.team_size_preference}</p>
-          <p className="text-xs text-slate-500 mt-1">Ideal Team Size</p>
-        </div>
-      </div>
 
-      <div className="grid md:grid-cols-3 gap-4">
-        <div className="space-y-2">
-          <h3 className="font-semibold text-teal text-sm">Best Partners</h3>
-          <p className="text-xs text-slate-400 mb-1">Complement your strengths</p>
-          {archetype.best_partners.map((p) => (
-            <div key={p} className="px-3 py-2 rounded-lg bg-teal-50 border border-teal-100 text-sm text-teal-800 font-medium">{archetypeName(p)}</div>
-          ))}
+        <div className="grid grid-cols-2 gap-4">
+          <div className="p-4 rounded-xl bg-white border border-slate-100 text-center hover:-translate-y-1 transition-transform duration-200">
+            <p className="text-lg font-bold text-indigo">{tc.remote_orientation}</p>
+            <p className="text-xs text-slate-500 mt-1">Work Location Preference</p>
+          </div>
+          <div className="p-4 rounded-xl bg-white border border-slate-100 text-center hover:-translate-y-1 transition-transform duration-200">
+            <p className="text-lg font-bold text-indigo">{tc.team_size_preference}</p>
+            <p className="text-xs text-slate-500 mt-1">Ideal Team Size</p>
+          </div>
         </div>
-        <div className="space-y-2">
-          <h3 className="font-semibold text-indigo text-sm">Growth Partners</h3>
-          <p className="text-xs text-slate-400 mb-1">Challenge your limits</p>
-          {archetype.growth_partners.map((p) => (
-            <div key={p} className="px-3 py-2 rounded-lg bg-indigo-50 border border-indigo-100 text-sm text-indigo-800 font-medium">{archetypeName(p)}</div>
-          ))}
-        </div>
-        <div className="space-y-2">
-          <h3 className="font-semibold text-slate-500 text-sm">Friction Risk</h3>
-          <p className="text-xs text-slate-400 mb-1">Manage these dynamics</p>
-          {archetype.friction_archetypes.map((p) => (
-            <div key={p} className="px-3 py-2 rounded-lg bg-slate-50 border border-slate-200 text-sm text-slate-600 font-medium">{archetypeName(p)}</div>
-          ))}
+
+        <div className="grid md:grid-cols-3 gap-4">
+          <div className="space-y-2 hover:-translate-y-1 transition-transform duration-200">
+            <h3 className="font-semibold text-teal text-sm">Best Partners</h3>
+            <p className="text-xs text-slate-400 mb-1">Complement your strengths</p>
+            {archetype.best_partners.map((p) => (
+              <div key={p} className="px-3 py-2 rounded-lg bg-teal-50 border border-teal-100 text-sm text-teal-800 font-medium hover:scale-105 transition-transform duration-150">{archetypeName(p)}</div>
+            ))}
+          </div>
+          <div className="space-y-2 hover:-translate-y-1 transition-transform duration-200">
+            <h3 className="font-semibold text-indigo text-sm">Growth Partners</h3>
+            <p className="text-xs text-slate-400 mb-1">Challenge your limits</p>
+            {archetype.growth_partners.map((p) => (
+              <div key={p} className="px-3 py-2 rounded-lg bg-indigo-50 border border-indigo-100 text-sm text-indigo-800 font-medium hover:scale-105 transition-transform duration-150">{archetypeName(p)}</div>
+            ))}
+          </div>
+          <div className="space-y-2 hover:-translate-y-1 transition-transform duration-200">
+            <h3 className="font-semibold text-slate-500 text-sm">Friction Risk</h3>
+            <p className="text-xs text-slate-400 mb-1">Manage these dynamics</p>
+            {archetype.friction_archetypes.map((p) => (
+              <div key={p} className="px-3 py-2 rounded-lg bg-slate-50 border border-slate-200 text-sm text-slate-600 font-medium hover:scale-105 transition-transform duration-150">{archetypeName(p)}</div>
+            ))}
+          </div>
         </div>
       </div>
-    </section>
+    </div>
   )
 }

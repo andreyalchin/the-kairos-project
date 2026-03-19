@@ -19,85 +19,91 @@ export function ReportSection7({ result, archetype }: { result: AssessmentResult
   const { social_style } = result.hpif_profile.behavioral_expression
 
   return (
-    <section className="space-y-8 py-8">
-      <h2 className="text-2xl font-bold text-text">Leadership Profile</h2>
-
-      <div className="grid grid-cols-2 gap-4">
-        <div className="p-5 rounded-2xl bg-indigo-50 border border-indigo-100 text-center">
-          <p className="text-4xl font-bold text-indigo">{leadership_score}</p>
-          <p className="text-indigo-600 text-sm mt-1">Leadership Score</p>
-        </div>
-        <div className="p-5 rounded-2xl bg-indigo-50 border border-indigo-100 text-center">
-          <p className="text-3xl font-bold text-indigo">{leadership_tier}</p>
-          <p className="text-indigo-600 text-sm mt-1">Leadership Tier</p>
-        </div>
+    <div className="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden">
+      <div className="bg-slate-900 px-6 py-5">
+        <p className="text-xs font-semibold text-slate-500 uppercase tracking-widest">Section 7</p>
+        <h2 className="text-2xl font-bold text-white mt-1">Leadership Profile</h2>
+        <p className="text-slate-400 text-sm mt-1">Your leadership style, orientation, and influence patterns</p>
       </div>
 
-      <p className="text-slate-600 text-sm leading-relaxed">{TIER_DESCRIPTIONS[leadership_tier]}</p>
-
-      <div className="space-y-5">
-        <h3 className="font-semibold text-text">Leadership Orientation</h3>
-        <div>
-          <div className="flex justify-between text-sm mb-1">
-            <span className="text-slate-400">Tactical</span>
-            <span className="font-medium text-indigo">Strategic · {strategic_vs_tactical}</span>
+      <div className="p-6 md:p-8 space-y-6">
+        <div className="grid grid-cols-2 gap-4">
+          <div className="p-5 rounded-2xl bg-indigo-50 border border-indigo-100 text-center hover:-translate-y-1 transition-transform duration-200">
+            <p className="text-4xl font-black text-indigo">{leadership_score}</p>
+            <p className="text-indigo-600 text-sm mt-1">Leadership Score</p>
           </div>
-          <div className="h-3 bg-slate-100 rounded-full overflow-hidden">
-            <div className="h-full bg-gradient-to-r from-indigo to-teal rounded-full" style={{ width: `${strategic_vs_tactical}%` }} />
+          <div className="p-5 rounded-2xl bg-indigo-50 border border-indigo-100 text-center hover:-translate-y-1 transition-transform duration-200">
+            <p className="text-3xl font-black text-indigo">{leadership_tier}</p>
+            <p className="text-indigo-600 text-sm mt-1">Leadership Tier</p>
           </div>
-          <p className="text-xs text-slate-400 mt-1">How strongly you orient toward long-horizon vision versus day-to-day execution</p>
         </div>
-        <div>
-          <div className="flex justify-between text-sm mb-1">
-            <span className="text-slate-400">Specialist</span>
-            <span className="font-medium text-indigo">Generalist · {specialist_vs_generalist}</span>
-          </div>
-          <div className="h-3 bg-slate-100 rounded-full overflow-hidden">
-            <div className="h-full bg-gradient-to-r from-indigo to-teal rounded-full" style={{ width: `${specialist_vs_generalist}%` }} />
-          </div>
-          <p className="text-xs text-slate-400 mt-1">Whether you lead through deep domain expertise or broad cross-functional range</p>
-        </div>
-      </div>
 
-      <div className="p-5 rounded-2xl bg-slate-50 border border-slate-100">
-        <p className="text-xs text-slate-400 uppercase tracking-widest font-medium mb-1">Communication Style</p>
-        <p className="font-bold text-text mb-1">{social_style}</p>
-        <p className="text-sm text-slate-600 leading-relaxed">{SOCIAL_STYLE_DESCRIPTIONS[social_style] ?? ''}</p>
-      </div>
+        <p className="text-slate-600 text-sm leading-relaxed">{TIER_DESCRIPTIONS[leadership_tier]}</p>
 
-      {archetype.leadership_style && (
-        <div className="px-5 py-4 rounded-xl bg-indigo-50 border border-indigo-100">
-          <p className="text-xs text-indigo uppercase tracking-widest font-medium mb-1">Leadership Style</p>
-          <p className="font-semibold text-indigo">{archetype.leadership_style}</p>
-        </div>
-      )}
-
-      <div className="grid md:grid-cols-2 gap-6">
-        {archetype.leadership_strengths && (
+        <div className="space-y-5">
+          <h3 className="font-semibold text-text">Leadership Orientation</h3>
           <div>
-            <h3 className="font-semibold text-teal mb-3">Leadership Strengths</h3>
-            <ul className="space-y-2">
-              {archetype.leadership_strengths.map((s) => (
-                <li key={s} className="text-sm text-slate-600 flex gap-2">
-                  <span className="text-teal shrink-0 mt-0.5">✓</span>{s}
-                </li>
-              ))}
-            </ul>
+            <div className="flex justify-between text-sm mb-1">
+              <span className="text-slate-400">Tactical</span>
+              <span className="font-medium text-indigo">Strategic · {strategic_vs_tactical}</span>
+            </div>
+            <div className="h-3 bg-slate-100 rounded-full overflow-hidden">
+              <div className="h-full bg-gradient-to-r from-indigo to-teal rounded-full" style={{ width: `${strategic_vs_tactical}%` }} />
+            </div>
+            <p className="text-xs text-slate-400 mt-1">How strongly you orient toward long-horizon vision versus day-to-day execution</p>
+          </div>
+          <div>
+            <div className="flex justify-between text-sm mb-1">
+              <span className="text-slate-400">Specialist</span>
+              <span className="font-medium text-indigo">Generalist · {specialist_vs_generalist}</span>
+            </div>
+            <div className="h-3 bg-slate-100 rounded-full overflow-hidden">
+              <div className="h-full bg-gradient-to-r from-indigo to-teal rounded-full" style={{ width: `${specialist_vs_generalist}%` }} />
+            </div>
+            <p className="text-xs text-slate-400 mt-1">Whether you lead through deep domain expertise or broad cross-functional range</p>
+          </div>
+        </div>
+
+        <div className="p-5 rounded-2xl bg-slate-50 border border-slate-100 hover:-translate-y-1 transition-transform duration-200">
+          <p className="text-xs text-slate-400 uppercase tracking-widest font-medium mb-1">Communication Style</p>
+          <p className="font-bold text-text mb-1">{social_style}</p>
+          <p className="text-sm text-slate-600 leading-relaxed">{SOCIAL_STYLE_DESCRIPTIONS[social_style] ?? ''}</p>
+        </div>
+
+        {archetype.leadership_style && (
+          <div className="px-5 py-4 rounded-xl bg-indigo-50 border border-indigo-100 hover:-translate-y-1 transition-transform duration-200">
+            <p className="text-xs text-indigo uppercase tracking-widest font-medium mb-1">Leadership Style</p>
+            <p className="font-semibold text-indigo">{archetype.leadership_style}</p>
           </div>
         )}
-        {archetype.leadership_blind_spots && (
-          <div>
-            <h3 className="font-semibold text-amber-500 mb-3">Leadership Blind Spots</h3>
-            <ul className="space-y-2">
-              {archetype.leadership_blind_spots.map((s) => (
-                <li key={s} className="text-sm text-slate-600 flex gap-2">
-                  <span className="text-amber-400 shrink-0 mt-0.5">△</span>{s}
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
+
+        <div className="grid md:grid-cols-2 gap-6">
+          {archetype.leadership_strengths && (
+            <div>
+              <h3 className="font-semibold text-teal mb-3">Leadership Strengths</h3>
+              <ul className="space-y-2">
+                {archetype.leadership_strengths.map((s) => (
+                  <li key={s} className="text-sm text-slate-600 flex gap-2">
+                    <span className="text-teal shrink-0 mt-0.5">✓</span>{s}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+          {archetype.leadership_blind_spots && (
+            <div>
+              <h3 className="font-semibold text-amber-500 mb-3">Leadership Blind Spots</h3>
+              <ul className="space-y-2">
+                {archetype.leadership_blind_spots.map((s) => (
+                  <li key={s} className="text-sm text-slate-600 flex gap-2">
+                    <span className="text-amber-400 shrink-0 mt-0.5">△</span>{s}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
       </div>
-    </section>
+    </div>
   )
 }
